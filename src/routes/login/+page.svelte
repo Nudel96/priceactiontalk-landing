@@ -1,7 +1,25 @@
 <script lang="ts">
-  let email = '';
-  let password = '';
+  import { goto } from '$app/navigation';
+
+  let email = 'test@test.de';
+  let password = 'test';
   let showPassword = false;
+  let error = '';
+
+  // Dummy-Zugangsdaten
+  const DUMMY = {
+    email: 'test@test.de',
+    password: 'test'
+  };
+
+  function handleLogin(event: Event) {
+    event.preventDefault();
+    if (email === DUMMY.email && password === DUMMY.password) {
+      goto('/dashboard');
+    } else {
+      error = 'Invalid email or password.';
+    }
+  }
 </script>
 
 <main class="min-h-screen w-full flex items-center justify-center bg-[#0d1b2a] px-3">
@@ -16,7 +34,7 @@
     <section class="flex flex-col gap-2">
       <h1 class="text-2xl md:text-3xl font-extrabold text-white mb-1">Login to Your Account</h1>
       <p class="text-base text-[#b0bec5] mb-6">Access your trading community and resources.</p>
-      <form class="flex flex-col gap-4">
+      <form class="flex flex-col gap-4" on:submit|preventDefault={handleLogin}>
         <div class="flex flex-col gap-1">
           <label for="email" class="text-sm font-semibold text-white">Email Address</label>
           <input id="email" name="email" type="email" bind:value={email} required autocomplete="username" placeholder="Enter your email"
