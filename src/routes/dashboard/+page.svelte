@@ -1,40 +1,105 @@
 <script lang="ts">
-  let search = "";
+  // Search input binding
+  let search = '';
+
+  // SVG-Icons as HTML strings for sidebar
+  function getIcon(name: string): string {
+    const icons: Record<string, string> = {
+      House: `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" viewBox=\"0 0 256 256\"><path d=\"M224,115.55V208a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V168a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8v40a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V115.55a16,16,0,0,1,5.17-11.78l80-75.48.11-.11a16,16,0,0,1,21.53,0l80,75.48Z\"/></svg>`,
+      ChartLine: `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" viewBox=\"0 0 256 256\"><path d=\"M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0v94.37L90.73,98a8,8,0,0,1,10.07-.38l58.81,44.11L218.73,90a8,8,0,1,1,10.54,12l-64,56Z\"/></svg>`,
+      Briefcase: `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" viewBox=\"0 0 256 256\"><path d=\"M216,56H176V48a24,24,0,0,0-24-24H104a24,24,0,0,0-24,24v8H40a16,16,0,0,0-16,16V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V72A16,16,0,0,0,216,56Z\"/></svg>`,
+      Eye: `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" viewBox=\"0 0 256 256\"><path d=\"M128,48a80,80,0,1,0,80,80A80,80,0,0,0,128,48Zm0,144a64,64,0,1,1,64-64A64,64,0,0,1,128,192Z\"/></svg>`,
+      UsersThree: `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" viewBox=\"0 0 256 256\"><path d=\"M128,128a32,32,0,1,0-32-32A32,32,0,0,0,128,128Z\"/></svg>`,
+      Calendar: `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" viewBox=\"0 0 256 256\"><rect x=\"40\" y=\"48\" width=\"176\" height=\"160\" rx=\"8\"/></svg>`,
+      Question: `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"currentColor\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"176\" r=\"12\"/><path d=\"M128,72a36,36,0,0,0-36,36h0a36,36,0,0,0,36,36h0a36,36,0,0,0,36-36h0A36,36,0,0,0,128,72Z\"/></svg>`
+    };
+    return icons[name] || '';
+  }
+
+  const sidebarItems = [
+    { icon: 'House',       label: 'School',   route: '/school',   active: true },
+    { icon: 'ChartLine',   label: 'Level',    route: '/level' },
+    { icon: 'Briefcase',   label: 'Homework', route: '/homework' },
+    { icon: 'Eye',         label: 'Forum',    route: '/forum' },
+    { icon: 'UsersThree',  label: 'Market',   route: '/market' },
+    { icon: 'Calendar',    label: 'Event',    route: '/event' },
+    { icon: 'Question',    label: 'Support',  route: '/support' }
+  ];
+
+  const posts = [
+    /* ... existing posts ... */
+  ];
 </script>
 
-<main class="relative flex min-h-screen flex-col bg-[#0d1b2a] font-sans overflow-x-hidden">
-  <!-- Header/Navi -->
-  <header class="flex items-center justify-between border-b border-[#1b9aaa]/10 px-8 py-4">
-    <div class="flex items-center gap-3 text-white">
-      <img src="/Logo2.png" alt="PriceActionTalk Logo" class="h-8 w-8 rounded-lg object-contain bg-[#7cfc00]" />
-      <span class="text-xl font-bold tracking-tight">PriceActionTalk</span>
+<svelte:head>
+  <!-- Font Imports -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+    rel="stylesheet"
+  />
+</svelte:head>
+
+<main class="relative flex min-h-screen flex-col bg-[#111518] font-sans" style="font-family: 'Inter', 'Noto Sans', sans-serif;">
+  <!-- Header -->
+  <header class="flex items-center justify-between border-b border-[#283139] px-10 py-3">
+    <div class="flex items-center gap-4 text-white">
+      <svg viewBox="0 0 48 48" class="w-8 h-8 text-current"><path d="M42.4379 44..."/></svg>
+      <h2 class="text-white text-lg font-bold">PriceActionTalk</h2>
     </div>
-    <div class="flex flex-1 justify-end gap-6">
+    <div class="flex flex-1 justify-end items-center gap-4">
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Search"
         bind:value={search}
-        class="form-input w-60 h-10 px-4 rounded-xl border-none bg-[#1b9aaa]/10 text-white placeholder-[#7cfc00] focus:ring-2 focus:ring-[#1b9aaa] transition shadow"
+        class="form-input bg-[#283139] text-white placeholder-[#9cacba] rounded-xl px-4 py-2 focus:ring-0 focus:outline-none"
       />
-      <a href="#" class="flex items-center justify-center rounded-xl h-10 px-4 bg-[#1b9aaa] text-white text-sm font-bold hover:bg-[#7cfc00] transition">Create</a>
-      <button class="flex items-center justify-center rounded-xl h-10 w-10 bg-[#1b9aaa]/20 text-white"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 01-6 0v-1m6 0H9" /></svg></button>
-      <img src="/avatar-default.png" alt="User Avatar" class="h-10 w-10 rounded-full object-cover bg-[#1b9aaa]/10" />
+      <button class="bg-[#2094f3] text-white px-4 py-2 rounded-xl">Create</button>
+      <button class="bg-[#283139] text-white p-2 rounded-xl">
+        <svg width="20" height="20" fill="currentColor"><path d="M221.8,175.94..."/></svg>
+      </button>
+      <div class="w-10 h-10 rounded-full bg-cover bg-center" style="background-image:url('/avatar.png')"></div>
     </div>
   </header>
 
-  <div class="flex flex-col md:flex-row gap-4 p-4 flex-1">
-    <!-- Sidebar (links) -->
-    <aside class="flex flex-col gap-2 w-full md:w-72 bg-[#162635] rounded-xl p-4 shadow-lg border border-[#1b9aaa]/10 min-h-[640px]">
-      <button class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#1b9aaa]/10 text-white transition"><svg ...><!-- icon --></svg><span class="text-sm font-medium">School</span></button>
-      <!-- Füge weitere Buttons analog hinzu (Level, Homework, ...) -->
-      <button class="mt-8 w-full bg-[#1b9aaa] hover:bg-[#7cfc00] text-white font-bold rounded-xl py-2 transition">New post</button>
-    </aside>
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+      <aside class="w-80 bg-[#111518] p-4">
+      {#each sidebarItems as item}
+       <a
+      href={item.route}
+      class="flex items-center gap-3 px-3 py-2 rounded-xl mb-2 transition-colors {item.active ? 'bg-[#283139]' : 'hover:bg-[#283139]'}"
+      >
+      {@html getIcon(item.icon)}
+      <span class="text-white">{item.label}</span>
+     </a>
+      {/each}
+     </aside>
 
-    <!-- Dashboard Area -->
-    <section class="flex-1 flex flex-col gap-4 max-w-5xl">
-      <h2 class="text-white text-3xl font-bold tracking-tight mb-2">Community</h2>
-      <!-- Tabs und Cards -->
-      <!-- ... (hier kommt dein Content, Cards etc.) ... -->
+    <!-- Main Content -->
+    <section class="flex-1 p-6">
+      <h1 class="text-2xl font-bold text-white mb-4">Community</h1>
+      <nav class="flex space-x-4 mb-6 border-b border-[#3b4954] pb-2">
+        <a href="#" class="text-white border-b-2 border-white pb-1">Following</a>
+        <a href="#" class="text-[#9cacba] hover:text-white pb-1">Popular</a>
+        <a href="#" class="text-[#9cacba] hover:text-white pb-1">Trending</a>
+      </nav>
+      <div class="space-y-6">
+        {#each posts as post}
+          <div class="flex bg-[#162635] rounded-xl overflow-hidden">
+            <div class="flex-1 p-4">
+              <p class="text-[#9cacba] text-sm">{post.trend}</p>
+              <h2 class="text-white text-lg font-bold">{post.title}</h2>
+              <p class="text-[#9cacba] text-sm mb-2">by {post.author}</p>
+              <button class="bg-[#283139] text-white px-3 py-1 rounded-full text-sm">View more</button>
+            </div>
+            <div
+              class="w-1/3 bg-cover bg-center"
+              style="background-image:url('{post.image}');"
+            ></div>
+          </div>
+        {/each}
+      </div>
     </section>
   </div>
 </main>
