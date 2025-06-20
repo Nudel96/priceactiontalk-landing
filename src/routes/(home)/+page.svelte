@@ -177,8 +177,6 @@
 			</p>
 
 			<div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-				<!-- Svelte's {#each} block for list rendering -->
-				<!-- Staggered animation is achieved with a calculated delay -->
 				{#each features as feature, i}
 					{@const Icon = feature.icon}
 					<div
