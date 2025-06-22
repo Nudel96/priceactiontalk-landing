@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
 
   // Set a future date for the countdown
-  const launchDate = new Date('2025-10-10T00:00:00');
+  const launchDate = new Date('2026-01-01T00:00:00');
 
   // Use $state for reactive values
   let timeLeft = $state({

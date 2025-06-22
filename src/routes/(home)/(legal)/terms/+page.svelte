@@ -11,7 +11,7 @@
 				priceactiontalk.com
 			</a>
 			(the "Website") operated by PriceActionTalk, owned by Melvin ("Company", "we", "us", "our"). Those
-			are brought to you by Melvin, 123 Trading Road, Karachi, Sindh, Pakistan. By accessing or using the
+			are brought to you by Melvin Singh, 5 Street 21, Islamabad, Pakistan. By accessing or using the
 			Website, you agree to these Terms in full.
 		</p>
 		<p>
@@ -58,7 +58,7 @@
 		<p>
 			For questions or concerns, contact us at <a href="mailto:priceactiontalk25@gmail.com">
 				priceactiontalk25@gmail.com
-			</a> or via +92-21-123456789.
+			</a> or via +92-21-812354862.
 		</p>
 		<p>Responsible according to &sect;5 TMG: Melvin</p>
 	</div>
