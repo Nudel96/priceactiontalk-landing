@@ -11,22 +11,33 @@
 		BookCopy,
 		ChartCandlestick,
 		MessageSquare,
-		ChevronDown
+		ChevronDown,
+		ShieldAlert
 	} from '@lucide/svelte';
 
 	// Custom components and actions
 	import CountdownTimer from './CountdownTimer.svelte';
 	import { viewport } from '$lib/actions/viewport';
+	import type { PageProps } from './$types';
 
 	// Component State using Svelte 5 Runes
 	let email = $state('');
 	let formState: 'idle' | 'loading' | 'success' = $state('idle');
 	let showHeroContent = $state(false);
 
+	let { form }: PageProps = $props();
+
 	// Lifecycle hook to trigger initial animation
 	onMount(() => {
 		showHeroContent = true;
 	});
+
+	const handleSubmit = async (event: Event) => {
+		if (!email) return;
+
+		formState = 'loading';
+		console.log(event)
+	};
 
 	const features = [
 		{
@@ -49,23 +60,6 @@
 		}
 	];
 
-	// Form submission logic
-	const handleSubmit = (e: SubmitEvent) => {
-		e.preventDefault();
-		if (email && formState === 'idle') {
-			formState = 'loading';
-			setTimeout(() => {
-				formState = 'success';
-				setTimeout(() => {
-					// In a real app, you'd use a toast notification instead of alert()
-					alert(`Thank you! ${email} has been added to our waitlist.`);
-					formState = 'idle';
-					email = '';
-				}, 1000);
-			}, 1500);
-		}
-	};
-
 	const embedUrl = 'https://www.youtube.com/embed/z-i6bQjElos';
 </script>
 
@@ -86,35 +80,47 @@
 					journal, strategies, and education into one powerful hub.
 				</p>
 
-				<form onsubmit={handleSubmit} class="mx-auto w-full max-w-lg">
-					<div class="relative flex items-center">
-						<Mail class="absolute left-5 text-gray-400" size="20" />
-						<input
-							type="email"
-							bind:value={email}
-							placeholder="Enter your email to get notified"
-							required
-							disabled={formState !== 'idle'}
-							class="focus:border-teal focus:ring-teal w-full rounded-full border border-white/20 bg-white/5 py-4 pl-14 pr-40 text-white placeholder-gray-400 backdrop-blur-sm transition duration-300" />
-						<button
-							type="submit"
-							disabled={formState !== 'idle'}
-							class="btn bg-teal hover:bg-teal/90 animate-subtle-glow absolute right-2 top-1/2 flex h-11 w-36 -translate-y-1/2 items-center justify-center gap-2 rounded-full px-5 py-2.5 font-bold text-white shadow-lg">
-							<!-- Svelte's {#if} blocks with transitions replace AnimatePresence -->
-							{#if formState === 'idle'}
-								<span in:fade={{ duration: 200 }} class="flex items-center gap-2">
-									<Send size="16" />Notify Me
-								</span>
-							{:else if formState === 'loading'}
-								<span in:fade={{ duration: 200 }} class="flex items-center justify-center">
-									<Loader class="animate-spin" size="20" />
-								</span>
-							{:else if formState === 'success'}
-								<span in:fade={{ duration: 200 }} class="flex items-center justify-center">
-									<Check size="20" />
-								</span>
-							{/if}
-						</button>
+				<form method="post" action="?/waitlist" class="mx-auto w-full max-w-lg">
+					<div class="relative flex items-center justify-center">
+						{#if !form}
+							<Mail class="absolute left-5 text-gray-400 z-1" size="20" />
+							<input
+								type="email"
+								name="email"
+								bind:value={email}
+								placeholder="Enter your email to get notified"
+								required
+								disabled={formState !== 'idle'}
+								class="focus:border-teal focus:ring-teal w-full rounded-full border border-white/20 bg-white/5 py-4 pl-14 pr-40 text-white placeholder-gray-400 backdrop-blur-sm transition duration-300" />
+							<button
+								type="submit"
+								onsubmit={handleSubmit}
+								disabled={formState !== 'idle'}
+								class="btn bg-teal hover:bg-teal/90 animate-subtle-glow absolute right-2 top-1/2 flex h-11 w-36 -translate-y-1/2 items-center justify-center gap-2 rounded-full px-5 py-2.5 font-bold text-white shadow-lg">
+								{#if formState === 'idle'}
+									<span in:fade={{ duration: 200 }} class="flex items-center gap-2">
+										<Send size="16" />Notify Me
+									</span>
+								{:else if formState === 'loading'}
+									<span in:fade={{ duration: 200 }} class="flex items-center justify-center">
+										<Loader class="animate-spin" size="20" />
+									</span>
+								{:else if formState === 'success'}
+									<span in:fade={{ duration: 200 }} class="flex items-center justify-center">
+										<Check size="20" />
+									</span>
+								{/if}
+							</button>
+						{:else}
+							<span class="flex items-center gap-2">
+								{#if form.success}
+									<Check size="20" class="text-green-500" />
+								{:else}
+									<ShieldAlert size="20" class="text-red-500" />
+								{/if}
+								{form.message}
+							</span>
+						{/if}
 					</div>
 				</form>
 			</div>
