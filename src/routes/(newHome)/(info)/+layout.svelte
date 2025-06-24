@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Logo from "$lib/components/Logo.svelte";
+
 	const STRIPE_CHECKOUT_URL = 'https://dein-stripe-link.com/checkout';
 </script>
 
@@ -6,7 +8,7 @@
 	<header
 		class="flex items-center justify-between border-b border-[#1b9aaa]/30 bg-[#0d1b2a] px-8 py-4">
 		<div class="flex items-center gap-4 text-white">
-			<img src="/Logo.jpg" alt="PriceActionTalk Logo" class="h-8 w-8" />
+			<Logo />
 			<span class="text-xl font-bold tracking-tight">PriceActionTalk</span>
 		</div>
 		<nav class="flex flex-1 items-center justify-end gap-8">
