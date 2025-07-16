@@ -21,8 +21,29 @@
 
 	const userTier = getTierInfo(user.level);
 
-	const upcomingHomework = data.homeworks.slice(0, 3);
+	// only show homework the user has not completed yet
+	const upcomingHomework = data.homeworks
+		.filter((hw) => !(user.completedHomework || []).includes(hw.id))
+		.sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime())
+		.slice(0, 3);
 	const recentForumPosts = data.threads.slice(0, 3);
+
+	function formatDistanceToNow(date: Date) {
+		const diff = date.getTime() - Date.now();
+		const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+		const minutes = Math.round(diff / 60000);
+		if (Math.abs(minutes) < 60) return rtf.format(minutes, 'minute');
+		const hours = Math.round(diff / 3600000);
+		if (Math.abs(hours) < 24) return rtf.format(hours, 'hour');
+		const days = Math.round(diff / 86400000);
+		if (Math.abs(days) < 7) return rtf.format(days, 'day');
+		const weeks = Math.round(diff / 604800000);
+		if (Math.abs(weeks) < 4) return rtf.format(weeks, 'week');
+		const months = Math.round(diff / 2592000000);
+		if (Math.abs(months) < 12) return rtf.format(months, 'month');
+		const years = Math.round(diff / 31536000000);
+		return rtf.format(years, 'year');
+	}
 </script>
 
 <div class="space-y-6">
@@ -59,6 +80,9 @@
 				<div>
 					<p class="text-sm font-medium">{user.xp} / {nextLevelXp} XP</p>
 					<p class="text-xs opacity-80">Next level: {user.level + 1}</p>
+					<a href="/school" class="mt-2 flex items-center gap-1 text-xs font-bold hover:underline">
+						View details
+					</a>
 				</div>
 			</div>
 		</div>
@@ -70,15 +94,15 @@
 			<div class="space-y-3 text-sm">
 				<div class="flex justify-between">
 					<span class="text-white/80">Forum posts</span>
-					<span class="font-semibold">0</span>
+					<span class="font-semibold">{user.stats?.forumPosts ?? 0}</span>
 				</div>
 				<div class="flex justify-between">
 					<span class="text-white/80">Completed homework</span>
-					<span class="font-semibold">0</span>
+					<span class="font-semibold">{user.stats?.completedHomework ?? 0}</span>
 				</div>
 				<div class="flex justify-between">
 					<span class="text-white/80">Days active</span>
-					<span class="font-semibold">0</span>
+					<span class="font-semibold">{user.stats?.daysActive ?? 0}</span>
 				</div>
 			</div>
 		</div>
@@ -90,6 +114,11 @@
 			<div>
 				<p class="text-navy text-lg font-bold">{userTier.name}</p>
 				<p class="text-graphite/80 mb-3 text-sm">{userTier.description}</p>
+				<a
+					href="/school"
+					class="text-teal flex items-center gap-1 text-sm font-semibold hover:underline">
+					Continue learning
+				</a>
 			</div>
 		</div>
 
@@ -107,12 +136,15 @@
 		<div class="card">
 			<div class="mb-4 flex items-center justify-between">
 				<h3 class="text-navy font-semibold">Recent Forum Activity</h3>
+				<a href="/forum" class="text-teal text-sm hover:underline">View all</a>
 			</div>
 			<div class="space-y-4">
 				{#if recentForumPosts.length}
 					{#each recentForumPosts as post}
 						<div class="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-							<span class="text-navy font-medium">{post.title}</span>
+							<a href={`/forum/${post.id}`} class="text-navy hover:text-teal font-medium">
+								{post.title}
+							</a>
 							<div class="mt-1 flex items-center justify-between text-xs text-gray-500">
 								<span>
 									by {post.author.username} in
@@ -131,19 +163,27 @@
 		<div class="card">
 			<div class="mb-4 flex items-center justify-between">
 				<h3 class="text-navy font-semibold">Upcoming Homework</h3>
+				<a href="/homework" class="text-teal text-sm hover:underline">View all</a>
 			</div>
 			<div class="space-y-4">
 				{#if upcomingHomework.length}
 					{#each upcomingHomework as task}
 						<div class="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
 							<div class="flex items-center justify-between">
-								<span class="text-navy font-medium">{task.title}</span>
+								<a href={`/homework/${task.id}`} class="text-navy hover:text-teal font-medium">
+									{task.title}
+								</a>
 								<span class="bg-teal/10 text-teal rounded-full px-2 py-0.5 text-xs font-semibold">
 									+{task.xp} XP
 								</span>
 							</div>
 							<div class="mt-1 flex items-center justify-between text-xs text-gray-500">
-								<span>Due: {new Date(task.deadline).toLocaleDateString()}</span>
+								<span class="flex items-center gap-1">
+									Due: {formatDistanceToNow(new Date(task.deadline))}
+								</span>
+								<a href={`/homework/${task.id}`} class="btn btn-primary btn-sm px-3 py-1 text-xs">
+									Start now
+								</a>
 							</div>
 						</div>
 					{/each}
