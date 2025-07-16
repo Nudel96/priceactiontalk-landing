@@ -36,7 +36,7 @@
 		if (!email) return;
 
 		formState = 'loading';
-		console.log(event)
+		console.log(event);
 	};
 
 	const features = [
@@ -64,15 +64,16 @@
 </script>
 
 <!-- SECTION 1: The Hero Hook with 3D Background -->
-<section class="relative flex h-[calc(100vh-78px)] flex-col items-center justify-center p-4 text-center">
-	<div class="relative z-10 h-full w-full flex items-center justify-center">
+<section
+	class="relative flex h-[calc(100vh-78px)] flex-col items-center justify-center p-4 text-center">
+	<div class="relative z-10 flex h-full w-full items-center justify-center">
 		{#if showHeroContent}
 			<div in:fly={{ y: 20, duration: 800, delay: 200 }} class="w-full max-w-3xl">
-				<h2 class="mb-4 text-2xl font-light uppercase tracking-[0.3em] text-gray-200/80">
+				<h2 class="mb-4 text-2xl font-light tracking-[0.3em] text-gray-200/80 uppercase">
 					PRICEACTIONTALK
 				</h2>
 				<h1
-					class="animate-text-shimmer mb-4 bg-gradient-to-r from-gray-200 via-white to-gray-400 bg-[200%_auto] bg-clip-text text-4xl font-bold leading-tight text-transparent md:text-6xl">
+					class="animate-text-shimmer mb-4 bg-gradient-to-r from-gray-200 via-white to-gray-400 bg-[200%_auto] bg-clip-text text-4xl leading-tight font-bold text-transparent md:text-6xl">
 					The Future of Trading is Here.
 				</h1>
 				<p class="mx-auto mb-8 max-w-2xl text-lg text-gray-300 md:text-xl">
@@ -83,7 +84,7 @@
 				<form method="post" action="?/waitlist" class="mx-auto w-full max-w-lg">
 					<div class="relative flex items-center justify-center">
 						{#if !form}
-							<Mail class="absolute left-5 text-gray-400 z-1" size="20" />
+							<Mail class="absolute left-5 z-1 text-gray-400" size="20" />
 							<input
 								type="email"
 								name="email"
@@ -91,12 +92,12 @@
 								placeholder="Enter your email to get notified"
 								required
 								disabled={formState !== 'idle'}
-								class="focus:border-teal focus:ring-teal w-full rounded-full border border-white/20 bg-white/5 py-4 pl-14 pr-40 text-white placeholder-gray-400 backdrop-blur-sm transition duration-300" />
+								class="focus:border-teal focus:ring-teal w-full rounded-full border border-white/20 bg-white/5 py-4 pr-40 pl-14 text-white placeholder-gray-400 backdrop-blur-sm transition duration-300" />
 							<button
 								type="submit"
 								onsubmit={handleSubmit}
 								disabled={formState !== 'idle'}
-								class="btn bg-teal hover:bg-teal/90 animate-subtle-glow absolute right-2 top-1/2 flex h-11 w-36 -translate-y-1/2 items-center justify-center gap-2 rounded-full px-5 py-2.5 font-bold text-white shadow-lg">
+								class="btn bg-teal hover:bg-teal/90 animate-subtle-glow absolute top-1/2 right-2 flex h-11 w-36 -translate-y-1/2 items-center justify-center gap-2 rounded-full px-5 py-2.5 font-bold text-white shadow-lg">
 								{#if formState === 'idle'}
 									<span in:fade={{ duration: 200 }} class="flex items-center gap-2">
 										<Send size="16" />Notify Me
@@ -136,10 +137,7 @@
 
 <!-- SECTION 2: Video Sneak Peek -->
 <section class="bg-navy py-20 md:py-32">
-	<div
-		class="mx-auto max-w-4xl px-4 text-center"
-		use:viewport
-		role="group">
+	<div class="mx-auto max-w-4xl px-4 text-center" use:viewport role="group">
 		<div in:fly={{ y: 20, duration: 700 }}>
 			<h2 class="mb-4 text-3xl font-bold text-white">See It In Action</h2>
 			<p class="mx-auto mb-10 max-w-2xl text-lg text-gray-400">
@@ -171,18 +169,15 @@
 
 <!-- SECTION 4: The Feature Hook -->
 <section class="bg-gray-50 py-20 md:py-32">
-	<div
-		class="mx-auto max-w-7xl px-4 text-center"
-		use:viewport
-		role="group">
+	<div class="mx-auto max-w-7xl px-4 text-center" use:viewport role="group">
 		<h2 class="text-navy mb-4 text-3xl font-bold">Your All-In-One Trading Hub</h2>
 		<p class="mx-auto mb-12 max-w-3xl text-lg text-gray-600">
-			We built the tools you've always needed, right where you need them. No more switching
-			between apps.
+			We built the tools you've always needed, right where you need them. No more switching between
+			apps.
 		</p>
 
 		<div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-			{#each features as feature, i}
+			{#each features as feature, i (i)}
 				{@const Icon = feature.icon}
 				<div
 					in:fly={{ y: 20, duration: 500, delay: i * 200 }}

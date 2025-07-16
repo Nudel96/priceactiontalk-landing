@@ -1,6 +1,6 @@
 <h2>Terms and Conditions</h2>
 <div class="modal-content">
-	<div class="bg-white flex text-black w-full max-w-[1000px] flex-col gap-4 rounded-lg border p-4">
+	<div class="flex w-full max-w-[1000px] flex-col gap-4 rounded-lg border bg-white p-4 text-black">
 		<p>
 			<strong>Last updated:</strong>
 			June 19, 2025
@@ -15,8 +15,8 @@
 			Website, you agree to these Terms in full.
 		</p>
 		<p>
-			By accessing the Website, you acknowledge that you have read, understood, and agree to be bound
-			by these Terms. If you do not agree, you must refrain from using the Website.
+			By accessing the Website, you acknowledge that you have read, understood, and agree to be
+			bound by these Terms. If you do not agree, you must refrain from using the Website.
 		</p>
 		<p>
 			We may modify these Terms at any time. Changes take effect upon posting on the Website. Your
@@ -33,8 +33,8 @@
 			infringing content, or interfere with the security or operation of the Website.
 		</p>
 		<p>
-			The Website may contain links to third-party websites. We are not responsible for their content
-			or policies. Your use of third-party sites is at your own risk.
+			The Website may contain links to third-party websites. We are not responsible for their
+			content or policies. Your use of third-party sites is at your own risk.
 		</p>
 		<p>
 			The Website is provided "as is" and "as available" without warranties of any kind. To the
@@ -47,8 +47,8 @@
 		</p>
 		<p>
 			You agree to indemnify and hold harmless the Company, its officers, employees, and agents from
-			any claims, liabilities, damages, losses, or expenses arising out of your breach of these Terms
-			or your use of the Website.
+			any claims, liabilities, damages, losses, or expenses arising out of your breach of these
+			Terms or your use of the Website.
 		</p>
 		<p>
 			These Terms are governed by the laws of Pakistan. Any disputes arising under or in connection
@@ -58,7 +58,8 @@
 		<p>
 			For questions or concerns, contact us at <a href="mailto:priceactiontalk25@gmail.com">
 				priceactiontalk25@gmail.com
-			</a> or via +92-21-812354862.
+			</a>
+			or via +92-21-812354862.
 		</p>
 		<p>Responsible according to &sect;5 TMG: Melvin</p>
 	</div>
