@@ -31,14 +31,14 @@
 
 	// --- Reactive Logic ---
 	// This logic remains the same, reacting to changes in the $page store.
-	$: if (page.url.pathname) {
+	$: if ($page.url.pathname) {
 		isSidebarOpen = false;
 	}
 
 	// Determine the current page title.
 	let currentPageTitle = '';
 	$: {
-		const path = page.url.pathname;
+		const path = $page.url.pathname;
 		if (path === '/dashboard') currentPageTitle = 'Dashboard';
 		else if (path.startsWith('/school')) currentPageTitle = 'School';
 		else if (path.startsWith('/homework')) currentPageTitle = 'Homework';
@@ -83,7 +83,8 @@
 		<div
 			class="fixed inset-0 z-20 bg-black/60 lg:hidden"
 			on:click={() => (isSidebarOpen = false)}
-			role="presentation"></div>
+			role="presentation">
+		</div>
 	{/if}
 
 	<!-- Sidebar -->
@@ -106,7 +107,7 @@
 			{/if}
 
 			<nav class="flex-grow space-y-1.5">
-				{#each navItems as item}
+				{#each navItems as item (item.href)}
 					<a href={item.href} class="nav-link">
 						<svelte:component this={item.icon} size={20} />
 						<span>{item.label}</span>

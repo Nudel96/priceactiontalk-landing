@@ -1,6 +1,6 @@
 <h2>Privacy Policy</h2>
 <div class="modal-content">
-	<div class="bg-white flex text-black w-full max-w-[1000px] flex-col gap-4 rounded-lg border p-4">
+	<div class="flex w-full max-w-[1000px] flex-col gap-4 rounded-lg border bg-white p-4 text-black">
 		<span>
 			<i>
 				Privacy is very important for us and we do all we can to protect your personal information.
@@ -22,17 +22,16 @@
 		<span>
 			For an effective usage of this site you will need an User Account, which only can be
 			registered from <a href="//priceactiontalk.com/register">this site</a>
-			. With this Account you gain access to all of our Applications. Proper disclosure of personal
-			information is required. We reserve the right to block offending Accounts from using our
-			services. You must only create one Account for a unique person. Multiaccount-usage is not
-			allowed and we reserve the right to delete conspicuous accounts. Affected Accounts will be
-			informed in time and have 5 calendar days to refute the allegations. Evidence supporting the
-			uniqueness of a persons account are identitycards, passports, birth certificates and residence
-			permits. Affected accounts will be deactivated immediately, and automatically deleted after 3
-			months. The final and valid decision to terminate an account is up to us and incontestable.
-			You have no fundamental right to an account.
+			. With this Account you gain access to all of our Applications. Proper disclosure of personal information
+			is required. We reserve the right to block offending Accounts from using our services. You must
+			only create one Account for a unique person. Multiaccount-usage is not allowed and we reserve the
+			right to delete conspicuous accounts. Affected Accounts will be informed in time and have 5 calendar
+			days to refute the allegations. Evidence supporting the uniqueness of a persons account are identitycards,
+			passports, birth certificates and residence permits. Affected accounts will be deactivated immediately,
+			and automatically deleted after 3 months. The final and valid decision to terminate an account
+			is up to us and incontestable. You have no fundamental right to an account.
 			<i>The judicial way is excluded.</i>
-			 New accounts obtain limited access to all features and applications. Right after the activation
+			New accounts obtain limited access to all features and applications. Right after the activation
 			of an account by a support stuff the account gains extended access. Certain premium features are
 			available for purchase.
 		</span>
