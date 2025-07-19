@@ -30,9 +30,9 @@
 <main class="flex flex-grow items-center justify-center px-4 py-10">
 	<div
 		in:fly={{ y: 20, duration: 400 }}
-		class="w-150 max-w-md rounded-lg bg-white p-6 shadow-lg md:p-8">
-		<h1 class="text-navy mb-2 text-2xl font-bold">Welcome back</h1>
-		<p class="text-graphite/80 mb-6">Sign in to access your PriceActionTalk account</p>
+		class="to-navy shadow-card w-full max-w-md rounded-xl bg-gradient-to-br from-[#16243c] p-8 ring-1 ring-white/10">
+		<h1 class="mb-2 text-3xl font-bold text-white">Welcome back</h1>
+		<p class="mb-6 text-sm text-gray-300">Sign in to access your PriceActionTalk account</p>
 
 		{#if error}
 			<div class="mb-6 rounded-md bg-red-50 px-4 py-3 text-red-700">
@@ -42,32 +42,32 @@
 
 		<form onsubmit={handleSubmit} class="space-y-4">
 			<div>
-				<label for="email" class="text-graphite mb-1 block text-sm font-medium">
+				<label for="email" class="mb-1 block text-sm font-medium text-gray-300">
 					Email Address
 				</label>
 				<input
 					id="email"
 					type="email"
 					bind:value={email}
-					class="focus:ring-teal w-full rounded-md border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1"
+					class="focus:border-teal focus:ring-teal w-full rounded-md border border-gray-600 bg-transparent px-4 py-2 text-white placeholder-gray-500 focus:outline-none"
 					placeholder="your.email@example.com"
 					required />
 			</div>
 
 			<div>
-				<label for="password" class="text-graphite mb-1 block text-sm font-medium">Password</label>
+				<label for="password" class="mb-1 block text-sm font-medium text-gray-300">Password</label>
 				<div class="relative">
 					<input
 						id="password"
 						type={showPassword ? 'text' : 'password'}
 						bind:value={password}
-						class="focus:ring-teal w-full rounded-md border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1"
+						class="focus:border-teal focus:ring-teal w-full rounded-md border border-gray-600 bg-transparent px-4 py-2 text-white placeholder-gray-500 focus:outline-none"
 						placeholder="••••••••"
 						required />
 					<button
 						type="button"
 						onclick={() => (showPassword = !showPassword)}
-						class="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600 cursor-pointer"
+						class="hover:text-teal absolute top-1/2 right-3 -translate-y-1/2 transform cursor-pointer text-gray-400"
 						aria-label={showPassword ? 'Hide password' : 'Show password'}>
 						{#if showPassword}
 							<EyeOff size={18} />
@@ -84,7 +84,7 @@
 
 			<button
 				type="submit"
-				class="btn bg-teal flex w-full items-center justify-center rounded-md px-4 py-2.5 font-bold text-white transition-colors hover:bg-teal-600 disabled:bg-teal-300 cursor-pointer"
+				class="btn from-teal to-signal text-navy flex w-full items-center justify-center rounded-md bg-gradient-to-r px-4 py-2.5 font-bold transition hover:opacity-90 disabled:opacity-50"
 				disabled={isLoading}>
 				{#if isLoading}
 					<span>Loading...</span>
@@ -97,8 +97,8 @@
 			</button>
 		</form>
 
-		<div class="mt-6 text-center">
-			<p class="text-graphite/80">
+		<div class="mt-6 text-center text-gray-300">
+			<p>
 				Don't have an account?
 				<a href="/register" class="text-teal font-medium hover:underline">Sign up</a>
 			</p>
