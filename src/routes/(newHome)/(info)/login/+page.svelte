@@ -86,7 +86,7 @@
 
 			<button
 				type="submit"
-				class="btn from-teal to-signal text-navy flex w-full items-center justify-center rounded-md bg-gradient-to-r px-4 py-2.5 font-bold transition hover:opacity-90 disabled:opacity-50"
+				class="btn bg-teal flex w-full cursor-pointer items-center justify-center rounded-md px-4 py-2.5 font-bold text-white transition-colors hover:bg-teal-600 disabled:bg-teal-300"
 				disabled={isLoading}>
 				{#if isLoading}
 					<span>Loading...</span>
