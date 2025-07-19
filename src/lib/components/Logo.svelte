@@ -1,1 +1,1 @@
-<img src="/Logo.jpg" alt="PriceActionTalk Logo" class="h-8 w-8" />
+<img src="/Logosvg.svg" alt="PriceActionTalk Logo" class="h-8 w-8" />

@@ -1,37 +1,49 @@
 <script lang="ts">
-	import Logo from "$lib/components/Logo.svelte";
+	import Logo from '$lib/components/Logo.svelte';
 
 	const STRIPE_CHECKOUT_URL = 'https://dein-stripe-link.com/checkout';
 </script>
 
 <div class="flex flex-col font-[Manrope,sans-serif]">
 	<header
-		class="flex items-center justify-between border-b border-[#1b9aaa]/30 bg-[#0d1b2a] px-8 py-4">
+		class="from-navy flex items-center justify-between bg-gradient-to-b to-[#16243c] px-8 py-4 shadow-md">
 		<div class="flex items-center gap-4 text-white">
 			<Logo />
 			<span class="text-xl font-bold tracking-tight">PriceActionTalk</span>
 		</div>
-		<nav class="flex flex-1 items-center justify-end gap-8">
-			<a class="text-sm font-medium text-white transition hover:text-[#1b9aaa]" href="/">Home</a>
-			<a class="text-sm font-medium text-white transition hover:text-[#1b9aaa]" href="/about">
+		<nav class="flex flex-1 items-center justify-end gap-6">
+			<a
+				class="rounded-md px-3 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+				href="/">
+				Home
+			</a>
+			<a
+				class="rounded-md px-3 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+				href="/about">
 				About
 			</a>
-			<a class="text-sm font-medium text-white transition hover:text-[#1b9aaa]" href="/resources">
+			<a
+				class="rounded-md px-3 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+				href="/resources">
 				Free Resources
 			</a>
-			<a class="text-sm font-medium text-white transition hover:text-[#1b9aaa]" href="/membership">
+			<a
+				class="rounded-md px-3 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+				href="/membership">
 				Membership
 			</a>
-			<a class="text-sm font-medium text-white transition hover:text-[#1b9aaa]" href="/contact">
+			<a
+				class="rounded-md px-3 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+				href="/contact">
 				Contact
 			</a>
 			<a
-				class="joinnowbtn rounded-full bg-[#7cfc00] px-6 py-3 text-sm font-bold text-[#0d1b2a] transition hover:bg-[#59c200]"
+				class="joinnowbtn from-teal to-signal text-navy rounded-full bg-gradient-to-r px-6 py-3 text-sm font-bold shadow hover:opacity-90"
 				href={STRIPE_CHECKOUT_URL}>
 				Join Now
 			</a>
 			<a
-				class="flex items-center gap-2 rounded-full bg-[#1b9aaa] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#127e83]"
+				class="flex items-center gap-2 rounded-full bg-white/10 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/20"
 				href="https://discord.gg/2j8Skn2w"
 				target="_blank">
 				<svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
@@ -48,11 +60,5 @@
 <style lang="postcss">
 	:global(body) {
 		background-color: #0d1b2a;
-	}
-	nav > a:not(.joinnowbtn) {
-		color: white;
-		&:hover {
-			color: #1b9aaa;
-		}
 	}
 </style>

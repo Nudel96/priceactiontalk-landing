@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { fly } from 'svelte/transition';
 	import { Eye, EyeOff, ArrowRight } from '@lucide/svelte';
+	import Logo from '$lib/components/Logo.svelte';
 
 	import { login } from '$lib/stores/authStore';
 
@@ -31,6 +32,7 @@
 	<div
 		in:fly={{ y: 20, duration: 400 }}
 		class="to-navy shadow-card w-full max-w-md rounded-xl bg-gradient-to-br from-[#16243c] p-8 ring-1 ring-white/10">
+		<Logo class="mx-auto mb-6 h-12 w-auto" />
 		<h1 class="mb-2 text-3xl font-bold text-white">Welcome back</h1>
 		<p class="mb-6 text-sm text-gray-300">Sign in to access your PriceActionTalk account</p>
 
