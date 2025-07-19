@@ -6,13 +6,12 @@
 	// --- Icon and Component Imports ---
 	import {
 		Home,
-		BookOpen,
-		ChartCandlestick,
-		Briefcase,
-		MessageSquare,
-		ChartLine,
-		BookText,
 		User as UserIcon,
+		MessageSquare,
+		Briefcase,
+		Trophy,
+		BookOpen,
+		ChartLine,
 		Menu,
 		X,
 		LogOut
@@ -40,26 +39,24 @@
 	$: {
 		const path = page.url.pathname;
 		if (path === '/dashboard') currentPageTitle = 'Dashboard';
-		else if (path.startsWith('/school')) currentPageTitle = 'School';
-		else if (path.startsWith('/homework')) currentPageTitle = 'Homework';
-		else if (path.startsWith('/forum')) currentPageTitle = 'Forum';
-		else if (path.startsWith('/market')) currentPageTitle = 'Market Analysis';
-		else if (path.startsWith('/journal')) currentPageTitle = 'Trading Journal';
-		else if (path.startsWith('/tradelearner')) currentPageTitle = 'Tradelearner';
 		else if (path.startsWith('/profile')) currentPageTitle = 'Profile';
+		else if (path.startsWith('/forum')) currentPageTitle = 'Forum';
+		else if (path.startsWith('/homework')) currentPageTitle = 'Homework';
+		else if (path.startsWith('/level')) currentPageTitle = 'Level';
+		else if (path.startsWith('/school')) currentPageTitle = 'School';
+		else if (path.startsWith('/tradinghub')) currentPageTitle = 'Tradinghub';
 		else currentPageTitle = 'Page'; // A sensible fallback
 	}
 
 	// Navigation items definition remains the same.
 	const navItems = [
-		{ href: '/', icon: Home, label: 'Dashboard' },
-		{ href: '/school', icon: BookOpen, label: 'School' },
-		{ href: '/tradelearner', icon: ChartCandlestick, label: 'Tradelearner' },
-		{ href: '/homework', icon: Briefcase, label: 'Homework' },
+		{ href: '/dashboard', icon: Home, label: 'Dashboard' },
+		{ href: '/profile', icon: UserIcon, label: 'Profile' },
 		{ href: '/forum', icon: MessageSquare, label: 'Forum' },
-		{ href: '/market', icon: ChartLine, label: 'Market' },
-		{ href: '/journal', icon: BookText, label: 'Journal' },
-		{ href: '/profile', icon: UserIcon, label: 'Profile' }
+		{ href: '/homework', icon: Briefcase, label: 'Homework' },
+		{ href: '/level', icon: Trophy, label: 'Level' },
+		{ href: '/school', icon: BookOpen, label: 'School' },
+		{ href: '/tradinghub', icon: ChartLine, label: 'Tradinghub' }
 	];
 </script>
 
@@ -83,7 +80,8 @@
 		<div
 			class="fixed inset-0 z-20 bg-black/60 lg:hidden"
 			on:click={() => (isSidebarOpen = false)}
-			role="presentation"></div>
+			role="presentation">
+		</div>
 	{/if}
 
 	<!-- Sidebar -->

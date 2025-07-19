@@ -38,12 +38,12 @@
 				Contact
 			</a>
 			<a
-				class="joinnowbtn from-teal to-signal text-navy rounded-full bg-gradient-to-r px-6 py-3 text-sm font-bold shadow hover:opacity-90"
+				class="joinnowbtn from-teal to-signal text-navy rounded-md bg-gradient-to-r px-6 py-3 text-sm font-bold shadow hover:opacity-90"
 				href={STRIPE_CHECKOUT_URL}>
 				Join Now
 			</a>
 			<a
-				class="flex items-center gap-2 rounded-full bg-white/10 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/20"
+				class="flex items-center gap-2 rounded-md bg-white/10 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/20"
 				href="https://discord.gg/2j8Skn2w"
 				target="_blank">
 				<svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
