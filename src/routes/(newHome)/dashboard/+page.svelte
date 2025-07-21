@@ -1,11 +1,10 @@
 <script lang="ts">
 	import TradingViewEventsWidget from '$lib/components/TradingViewEventsWidget.svelte';
-	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const user = page.data.user;
+	const user = data.user;
 
 	const getNextLevelXp = (level: number) => (level + 1) * 100;
 	const nextLevelXp = getNextLevelXp(user.level);

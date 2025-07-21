@@ -17,24 +17,22 @@
 	async function handleSubmit() {
 		error = '';
 		isLoading = true;
-		try {
-			await login(email, password);
-			goto('/'); // Bei Erfolg zur Startseite navigieren
-		} catch (err) {
-			error = err instanceof Error ? err.message : 'Authentication failed';
-		} finally {
-			isLoading = false;
-		}
+
+		// Login akzeptiert beliebige Daten und leitet zum Dashboard weiter
+		await login(email, password);
+		goto('/dashboard');
+
+		isLoading = false;
 	}
 </script>
 
 <main class="flex flex-grow items-center justify-center px-4 py-10">
 	<div
 		in:fly={{ y: 20, duration: 400 }}
-		class="to-navy shadow-card w-full max-w-md rounded-xl bg-gradient-to-br from-[#16243c] p-8 ring-1 ring-white/10">
+		class="shadow-card text-navy w-full max-w-md rounded-xl bg-white p-8 ring-1 ring-gray-100">
 		<Logo class="mx-auto mb-6 h-12 w-auto" />
-		<h1 class="mb-2 text-3xl font-bold text-white">Welcome back</h1>
-		<p class="mb-6 text-sm text-gray-300">Sign in to access your PriceActionTalk account</p>
+		<h1 class="mb-2 text-3xl font-bold">Welcome back</h1>
+		<p class="mb-6 text-sm text-gray-600">Sign in to access your PriceActionTalk account</p>
 
 		{#if error}
 			<div class="mb-6 rounded-md bg-red-50 px-4 py-3 text-red-700">
@@ -51,7 +49,7 @@
 					id="email"
 					type="email"
 					bind:value={email}
-					class="focus:border-teal focus:ring-teal w-full rounded-md border border-gray-600 bg-transparent px-4 py-2 text-white placeholder-gray-500 focus:outline-none"
+					class="focus:border-teal focus:ring-teal w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-500 focus:outline-none"
 					placeholder="your.email@example.com"
 					required />
 			</div>
@@ -63,7 +61,7 @@
 						id="password"
 						type={showPassword ? 'text' : 'password'}
 						bind:value={password}
-						class="focus:border-teal focus:ring-teal w-full rounded-md border border-gray-600 bg-transparent px-4 py-2 text-white placeholder-gray-500 focus:outline-none"
+						class="focus:border-teal focus:ring-teal w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-500 focus:outline-none"
 						placeholder="••••••••"
 						required />
 					<button
@@ -86,7 +84,7 @@
 
 			<button
 				type="submit"
-				class="btn from-teal to-signal text-navy flex w-full items-center justify-center rounded-md bg-gradient-to-r px-4 py-2.5 font-bold transition hover:opacity-90 disabled:opacity-50"
+				class="btn bg-teal flex w-full cursor-pointer items-center justify-center rounded-md px-4 py-2.5 font-bold text-white transition-colors hover:bg-teal-600 disabled:bg-teal-300"
 				disabled={isLoading}>
 				{#if isLoading}
 					<span>Loading...</span>
@@ -107,3 +105,9 @@
 		</div>
 	</div>
 </main>
+
+<style>
+	:global(body) {
+		background-color: white;
+	}
+</style>
