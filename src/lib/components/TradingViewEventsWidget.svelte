@@ -1,13 +1,22 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
+
+	declare global {
+		interface Window {
+			TradingView: {
+				widget: (options: Record<string, unknown>) => void;
+			};
+		}
+	}
+
 	let container: HTMLDivElement;
 
 	onMount(() => {
-		const script = document.createElement('script');
-		script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-events.js';
-		script.async = true;
-		script.type = 'text/javascript';
-		script.innerHTML = JSON.stringify({
+		// wait until TradingView global is available
+		if (!window.TradingView) return;
+		// initialize widget using the container element
+		new window.TradingView.widget({
+			container_id: container,
 			colorTheme: 'dark',
 			isTransparent: false,
 			width: '100%',
@@ -16,16 +25,11 @@
 			importanceFilter: '0,1',
 			countryFilter: 'us,de,gb,in,jp,cn'
 		});
-		container.appendChild(script);
-	});
-
-	onDestroy(() => {
-		if (container) {
-			container.innerHTML = '';
-		}
 	});
 </script>
 
-<div class="tradingview-widget-container h-full">
-	<div bind:this={container} class="tradingview-widget-container__widget h-full"></div>
-</div>
+<svelte:head>
+	<script src="https://s3.tradingview.com/external-embedding/embed-widget-events.js"></script>
+</svelte:head>
+
+<div bind:this={container} class="h-full"></div>

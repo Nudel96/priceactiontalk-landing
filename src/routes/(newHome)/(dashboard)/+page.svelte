@@ -20,29 +20,8 @@
 
 	const userTier = getTierInfo(user.level);
 
-	// only show homework the user has not completed yet
-	const upcomingHomework = data.homeworks
-		.filter((hw) => !(user.completedHomework || []).includes(hw.id))
-		.sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime())
-		.slice(0, 3);
-	const recentForumPosts = data.threads.slice(0, 3);
-
-	function formatDistanceToNow(date: Date) {
-		const diff = date.getTime() - Date.now();
-		const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-		const minutes = Math.round(diff / 60000);
-		if (Math.abs(minutes) < 60) return rtf.format(minutes, 'minute');
-		const hours = Math.round(diff / 3600000);
-		if (Math.abs(hours) < 24) return rtf.format(hours, 'hour');
-		const days = Math.round(diff / 86400000);
-		if (Math.abs(days) < 7) return rtf.format(days, 'day');
-		const weeks = Math.round(diff / 604800000);
-		if (Math.abs(weeks) < 4) return rtf.format(weeks, 'week');
-		const months = Math.round(diff / 2592000000);
-		if (Math.abs(months) < 12) return rtf.format(months, 'month');
-		const years = Math.round(diff / 31536000000);
-		return rtf.format(years, 'year');
-	}
+	const recentMarketPosts = data.recentMarketPosts;
+	const recentForumPosts = data.recentForumPosts;
 </script>
 
 <div class="space-y-6">
@@ -139,7 +118,7 @@
 			</div>
 			<div class="space-y-4">
 				{#if recentForumPosts.length}
-					{#each recentForumPosts as post}
+					{#each recentForumPosts as post (post.id)}
 						<div class="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
 							<a href={`/forum/${post.id}`} class="text-navy hover:text-teal font-medium">
 								{post.title}
@@ -161,33 +140,21 @@
 
 		<div class="card">
 			<div class="mb-4 flex items-center justify-between">
-				<h3 class="text-navy font-semibold">Upcoming Homework</h3>
-				<a href="/homework" class="text-teal text-sm hover:underline">View all</a>
+				<h3 class="text-navy font-semibold">Latest Market Analyses</h3>
+				<a href="/market" class="text-teal text-sm hover:underline">View all</a>
 			</div>
 			<div class="space-y-4">
-				{#if upcomingHomework.length}
-					{#each upcomingHomework as task}
+				{#if recentMarketPosts.length}
+					{#each recentMarketPosts as idea (idea.id)}
 						<div class="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-							<div class="flex items-center justify-between">
-								<a href={`/homework/${task.id}`} class="text-navy hover:text-teal font-medium">
-									{task.title}
-								</a>
-								<span class="bg-teal/10 text-teal rounded-full px-2 py-0.5 text-xs font-semibold">
-									+{task.xp} XP
-								</span>
-							</div>
-							<div class="mt-1 flex items-center justify-between text-xs text-gray-500">
-								<span class="flex items-center gap-1">
-									Due: {formatDistanceToNow(new Date(task.deadline))}
-								</span>
-								<a href={`/homework/${task.id}`} class="btn btn-primary btn-sm px-3 py-1 text-xs">
-									Start now
-								</a>
-							</div>
+							<a href="/market" class="text-navy hover:text-teal font-medium">
+								{idea.title}
+							</a>
+							<div class="mt-1 text-xs text-gray-500">shared by {idea.author}</div>
 						</div>
 					{/each}
 				{:else}
-					<p class="py-4 text-center text-sm text-gray-500">No upcoming homework. Good job! 👍</p>
+					<p class="py-4 text-center text-sm text-gray-500">No market posts yet.</p>
 				{/if}
 			</div>
 		</div>
