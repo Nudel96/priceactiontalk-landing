@@ -12,12 +12,14 @@ export const user = writable<string | null>(null);
  * @param email - Die E-Mail des Benutzers.
  * @param password - Das Passwort des Benutzers.
  */
-export async function login(email: string, _password: string): Promise<void> {
+export async function login(email: string, _password?: string): Promise<void> {
 	// Simuliert eine Netzwerkverzögerung
 	await new Promise((resolve) => setTimeout(resolve, 500));
 
-	// In dieser vereinfachten Version akzeptieren wir beliebige Anmeldedaten
-	// und setzen den Benutzer einfach auf die angegebene E-Mail-Adresse.
+	void _password;
+
+	// Placeholder-Authentifizierung: akzeptiere beliebige Daten
+	// und setze den Benutzer einfach auf die angegebene E-Mail-Adresse.
 	user.set(email);
 	console.log('Login successful');
 }
@@ -29,18 +31,13 @@ export async function login(email: string, _password: string): Promise<void> {
  * @param password - Das Passwort des Benutzers.
  * @param username - Der Benutzername.
  */
-export async function register(email: string, password: string, username: string): Promise<void> {
+export async function register(email: string, _password?: string, username: string): Promise<void> {
 	// Simuliert eine Netzwerkverzögerung
 	await new Promise((resolve) => setTimeout(resolve, 1000));
 
-	if (email === 'taken@example.com') {
-		throw new Error('This email address is already taken.');
-	}
+	void _password;
 
-	if (password.length < 8) {
-		throw new Error('Password must be at least 8 characters long.');
-	}
-
+	// Keine Validierung in der Platzhalter-Version
 	// Bei Erfolg den Benutzer direkt einloggen
 	user.set(email);
 	console.log('Registration successful for:', username);
