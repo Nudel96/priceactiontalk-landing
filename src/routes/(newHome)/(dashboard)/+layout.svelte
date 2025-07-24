@@ -8,10 +8,8 @@
 		Home,
 		User as UserIcon,
 		MessageSquare,
-		Briefcase,
-		Trophy,
-		BookOpen,
 		ChartLine,
+		BookOpen,
 		Menu,
 		X,
 		LogOut
@@ -29,34 +27,30 @@
 	let isSidebarOpen = false;
 
 	// --- Reactive Logic ---
-	// This logic remains the same, reacting to changes in the $page store.
-	$: if (page.url.pathname) {
+	// Close the sidebar whenever the route changes
+	$: if ($page.url.pathname) {
 		isSidebarOpen = false;
 	}
 
 	// Determine the current page title.
 	let currentPageTitle = '';
 	$: {
-		const path = page.url.pathname;
+		const path = $page.url.pathname;
 		if (path === '/dashboard') currentPageTitle = 'Dashboard';
-		else if (path.startsWith('/profile')) currentPageTitle = 'Profile';
+		else if (path.startsWith('/market')) currentPageTitle = 'Market';
 		else if (path.startsWith('/forum')) currentPageTitle = 'Forum';
-		else if (path.startsWith('/homework')) currentPageTitle = 'Homework';
-		else if (path.startsWith('/level')) currentPageTitle = 'Level';
-		else if (path.startsWith('/school')) currentPageTitle = 'School';
-		else if (path.startsWith('/tradinghub')) currentPageTitle = 'Tradinghub';
-		else currentPageTitle = 'Page'; // A sensible fallback
+		else if (path.startsWith('/fundamental')) currentPageTitle = 'Fundamental';
+		else if (path.startsWith('/profile')) currentPageTitle = 'Profile';
+		else currentPageTitle = 'Page';
 	}
 
-	// Navigation items definition remains the same.
+	// Navigation items for the member area
 	const navItems = [
 		{ href: '/dashboard', icon: Home, label: 'Dashboard' },
-		{ href: '/profile', icon: UserIcon, label: 'Profile' },
+		{ href: '/market', icon: ChartLine, label: 'Market' },
 		{ href: '/forum', icon: MessageSquare, label: 'Forum' },
-		{ href: '/homework', icon: Briefcase, label: 'Homework' },
-		{ href: '/level', icon: Trophy, label: 'Level' },
-		{ href: '/school', icon: BookOpen, label: 'School' },
-		{ href: '/tradinghub', icon: ChartLine, label: 'Tradinghub' }
+		{ href: '/fundamental', icon: BookOpen, label: 'Fundamental' },
+		{ href: '/profile', icon: UserIcon, label: 'Profile' }
 	];
 </script>
 
@@ -104,8 +98,12 @@
 			{/if}
 
 			<nav class="flex-grow space-y-1.5">
-				{#each navItems as item}
-					<a href={item.href} class="nav-link">
+				{#each navItems as item (item.href)}
+					<a
+						href={item.href}
+						class="nav-link {page.url.pathname.startsWith(item.href)
+							? 'bg-white/10 font-semibold'
+							: ''}">
 						<svelte:component this={item.icon} size={20} />
 						<span>{item.label}</span>
 					</a>
