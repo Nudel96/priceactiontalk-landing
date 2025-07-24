@@ -96,7 +96,7 @@
 {/if}
 
 <style lang="postcss">
-	progress[value]{
+	progress[value] {
 		&::-webkit-progress-bar {
 			border-radius: 10px;
 		}

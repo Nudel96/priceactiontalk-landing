@@ -53,7 +53,7 @@
 					id="username"
 					type="text"
 					bind:value={username}
-					class="focus:ring-navy w-full rounded-md border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1"
+					class="focus:ring-navy w-full rounded-md border border-gray-200 px-4 py-2 focus:ring-1 focus:outline-none"
 					placeholder="Your username"
 					required />
 			</div>
@@ -66,7 +66,7 @@
 					id="email"
 					type="email"
 					bind:value={email}
-					class="focus:ring-navy w-full rounded-md border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1"
+					class="focus:ring-navy w-full rounded-md border border-gray-200 px-4 py-2 focus:ring-1 focus:outline-none"
 					placeholder="your.email@example.com"
 					required />
 			</div>
@@ -78,14 +78,14 @@
 						id="password"
 						type={showPassword ? 'text' : 'password'}
 						bind:value={password}
-						class="focus:ring-navy w-full rounded-md border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1"
+						class="focus:ring-navy w-full rounded-md border border-gray-200 px-4 py-2 focus:ring-1 focus:outline-none"
 						placeholder="At least 8 characters"
 						required
 						minlength="8" />
 					<button
 						type="button"
 						onclick={() => (showPassword = !showPassword)}
-						class="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
+						class="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
 						aria-label={showPassword ? 'Hide password' : 'Show password'}>
 						{#if showPassword}
 							<EyeOff size={18} />
@@ -98,7 +98,7 @@
 
 			<button
 				type="submit"
-				class="btn bg-teal flex w-full items-center justify-center rounded-md px-4 py-2.5 font-bold text-white transition-colors hover:bg-teal-600 disabled:bg-teal-300 cursor-pointer"
+				class="btn bg-teal flex w-full cursor-pointer items-center justify-center rounded-md px-4 py-2.5 font-bold text-white transition-colors hover:bg-teal-600 disabled:bg-teal-300"
 				disabled={isLoading}>
 				{#if isLoading}
 					<span>Loading...</span>

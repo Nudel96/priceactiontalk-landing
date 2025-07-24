@@ -1,6 +1,6 @@
 <script lang="ts">
 	// --- SvelteKit Imports ---
-	import { page } from '$app/state';
+	import { page } from '$app/stores';
 	import type { LayoutServerData } from './$types';
 
 	// --- Icon and Component Imports ---
@@ -101,7 +101,7 @@
 				{#each navItems as item (item.href)}
 					<a
 						href={item.href}
-						class="nav-link {page.url.pathname.startsWith(item.href)
+						class="nav-link {$page.url.pathname.startsWith(item.href)
 							? 'bg-white/10 font-semibold'
 							: ''}">
 						<svelte:component this={item.icon} size={20} />
