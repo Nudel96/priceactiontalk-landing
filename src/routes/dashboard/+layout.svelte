@@ -1,6 +1,7 @@
 <script lang="ts">
 	// --- SvelteKit Imports ---
 	import { page } from '$app/stores';
+	$: currentPath = $page.url.pathname;
 	import type { LayoutServerData } from './$types';
 
 	// --- Icon and Component Imports ---
@@ -28,14 +29,14 @@
 
 	// --- Reactive Logic ---
 	// Close the sidebar whenever the route changes
-	$: if ($page.url.pathname) {
+	$: if (currentPath) {
 		isSidebarOpen = false;
 	}
 
 	// Determine the current page title.
 	let currentPageTitle = '';
 	$: {
-		const path = $page.url.pathname;
+		const path = currentPath;
 		if (path === '/dashboard') currentPageTitle = 'Dashboard';
 		else if (path.startsWith('/market')) currentPageTitle = 'Market';
 		else if (path.startsWith('/forum')) currentPageTitle = 'Forum';
@@ -101,9 +102,7 @@
 				{#each navItems as item (item.href)}
 					<a
 						href={item.href}
-						class="nav-link {$page.url.pathname.startsWith(item.href)
-							? 'bg-white/10 font-semibold'
-							: ''}">
+						class="nav-link {currentPath.startsWith(item.href) ? 'bg-white/10 font-semibold' : ''}">
 						<svelte:component this={item.icon} size={20} />
 						<span>{item.label}</span>
 					</a>

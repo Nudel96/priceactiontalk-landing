@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Logo from '$lib/components/Logo.svelte';
+	import { page } from '$app/stores';
+	$: currentPath = $page.url.pathname;
 
 	const STRIPE_CHECKOUT_URL = 'https://dein-stripe-link.com/checkout';
 </script>
 
-<div class="flex flex-col font-[Manrope,sans-serif]">
+<div class="flex flex-col font-[Manrope,sans-serif]" data-path={currentPath}>
 	<header
 		class="from-navy flex items-center justify-between bg-gradient-to-b to-[#16243c] px-8 py-4 shadow-md">
 		<div class="flex items-center gap-4 text-white">
