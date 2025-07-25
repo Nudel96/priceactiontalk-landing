@@ -19,29 +19,16 @@
 	$: progressToNextLevel = ((user.xp - currentLevelXp) / (nextLevelXp - currentLevelXp)) * 100;
 
 	/**
-	 * Get level badge color based on level tier.
+	 * Get level badge color based on level.
 	 * @param {number} level
 	 * @returns {string} - The Tailwind CSS class for the background color.
 	 */
 	const getLevelBadgeColor = (level: number): string => {
-		if (level < 5) return 'bg-[#0d1b2a]'; // D-Tier
-		if (level < 10) return 'bg-[#2e2e2e]'; // C-Tier
-		if (level < 15) return 'bg-[#1b9aaa]'; // B-Tier
-		if (level < 20) return 'bg-[#7cfc00]'; // A-Tier
-		return 'bg-gradient-to-r from-[#7cfc00] to-[#1b9aaa]'; // A++-Tier
-	};
-
-	/**
-	 * Get the name of the tier based on the level.
-	 * @param {number} level
-	 * @returns {string} - The name of the tier.
-	 */
-	const getTierName = (level: number): string => {
-		if (level < 5) return 'D-Tier';
-		if (level < 10) return 'C-Tier';
-		if (level < 15) return 'B-Tier';
-		if (level < 20) return 'A-Tier';
-		return 'A++-Tier';
+		if (level <= 3) return 'bg-[#0d1b2a]'; // Beginner
+		if (level <= 6) return 'bg-[#2e2e2e]'; // Developing
+		if (level <= 9) return 'bg-[#1b9aaa]'; // Intermediate
+		if (level <= 12) return 'bg-[#7cfc00]'; // Advanced
+		return 'bg-gradient-to-r from-[#7cfc00] to-[#1b9aaa]'; // Expert
 	};
 </script>
 
@@ -78,7 +65,7 @@
 		<div class="flex-1">
 			<div class="flex items-center gap-2">
 				<span class="font-semibold text-white">{user.username}</span>
-				<span class="text-xs text-white/60">{getTierName(user.level)}</span>
+				<span class="text-xs text-white/60">Level {user.level}</span>
 			</div>
 
 			{#if showXp}

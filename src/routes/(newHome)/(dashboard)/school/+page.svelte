@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Clock, CheckCircle, ChevronRight } from '@lucide/svelte';
+	import { Clock, CheckCircle, ChevronRight, TrendingUp, Activity, Shield, Settings, Brain } from '@lucide/svelte';
 
 	// Define difficulty levels
 	const difficultyLevels = [
@@ -50,7 +50,7 @@
 		{
 			id: 'technical',
 			name: 'Technical Analysis',
-			icon: '📈',
+			icon: TrendingUp,
 			subcategories: [
 				'Chart Patterns',
 				'Support & Resistance',
@@ -63,7 +63,7 @@
 		{
 			id: 'fundamental',
 			name: 'Fundamental Analysis',
-			icon: '📊',
+			icon: Activity,
 			subcategories: [
 				'Economic Indicators',
 				'Central Bank Policies',
@@ -76,7 +76,7 @@
 		{
 			id: 'risk',
 			name: 'Risk Management',
-			icon: '🛡️',
+			icon: Shield,
 			subcategories: [
 				'Position Sizing',
 				'Stop Loss Strategies',
@@ -89,7 +89,7 @@
 		{
 			id: 'tools',
 			name: 'Websites / Tools',
-			icon: '🔧',
+			icon: Settings,
 			subcategories: [
 				'Trading Platforms',
 				'Economic Calendars',
@@ -102,7 +102,7 @@
 		{
 			id: 'personal',
 			name: 'Personal Development',
-			icon: '🧠',
+			icon: Brain,
 			subcategories: [
 				'Trading Psychology',
 				'Discipline & Patience',
@@ -127,6 +127,12 @@
 		const totalLessons = categories.length * 6; // 6 subcategories per category
 		const completed = Math.floor(Math.random() * totalLessons);
 		return { completed, total: totalLessons, percentage: Math.round((completed / totalLessons) * 100) };
+	};
+
+	const handleSubcategoryClick = (categoryId: string, subcategory: string) => {
+		console.log(`Navigating to ${categoryId} -> ${subcategory}`);
+		// In a real app, this would navigate to the specific subcategory content
+		alert(`Opening ${subcategory} lessons. This will be implemented with actual content.`);
 	};
 
 	// Reactive calculations
@@ -177,7 +183,9 @@
 			<div class="bg-white rounded-xl shadow-md overflow-hidden">
 				<div class="p-6 border-b border-gray-100">
 					<div class="flex items-center gap-3 mb-2">
-						<span class="text-2xl">{category.icon}</span>
+						<div class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
+							<svelte:component this={category.icon} class="w-5 h-5 text-teal-600" />
+						</div>
 						<h3 class="text-xl font-semibold text-navy">{category.name}</h3>
 					</div>
 				</div>
@@ -187,7 +195,7 @@
 							{@const isCompleted = getCompletionStatus(selectedLevel, category.id, subcategory)}
 							<button
 								class="w-full flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-teal-300 hover:bg-teal-50 transition-all duration-200 text-left"
-								on:click={() => selectedCategory = category.id}>
+								on:click={() => handleSubcategoryClick(category.id, subcategory)}>
 								<div class="flex items-center gap-3">
 									{#if isCompleted}
 										<CheckCircle class="w-5 h-5 text-green-500" />

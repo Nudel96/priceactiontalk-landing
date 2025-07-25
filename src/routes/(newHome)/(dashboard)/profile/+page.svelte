@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { User, Mail, Calendar, TrendingUp, MessageSquare, BookOpen, Trophy, Settings } from '@lucide/svelte';
+	import ProfileEditModal from '$lib/components/ProfileEditModal.svelte';
 
 	// Mock user data - in real app this would come from props/stores
-	const user = {
+	let user = {
 		username: 'demo_user',
 		email: 'demo@example.com',
 		level: 3,
 		xp: 250,
 		joinDate: '2024-01-15',
 		avatar: null,
-		tier: 'D-Tier (Newbie Trader)',
+		country: 'United States',
 		stats: {
 			forumPosts: 12,
 			completedLessons: 15,
@@ -19,15 +20,17 @@
 		}
 	};
 
-	const getTierInfo = (level: number) => {
-		if (level <= 3) return { name: 'D-Tier', description: 'Newbie Trader', color: 'bg-gray-500' };
-		if (level <= 6) return { name: 'C-Tier', description: 'Trend Seeker', color: 'bg-green-500' };
-		if (level <= 9) return { name: 'B-Tier', description: 'Market Navigator', color: 'bg-blue-500' };
-		if (level <= 12) return { name: 'A-Tier', description: 'Price Action Strategist', color: 'bg-purple-500' };
-		return { name: 'A++-Tier', description: 'Institutional Mind', color: 'bg-yellow-500' };
+	const getLevelInfo = (level: number) => {
+		if (level <= 3) return { description: 'Beginner Trader', color: 'bg-gray-500' };
+		if (level <= 6) return { description: 'Developing Trader', color: 'bg-green-500' };
+		if (level <= 9) return { description: 'Intermediate Trader', color: 'bg-blue-500' };
+		if (level <= 12) return { description: 'Advanced Trader', color: 'bg-purple-500' };
+		return { description: 'Expert Trader', color: 'bg-yellow-500' };
 	};
 
-	const tierInfo = getTierInfo(user.level);
+	const levelInfo = getLevelInfo(user.level);
+
+	let showEditModal = false;
 
 	const achievements = [
 		{ name: 'First Steps', description: 'Completed your first lesson', earned: true, icon: BookOpen },
@@ -77,7 +80,9 @@
 			<div class="flex-1">
 				<div class="flex items-center justify-between mb-2">
 					<h1 class="text-2xl font-bold text-navy">{user.username}</h1>
-					<button class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+					<button
+						on:click={() => showEditModal = true}
+						class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
 						<Settings class="w-4 h-4" />
 						<span class="text-sm">Edit Profile</span>
 					</button>
@@ -93,7 +98,7 @@
 					</div>
 					<div class="flex items-center gap-2">
 						<TrendingUp class="w-4 h-4" />
-						<span>Level {user.level} • {tierInfo.name}</span>
+						<span>Level {user.level} • {levelInfo.description}</span>
 					</div>
 				</div>
 			</div>
@@ -172,3 +177,6 @@
 		</div>
 	</div>
 </div>
+
+<!-- Profile Edit Modal -->
+<ProfileEditModal bind:showModal={showEditModal} bind:user />

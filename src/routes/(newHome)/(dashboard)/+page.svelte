@@ -10,18 +10,27 @@
 	const nextLevelXp = getNextLevelXp(user.level);
 	const progressToNextLevel = (user.xp / nextLevelXp) * 100;
 
-	const getTierInfo = (level: number) => {
-		if (level < 5) return { name: 'D-Tier', description: 'Newbie Trader' };
-		if (level < 10) return { name: 'C-Tier', description: 'Trend Seeker' };
-		if (level < 15) return { name: 'B-Tier', description: 'Market Navigator' };
-		if (level < 20) return { name: 'A-Tier', description: 'Price Action Strategist' };
-		return { name: 'A++-Tier', description: 'Institutional Mind' };
+	const getLevelInfo = (level: number) => {
+		if (level <= 3) return { description: 'Beginner Trader' };
+		if (level <= 6) return { description: 'Developing Trader' };
+		if (level <= 9) return { description: 'Intermediate Trader' };
+		if (level <= 12) return { description: 'Advanced Trader' };
+		return { description: 'Expert Trader' };
 	};
 
-	const userTier = getTierInfo(user.level);
+	const userLevelInfo = getLevelInfo(user.level);
 
 	const recentMarketPosts = data.recentMarketPosts;
 	const recentForumPosts = data.recentForumPosts;
+
+	// Mock recent activities for demo
+	const recentActivities = [
+		{ type: 'lesson', title: 'Completed "Support & Resistance Basics"', time: '2h ago', icon: '📚' },
+		{ type: 'forum', title: 'Posted in "Trading Psychology"', time: '4h ago', icon: '💬' },
+		{ type: 'analysis', title: 'Shared EURUSD analysis', time: '1d ago', icon: '📈' },
+		{ type: 'level', title: 'Reached Level 3', time: '2d ago', icon: '🎯' },
+		{ type: 'trade', title: 'Logged new GBPJPY trade', time: '3d ago', icon: '💰' }
+	];
 </script>
 
 <div class="space-y-6">
@@ -87,11 +96,11 @@
 
 		<div class="rounded-xl border bg-white p-6 shadow-md">
 			<div class="mb-3 flex items-center justify-between">
-				<h3 class="text-navy font-semibold">Current Tier</h3>
+				<h3 class="text-navy font-semibold">Current Level</h3>
 			</div>
 			<div>
-				<p class="text-navy text-lg font-bold">{userTier.name}</p>
-				<p class="text-graphite/80 mb-3 text-sm">{userTier.description}</p>
+				<p class="text-navy text-lg font-bold">Level {user.level}</p>
+				<p class="text-graphite/80 mb-3 text-sm">{userLevelInfo.description}</p>
 				<a
 					href="/school"
 					class="text-teal flex items-center gap-1 text-sm font-semibold hover:underline">
@@ -156,6 +165,25 @@
 				{:else}
 					<p class="py-4 text-center text-sm text-gray-500">No market posts yet.</p>
 				{/if}
+			</div>
+		</div>
+
+		<!-- Recent Activities -->
+		<div class="bg-white rounded-xl shadow-md p-6">
+			<div class="flex items-center justify-between mb-6">
+				<h3 class="text-xl font-semibold text-navy">Recent Activities</h3>
+				<a href="/profile" class="text-teal-600 text-sm hover:underline">View all</a>
+			</div>
+			<div class="space-y-4">
+				{#each recentActivities as activity}
+					<div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+						<div class="text-2xl">{activity.icon}</div>
+						<div class="flex-1">
+							<p class="font-medium text-navy">{activity.title}</p>
+							<p class="text-sm text-gray-500">{activity.time}</p>
+						</div>
+					</div>
+				{/each}
 			</div>
 		</div>
 	</div>

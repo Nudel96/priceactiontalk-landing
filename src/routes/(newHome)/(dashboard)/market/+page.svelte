@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Plus, ThumbsUp, ThumbsDown, MessageCircle, TrendingUp, TrendingDown, Minus, ExternalLink } from '@lucide/svelte';
+	import MarketPostModal from '$lib/components/MarketPostModal.svelte';
 
 	// Currency pairs and metals
 	const tradingPairs = [
@@ -18,6 +19,18 @@
 		{ value: 'short', label: 'Short', icon: TrendingDown, color: 'text-red-600', bgColor: 'bg-red-100' },
 		{ value: 'consolidation', label: 'Consolidation', icon: Minus, color: 'text-yellow-600', bgColor: 'bg-yellow-100' }
 	];
+
+	// Function to generate TradingView screenshot URL
+	const getTradingViewScreenshot = (tradingViewLink: string) => {
+		// Extract the chart ID from TradingView URL
+		const match = tradingViewLink.match(/\/x\/([a-zA-Z0-9]+)\//);
+		if (match) {
+			const chartId = match[1];
+			return `https://s3.tradingview.com/snapshots/${chartId}.png`;
+		}
+		// Fallback placeholder image
+		return '/images/chart-placeholder.png';
+	};
 
 	// Mock market analysis posts
 	const marketPosts = [
@@ -107,16 +120,42 @@
 		console.log(`Voting ${voteType} on post ${postId}`);
 	};
 
+	const handleCreatePost = () => {
+		if (newPost.title && newPost.pair && newPost.description) {
+			const post = {
+				id: Date.now(),
+				title: newPost.title,
+				pair: newPost.pair,
+				bias: newPost.bias,
+				description: newPost.description,
+				author: 'demo_user',
+				authorLevel: 3,
+				tradingViewLink: newPost.tradingViewLink || 'https://www.tradingview.com/x/example/',
+				timestamp: 'just now',
+				upvotes: 0,
+				downvotes: 0,
+				comments: 0,
+				userVote: null
+			};
+
+			console.log('Creating new market post:', post);
+
+			// Reset form
+			newPost = { title: '', pair: '', bias: 'long', description: '', tradingViewLink: '' };
+			showNewPostModal = false;
+		}
+	};
+
 	const getBiasInfo = (bias: string) => {
 		return biasOptions.find(option => option.value === bias) || biasOptions[0];
 	};
 
-	const getTierInfo = (level: number) => {
-		if (level <= 3) return { name: 'D-Tier', color: 'text-gray-600' };
-		if (level <= 6) return { name: 'C-Tier', color: 'text-green-600' };
-		if (level <= 9) return { name: 'B-Tier', color: 'text-blue-600' };
-		if (level <= 12) return { name: 'A-Tier', color: 'text-purple-600' };
-		return { name: 'A++-Tier', color: 'text-yellow-600' };
+	const getLevelInfo = (level: number) => {
+		if (level <= 3) return { description: 'Beginner', color: 'text-gray-600' };
+		if (level <= 6) return { description: 'Developing', color: 'text-green-600' };
+		if (level <= 9) return { description: 'Intermediate', color: 'text-blue-600' };
+		if (level <= 12) return { description: 'Advanced', color: 'text-purple-600' };
+		return { description: 'Expert', color: 'text-yellow-600' };
 	};
 </script>
 
@@ -139,7 +178,7 @@
 	<div class="space-y-6">
 		{#each marketPosts as post}
 			{@const biasInfo = getBiasInfo(post.bias)}
-			{@const tierInfo = getTierInfo(post.authorLevel)}
+			{@const levelInfo = getLevelInfo(post.authorLevel)}
 			<div class="bg-white rounded-xl shadow-md p-6">
 				<!-- Post Header -->
 				<div class="flex items-start justify-between mb-4">
@@ -150,7 +189,7 @@
 						<div>
 							<div class="font-semibold text-navy">{post.author}</div>
 							<div class="text-sm text-gray-500">
-								Level {post.authorLevel} • <span class="{tierInfo.color}">{tierInfo.name}</span> • {post.timestamp}
+								Level {post.authorLevel} • <span class="{levelInfo.color}">{levelInfo.description}</span> • {post.timestamp}
 							</div>
 						</div>
 					</div>
@@ -167,9 +206,9 @@
 				<h3 class="text-lg font-semibold text-navy mb-2">{post.title}</h3>
 				<p class="text-gray-700 mb-4">{post.description}</p>
 
-				<!-- TradingView Link -->
+				<!-- TradingView Screenshot Preview -->
 				<div class="bg-gray-50 rounded-lg p-3 mb-4">
-					<div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+					<div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
 						<ExternalLink class="w-4 h-4" />
 						<span>TradingView Analysis</span>
 					</div>
@@ -177,9 +216,17 @@
 						href={post.tradingViewLink}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-teal-600 hover:text-teal-700 text-sm break-all">
-						{post.tradingViewLink}
+						class="block hover:opacity-80 transition-opacity">
+						<img
+							src={getTradingViewScreenshot(post.tradingViewLink)}
+							alt="TradingView Chart Analysis"
+							class="w-full h-48 object-cover rounded-lg border border-gray-200 shadow-sm"
+							on:error={(e) => {
+								(e.currentTarget as HTMLImageElement).src = 'https://via.placeholder.com/600x300/f3f4f6/6b7280?text=Chart+Preview';
+							}}
+						/>
 					</a>
+					<p class="text-xs text-gray-500 mt-2">Click to view full analysis on TradingView</p>
 				</div>
 
 				<!-- Post Actions -->
@@ -308,3 +355,6 @@
 		</div>
 	</div>
 {/if}
+
+<!-- Market Post Modal -->
+<MarketPostModal bind:showModal={showNewPostModal} bind:newPost onCreatePost={handleCreatePost} />

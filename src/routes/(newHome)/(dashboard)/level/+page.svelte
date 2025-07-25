@@ -5,8 +5,7 @@
 	const currentUser = {
 		level: 3,
 		xp: 250,
-		username: 'demo_user',
-		tier: 'D-Tier (Newbie Trader)'
+		username: 'demo_user'
 	};
 
 	// XP calculation system - gets progressively harder
@@ -40,11 +39,11 @@
 
 	// Mock top traders data
 	const topTraders = [
-		{ rank: 1, username: 'master_trader', level: 15, xp: 2250, tier: 'A++-Tier' },
-		{ rank: 2, username: 'price_action_pro', level: 12, xp: 1850, tier: 'A-Tier' },
-		{ rank: 3, username: 'forex_guru', level: 11, xp: 1520, tier: 'B-Tier' },
-		{ rank: 4, username: 'chart_wizard', level: 10, xp: 1200, tier: 'B-Tier' },
-		{ rank: 5, username: 'trend_master', level: 9, xp: 950, tier: 'C-Tier' }
+		{ rank: 1, username: 'master_trader', level: 15, xp: 2250 },
+		{ rank: 2, username: 'price_action_pro', level: 12, xp: 1850 },
+		{ rank: 3, username: 'forex_guru', level: 11, xp: 1520 },
+		{ rank: 4, username: 'chart_wizard', level: 10, xp: 1200 },
+		{ rank: 5, username: 'trend_master', level: 9, xp: 950 }
 	];
 
 	// User stats
@@ -54,15 +53,15 @@
 		communityRank: 'Top 15%'
 	};
 
-	const getTierInfo = (level: number) => {
-		if (level <= 3) return { name: 'D-Tier', description: 'Newbie Trader', color: 'bg-gray-500' };
-		if (level <= 6) return { name: 'C-Tier', description: 'Trend Seeker', color: 'bg-green-500' };
-		if (level <= 9) return { name: 'B-Tier', description: 'Market Navigator', color: 'bg-blue-500' };
-		if (level <= 12) return { name: 'A-Tier', description: 'Price Action Strategist', color: 'bg-purple-500' };
-		return { name: 'A++-Tier', description: 'Institutional Mind', color: 'bg-yellow-500' };
+	const getLevelInfo = (level: number) => {
+		if (level <= 3) return { description: 'Beginner Trader', color: 'bg-gray-500' };
+		if (level <= 6) return { description: 'Developing Trader', color: 'bg-green-500' };
+		if (level <= 9) return { description: 'Intermediate Trader', color: 'bg-blue-500' };
+		if (level <= 12) return { description: 'Advanced Trader', color: 'bg-purple-500' };
+		return { description: 'Expert Trader', color: 'bg-yellow-500' };
 	};
 
-	const currentTier = getTierInfo(currentUser.level);
+	const currentLevelInfo = getLevelInfo(currentUser.level);
 </script>
 
 <div class="space-y-6">
@@ -81,8 +80,8 @@
 	<div class="bg-white rounded-xl shadow-md p-6">
 		<div class="flex items-center justify-between mb-6">
 			<div>
-				<h2 class="text-xl font-semibold text-navy">{currentTier.name}</h2>
-				<p class="text-gray-600">{currentTier.description}</p>
+				<h2 class="text-xl font-semibold text-navy">Level {currentUser.level}</h2>
+				<p class="text-gray-600">{currentLevelInfo.description}</p>
 			</div>
 			<div class="text-right">
 				<div class="text-3xl font-bold text-navy mb-1">{currentUser.level}</div>
@@ -181,7 +180,7 @@
 						</div>
 						<div>
 							<div class="font-semibold text-navy">{trader.username}</div>
-							<div class="text-sm text-gray-500">{trader.tier}</div>
+							<div class="text-sm text-gray-500">Level {trader.level}</div>
 						</div>
 					</div>
 					<div class="text-right">

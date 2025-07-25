@@ -16,7 +16,8 @@
 		TrendingUp,
 		Calendar,
 		Trophy,
-		FileText
+		FileText,
+		Globe
 	} from '@lucide/svelte';
 
 	import ProfileBadge from '$lib/components/ProfileBadge.svelte';
@@ -46,8 +47,9 @@
 		else if (path.startsWith('/forum')) currentPageTitle = 'Forum';
 		else if (path.startsWith('/market')) currentPageTitle = 'Market';
 		else if (path.startsWith('/event')) currentPageTitle = 'Event';
-		else if (path.startsWith('/trading-competition')) currentPageTitle = 'Trading Competition';
-		else if (path.startsWith('/strategy')) currentPageTitle = 'Strategy/Log';
+		else if (path.startsWith('/traderhub')) currentPageTitle = 'Traderhub';
+		else if (path.startsWith('/tradinglog')) currentPageTitle = 'Tradinglog';
+		else if (path.startsWith('/economic-overview')) currentPageTitle = 'Economic Overview';
 		else if (path.startsWith('/profile')) currentPageTitle = 'Profile';
 		else currentPageTitle = 'Page';
 	}
@@ -60,8 +62,9 @@
 		{ href: '/forum', icon: MessageSquare, label: 'Forum' },
 		{ href: '/market', icon: ChartLine, label: 'Market' },
 		{ href: '/event', icon: Calendar, label: 'Event' },
-		{ href: '/trading-competition', icon: Trophy, label: 'Trading Competition' },
-		{ href: '/strategy', icon: FileText, label: 'Strategy/Log' },
+		{ href: '/traderhub', icon: Trophy, label: 'Traderhub' },
+		{ href: '/tradinglog', icon: FileText, label: 'Tradinglog' },
+		{ href: '/economic-overview', icon: Globe, label: 'Economic Overview' },
 		{ href: '/profile', icon: UserIcon, label: 'Profile' }
 	];
 </script>

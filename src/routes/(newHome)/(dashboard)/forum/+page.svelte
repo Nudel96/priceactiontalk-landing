@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MessageSquare, Users, Plus, Search, TrendingUp, Brain, BarChart3, MessageCircle } from '@lucide/svelte';
+	import { MessageSquare, Users, Plus, Search, TrendingUp, Brain, Activity, MessageCircle } from '@lucide/svelte';
 
 	// Mock forum data
 	const forumCategories = [
@@ -22,7 +22,7 @@
 			id: 'macros-news',
 			name: 'Macros & News',
 			description: 'Discuss macro economic trends, news events, and their impact on markets',
-			icon: BarChart3,
+			icon: Activity,
 			iconColor: 'text-green-500',
 			bgColor: 'bg-green-50',
 			threads: 87,
@@ -90,9 +90,39 @@
 
 	let searchQuery = '';
 	let showNewThreadModal = false;
+	let newThread = {
+		title: '',
+		content: '',
+		category: 'general'
+	};
 
 	const handleNewThread = () => {
 		showNewThreadModal = true;
+	};
+
+	const handleCreateThread = () => {
+		if (newThread.title && newThread.content) {
+			// Add new thread to the beginning of the list
+			const thread = {
+				id: Date.now(),
+				title: newThread.title,
+				content: newThread.content,
+				category: newThread.category,
+				author: 'demo_user',
+				authorLevel: 3,
+				replies: 0,
+				views: 1,
+				lastActivity: 'just now',
+				isPinned: false,
+				isLocked: false
+			};
+
+			console.log('Creating new thread:', thread);
+
+			// Reset form
+			newThread = { title: '', content: '', category: 'general' };
+			showNewThreadModal = false;
+		}
 	};
 
 	const handleSearch = () => {
