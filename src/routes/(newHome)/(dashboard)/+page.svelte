@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TradingViewEventsWidget from '$lib/components/TradingViewEventsWidget.svelte';
+
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -100,12 +100,12 @@
 			</div>
 		</div>
 
-		<div class="h-64 rounded-xl border border-gray-700 bg-[#1D222D] p-6 shadow-md md:h-auto">
+		<div class="h-64 rounded-xl border border-gray-200 bg-white p-6 shadow-md md:h-auto">
 			<div class="mb-3 flex items-center justify-between">
-				<h3 class="font-semibold text-white">Economic Calendar</h3>
+				<h3 class="font-semibold text-navy">Economic Calendar</h3>
 			</div>
-			<div class="h-[calc(100%-2rem)]">
-				<TradingViewEventsWidget />
+			<div class="h-[calc(100%-2rem)] flex items-center justify-center">
+				<p class="text-gray-500 text-sm">Economic calendar will be integrated here</p>
 			</div>
 		</div>
 	</div>

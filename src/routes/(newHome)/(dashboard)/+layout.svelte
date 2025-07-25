@@ -1,6 +1,6 @@
 <script lang="ts">
 	// --- SvelteKit Imports ---
-	import { page } from '$app/state';
+	import { page } from '$app/stores';
 	import type { LayoutServerData } from './$types';
 
 	// --- Icon and Component Imports ---
@@ -9,10 +9,14 @@
 		User as UserIcon,
 		MessageSquare,
 		ChartLine,
-		BookOpen,
 		Menu,
 		X,
-		LogOut
+		LogOut,
+		GraduationCap,
+		TrendingUp,
+		Calendar,
+		Trophy,
+		FileText
 	} from '@lucide/svelte';
 
 	import ProfileBadge from '$lib/components/ProfileBadge.svelte';
@@ -36,20 +40,28 @@
 	let currentPageTitle = '';
 	$: {
 		const path = $page.url.pathname;
-		if (path === '/dashboard') currentPageTitle = 'Dashboard';
-		else if (path.startsWith('/market')) currentPageTitle = 'Market';
+		if (path === '/' || path === '') currentPageTitle = 'Dashboard';
+		else if (path.startsWith('/school')) currentPageTitle = 'School';
+		else if (path.startsWith('/level')) currentPageTitle = 'Level';
 		else if (path.startsWith('/forum')) currentPageTitle = 'Forum';
-		else if (path.startsWith('/fundamental')) currentPageTitle = 'Fundamental';
+		else if (path.startsWith('/market')) currentPageTitle = 'Market';
+		else if (path.startsWith('/event')) currentPageTitle = 'Event';
+		else if (path.startsWith('/trading-competition')) currentPageTitle = 'Trading Competition';
+		else if (path.startsWith('/strategy')) currentPageTitle = 'Strategy/Log';
 		else if (path.startsWith('/profile')) currentPageTitle = 'Profile';
 		else currentPageTitle = 'Page';
 	}
 
 	// Navigation items for the member area
 	const navItems = [
-		{ href: '/dashboard', icon: Home, label: 'Dashboard' },
-		{ href: '/market', icon: ChartLine, label: 'Market' },
+		{ href: '/', icon: Home, label: 'Dashboard' },
+		{ href: '/school', icon: GraduationCap, label: 'School' },
+		{ href: '/level', icon: TrendingUp, label: 'Level' },
 		{ href: '/forum', icon: MessageSquare, label: 'Forum' },
-		{ href: '/fundamental', icon: BookOpen, label: 'Fundamental' },
+		{ href: '/market', icon: ChartLine, label: 'Market' },
+		{ href: '/event', icon: Calendar, label: 'Event' },
+		{ href: '/trading-competition', icon: Trophy, label: 'Trading Competition' },
+		{ href: '/strategy', icon: FileText, label: 'Strategy/Log' },
 		{ href: '/profile', icon: UserIcon, label: 'Profile' }
 	];
 </script>
@@ -101,7 +113,8 @@
 				{#each navItems as item (item.href)}
 					<a
 						href={item.href}
-						class="nav-link {page.url.pathname.startsWith(item.href)
+						class="nav-link {(item.href === '/' && ($page.url.pathname === '/' || $page.url.pathname === '')) ||
+							(item.href !== '/' && $page.url.pathname.startsWith(item.href))
 							? 'bg-white/10 font-semibold'
 							: ''}">
 						<svelte:component this={item.icon} size={20} />

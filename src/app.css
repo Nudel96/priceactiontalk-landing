@@ -6,3 +6,20 @@
     --color-signal: #7cfc00;
     --color-graphite: #2e2e2e;
 }
+
+/* Global component styles */
+.card {
+    @apply bg-white rounded-xl shadow-md p-6;
+}
+
+.btn-primary {
+    @apply bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors;
+}
+
+.btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition-colors;
+}
+
+.input-field {
+    @apply w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent;
+}
