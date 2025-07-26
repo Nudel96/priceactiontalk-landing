@@ -1,5 +1,5 @@
 <script lang="ts">
-
+	import { language, t, type Language } from '$lib/stores/language';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -10,15 +10,15 @@
 	const nextLevelXp = getNextLevelXp(user.level);
 	const progressToNextLevel = (user.xp / nextLevelXp) * 100;
 
-	const getLevelInfo = (level: number) => {
-		if (level <= 3) return { description: 'Beginner Trader' };
-		if (level <= 6) return { description: 'Developing Trader' };
-		if (level <= 9) return { description: 'Intermediate Trader' };
-		if (level <= 12) return { description: 'Advanced Trader' };
-		return { description: 'Expert Trader' };
+	const getLevelInfo = (level: number, lang: Language) => {
+		if (level <= 3) return { description: t('level.beginner-trader', lang) };
+		if (level <= 6) return { description: t('level.developing-trader', lang) };
+		if (level <= 9) return { description: t('level.intermediate-trader', lang) };
+		if (level <= 12) return { description: t('level.advanced-trader', lang) };
+		return { description: t('level.expert-trader', lang) };
 	};
 
-	const userLevelInfo = getLevelInfo(user.level);
+	$: userLevelInfo = getLevelInfo(user.level, $language);
 
 	const recentMarketPosts = data.recentMarketPosts;
 	const recentForumPosts = data.recentForumPosts;
@@ -34,12 +34,12 @@
 </script>
 
 <div class="space-y-6">
-	<h1 class="text-navy text-2xl font-bold">Welcome back, {user.username} 👋</h1>
+	<h1 class="text-navy text-2xl font-bold">{t('dashboard.welcome', $language)}, {user.username} 👋</h1>
 
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 		<div class="from-teal rounded-xl bg-gradient-to-br to-cyan-500 p-6 text-white shadow-lg">
 			<div class="mb-3 flex items-center justify-between">
-				<h3 class="font-semibold">Level Progress</h3>
+				<h3 class="font-semibold">{t('dashboard.level-progress', $language)}</h3>
 			</div>
 			<div class="flex items-center gap-4">
 				<div class="relative flex h-20 w-20 items-center justify-center">
@@ -96,7 +96,7 @@
 
 		<div class="rounded-xl border bg-white p-6 shadow-md">
 			<div class="mb-3 flex items-center justify-between">
-				<h3 class="text-navy font-semibold">Current Level</h3>
+				<h3 class="text-navy font-semibold">{t('dashboard.current-level', $language)}</h3>
 			</div>
 			<div>
 				<p class="text-navy text-lg font-bold">Level {user.level}</p>
@@ -104,7 +104,7 @@
 				<a
 					href="/school"
 					class="text-teal flex items-center gap-1 text-sm font-semibold hover:underline">
-					Continue learning
+					{t('dashboard.continue-learning', $language)}
 				</a>
 			</div>
 		</div>
@@ -115,7 +115,7 @@
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 		<div class="card">
 			<div class="mb-4 flex items-center justify-between">
-				<h3 class="text-navy font-semibold">Recent Forum Activity</h3>
+				<h3 class="text-navy font-semibold">{t('dashboard.recent-activities', $language)}</h3>
 				<a href="/forum" class="text-teal text-sm hover:underline">View all</a>
 			</div>
 			<div class="space-y-4">

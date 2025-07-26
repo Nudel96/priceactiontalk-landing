@@ -21,6 +21,8 @@
 	} from '@lucide/svelte';
 
 	import ProfileBadge from '$lib/components/ProfileBadge.svelte';
+	import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
+	import { language, t } from '$lib/stores/language';
 
 	// --- Data from `load` function ---
 	// The `data` prop is automatically passed from your `+layout.ts` file.
@@ -36,35 +38,37 @@
 		isSidebarOpen = false;
 	}
 
-	// Determine the current page title.
+	// Determine the current page title with translations
 	let currentPageTitle = '';
 	$: {
 		const path = $page.url.pathname;
-		if (path === '/' || path === '') currentPageTitle = 'Dashboard';
-		else if (path.startsWith('/school')) currentPageTitle = 'School';
-		else if (path.startsWith('/level')) currentPageTitle = 'Level';
-		else if (path.startsWith('/forum')) currentPageTitle = 'Forum';
-		else if (path.startsWith('/market')) currentPageTitle = 'Market';
-		else if (path.startsWith('/event')) currentPageTitle = 'Event';
-		else if (path.startsWith('/traderhub')) currentPageTitle = 'Traderhub';
-		else if (path.startsWith('/tradinglog')) currentPageTitle = 'Tradinglog';
-		else if (path.startsWith('/economic-overview')) currentPageTitle = 'Economic Overview';
-		else if (path.startsWith('/profile')) currentPageTitle = 'Profile';
+		if (path === '/' || path === '') currentPageTitle = t('nav.dashboard', $language);
+		else if (path.startsWith('/school')) currentPageTitle = t('nav.school', $language);
+		else if (path.startsWith('/level')) currentPageTitle = t('nav.level', $language);
+		else if (path.startsWith('/forum')) currentPageTitle = t('nav.forum', $language);
+		else if (path.startsWith('/market')) currentPageTitle = t('nav.market', $language);
+		else if (path.startsWith('/event')) currentPageTitle = t('nav.event', $language);
+		else if (path.startsWith('/traderhub')) currentPageTitle = t('nav.traderhub', $language);
+		else if (path.startsWith('/tradinglog')) currentPageTitle = t('nav.tradinglog', $language);
+		else if (path.startsWith('/economic-overview')) currentPageTitle = t('nav.economic-overview', $language);
+		else if (path.startsWith('/fundamental')) currentPageTitle = t('nav.fundamental', $language);
+		else if (path.startsWith('/profile')) currentPageTitle = t('nav.profile', $language);
 		else currentPageTitle = 'Page';
 	}
 
 	// Navigation items for the member area
 	const navItems = [
-		{ href: '/', icon: Home, label: 'Dashboard' },
-		{ href: '/school', icon: GraduationCap, label: 'School' },
-		{ href: '/level', icon: TrendingUp, label: 'Level' },
-		{ href: '/forum', icon: MessageSquare, label: 'Forum' },
-		{ href: '/market', icon: ChartLine, label: 'Market' },
-		{ href: '/event', icon: Calendar, label: 'Event' },
-		{ href: '/traderhub', icon: Trophy, label: 'Traderhub' },
-		{ href: '/tradinglog', icon: FileText, label: 'Tradinglog' },
-		{ href: '/economic-overview', icon: Globe, label: 'Economic Overview' },
-		{ href: '/profile', icon: UserIcon, label: 'Profile' }
+		{ href: '/', icon: Home, labelKey: 'nav.dashboard' },
+		{ href: '/school', icon: GraduationCap, labelKey: 'nav.school' },
+		{ href: '/level', icon: TrendingUp, labelKey: 'nav.level' },
+		{ href: '/forum', icon: MessageSquare, labelKey: 'nav.forum' },
+		{ href: '/market', icon: ChartLine, labelKey: 'nav.market' },
+		{ href: '/event', icon: Calendar, labelKey: 'nav.event' },
+		{ href: '/traderhub', icon: Trophy, labelKey: 'nav.traderhub' },
+		{ href: '/tradinglog', icon: FileText, labelKey: 'nav.tradinglog' },
+		{ href: '/economic-overview', icon: Globe, labelKey: 'nav.economic-overview' },
+		{ href: '/fundamental', icon: Globe, labelKey: 'nav.fundamental' },
+		{ href: '/profile', icon: UserIcon, labelKey: 'nav.profile' }
 	];
 </script>
 
@@ -118,7 +122,7 @@
 							? 'bg-white/10 font-semibold'
 							: ''}">
 						<svelte:component this={item.icon} size={20} />
-						<span>{item.label}</span>
+						<span>{t(item.labelKey, $language)}</span>
 					</a>
 				{/each}
 			</nav>
@@ -147,11 +151,15 @@
 				</div>
 			</div>
 
-			<!-- The logout button is now a standard link to a /logout endpoint -->
-			<div class="border-t border-gray-700/50 pt-4">
+			<!-- Language switcher and logout button -->
+			<div class="border-t border-gray-700/50 pt-4 space-y-1">
+				<!-- Language Switcher -->
+				<LanguageSwitcher compact={true} />
+
+				<!-- Logout Button -->
 				<a href="/logout" class="nav-link w-full text-left hover:bg-red-500/20 hover:text-red-500">
 					<LogOut size={20} />
-					<span>Logout</span>
+					<span>{t('nav.logout', $language)}</span>
 				</a>
 			</div>
 		</div>

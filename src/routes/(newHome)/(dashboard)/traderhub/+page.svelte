@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import {
-		TrendingUp, TrendingDown, RefreshCw, DollarSign, Activity,
-		BarChart3, Settings, Plus, Minus, Eye, EyeOff, Maximize2,
-		Play, Pause, AlertTriangle, Bell, Search, Filter,
-		ChevronDown, ChevronUp, MoreHorizontal, X, Check
+		TrendingUp, TrendingDown, RefreshCw, DollarSign,
+		Settings, Eye, EyeOff, Maximize2,
+		AlertTriangle, Bell, Search, SlidersHorizontal,
+		ChevronDown, ChevronUp, X, Activity
 	} from '@lucide/svelte';
 
 	// Enhanced Types
@@ -106,29 +106,61 @@
 	// Enhanced API Functions
 	async function fetchPrice(symbol: string): Promise<PriceData | null> {
 		try {
-			const response = await fetch(`${API_BASE}/api/price/${symbol}`);
-			if (!response.ok) throw new Error('Failed to fetch price');
+			const response = await fetch(`${API_BASE}/api/price/${symbol}`, {
+				method: 'GET',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				}
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
 			const data = await response.json();
+
+			// Validate data structure
+			if (!data || typeof data.price !== 'number') {
+				throw new Error('Invalid price data received');
+			}
 
 			// Enhance with mock OHLC data for demo
 			return {
 				...data,
-				volume: Math.floor(Math.random() * 1000000),
-				high: data.price * (1 + Math.random() * 0.01),
-				low: data.price * (1 - Math.random() * 0.01),
-				open: data.price * (1 + (Math.random() - 0.5) * 0.005)
+				volume: data.volume || Math.floor(Math.random() * 1000000),
+				high: data.high || data.price * (1 + Math.random() * 0.01),
+				low: data.low || data.price * (1 - Math.random() * 0.01),
+				open: data.open || data.price * (1 + (Math.random() - 0.5) * 0.005)
 			};
 		} catch (err) {
 			console.error('Price fetch error:', err);
+			error = `Failed to fetch price for ${symbol}`;
 			return null;
 		}
 	}
 
 	async function fetchOpenTrades() {
 		try {
-			const response = await fetch(`${API_BASE}/api/trades/${USER_ID}`);
-			if (!response.ok) throw new Error('Failed to fetch trades');
+			const response = await fetch(`${API_BASE}/api/trades/${USER_ID}`, {
+				method: 'GET',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				}
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
 			const trades = await response.json();
+
+			// Validate trades array
+			if (!Array.isArray(trades)) {
+				throw new Error('Invalid trades data received');
+			}
+
 			openTrades = trades.map((trade: any) => ({
 				...trade,
 				status: 'open',
@@ -138,7 +170,7 @@
 			}));
 		} catch (err) {
 			console.error('Trades fetch error:', err);
-			error = 'Failed to load trades';
+			error = 'Failed to load open trades. Please check your connection.';
 		}
 	}
 
@@ -195,7 +227,21 @@
 
 	// Enhanced Trading Functions
 	async function executeTrade() {
-		if (!priceData) return;
+		if (!priceData) {
+			error = 'No price data available. Please wait for market data to load.';
+			return;
+		}
+
+		// Validation
+		if (lotSize <= 0) {
+			error = 'Position size must be greater than 0';
+			return;
+		}
+
+		if (orderType !== 'market' && limitPrice <= 0 && stopPrice <= 0) {
+			error = 'Please enter a valid price for limit/stop orders';
+			return;
+		}
 
 		if (!oneClickTrading && !showOrderConfirmation) {
 			showOrderConfirmation = true;
@@ -218,8 +264,14 @@
 			if (orderType === 'market') {
 				tradeData.entry = direction === 'buy' ? priceData.ask : priceData.bid;
 			} else if (orderType === 'limit') {
+				if (limitPrice <= 0) {
+					throw new Error('Invalid limit price');
+				}
 				tradeData.entry = limitPrice;
 			} else if (orderType === 'stop') {
+				if (stopPrice <= 0) {
+					throw new Error('Invalid stop price');
+				}
 				tradeData.entry = stopPrice;
 			}
 
@@ -230,20 +282,31 @@
 
 			const response = await fetch(`${API_BASE}/api/trade`, {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
 				body: JSON.stringify(tradeData)
 			});
 
-			if (!response.ok) throw new Error('Failed to execute trade');
+			if (!response.ok) {
+				const errorData = await response.text();
+				throw new Error(`Trade execution failed: ${response.status} - ${errorData}`);
+			}
+
+			const result = await response.json();
+			console.log('Trade executed successfully:', result);
 
 			// Reset form and refresh data
 			resetOrderForm();
 			await fetchOpenTrades();
 			await fetchPendingOrders();
 			showOrderConfirmation = false;
+
+			// Success message could be added here
 		} catch (err) {
 			console.error('Trade execution error:', err);
-			error = 'Failed to execute trade';
+			error = err instanceof Error ? err.message : 'Failed to execute trade. Please try again.';
 		} finally {
 			isLoading = false;
 		}
@@ -299,27 +362,44 @@
 
 	// Close a trade
 	async function closeTrade(trade: Trade) {
-		if (!priceData) return;
+		if (!priceData || priceData.symbol !== trade.symbol) {
+			error = 'Cannot close trade: No current price data available for this symbol';
+			return;
+		}
 
 		try {
 			const closePrice = trade.direction === 'buy' ? priceData.bid : priceData.ask;
 
+			if (closePrice <= 0) {
+				throw new Error('Invalid close price');
+			}
+
 			const response = await fetch(`${API_BASE}/api/close`, {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
 				body: JSON.stringify({
 					tradeId: trade.id,
 					price: closePrice
 				})
 			});
 
-			if (!response.ok) throw new Error('Failed to close trade');
+			if (!response.ok) {
+				const errorData = await response.text();
+				throw new Error(`Failed to close trade: ${response.status} - ${errorData}`);
+			}
+
+			const result = await response.json();
+			console.log('Trade closed successfully:', result);
 
 			// Refresh trades list
 			await fetchOpenTrades();
+			await fetchClosedTrades();
 		} catch (err) {
 			console.error('Trade close error:', err);
-			error = 'Failed to close trade';
+			error = err instanceof Error ? err.message : 'Failed to close trade. Please try again.';
 		}
 	}
 
@@ -344,8 +424,29 @@
 		}
 	}
 
+	// Test backend connection
+	async function testBackendConnection(): Promise<boolean> {
+		try {
+			const response = await fetch(`${API_BASE}/api/price/EURUSD`, {
+				method: 'GET',
+				headers: { 'Accept': 'application/json' }
+			});
+			return response.ok;
+		} catch (err) {
+			console.error('Backend connection test failed:', err);
+			return false;
+		}
+	}
+
 	// Enhanced Lifecycle
 	onMount(async () => {
+		// Test backend connection first
+		const isBackendAvailable = await testBackendConnection();
+		if (!isBackendAvailable) {
+			error = 'Cannot connect to trading backend. Please ensure the server is running on port 3001.';
+			return;
+		}
+
 		startPriceUpdates();
 		await fetchOpenTrades();
 		await fetchPendingOrders();
@@ -439,6 +540,7 @@
 					</span>
 					<button
 						on:click={() => oneClickTrading = !oneClickTrading}
+						aria-label="Toggle one-click trading"
 						class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
 						class:bg-teal-600={oneClickTrading}
 						class:bg-gray-600={!oneClickTrading && isDarkMode}
@@ -482,7 +584,7 @@
 							<Search size={16} class={isDarkMode ? 'text-gray-400' : 'text-gray-600'} />
 						</button>
 						<button class="rounded p-1 hover:bg-gray-700" aria-label="Filter markets">
-							<Filter size={16} class={isDarkMode ? 'text-gray-400' : 'text-gray-600'} />
+							<SlidersHorizontal size={16} class={isDarkMode ? 'text-gray-400' : 'text-gray-600'} />
 						</button>
 					</div>
 				</div>
@@ -552,7 +654,7 @@
 					</div>
 					<div class="flex items-center gap-2">
 						<button class="rounded p-2 hover:bg-gray-700" aria-label="Chart settings">
-							<BarChart3 size={16} class={isDarkMode ? 'text-gray-400' : 'text-gray-600'} />
+							<Activity size={16} class={isDarkMode ? 'text-gray-400' : 'text-gray-600'} />
 						</button>
 					</div>
 				</div>
@@ -563,7 +665,7 @@
 				<!-- TradingView Chart Integration -->
 				<div class="h-full w-full flex items-center justify-center">
 					<div class="text-center" class:text-gray-400={isDarkMode} class:text-gray-600={!isDarkMode}>
-						<BarChart3 size={48} class="mx-auto mb-4 opacity-50" />
+						<Activity size={48} class="mx-auto mb-4 opacity-50" />
 						<p class="text-lg font-medium">Professional Chart</p>
 						<p class="text-sm">TradingView Integration</p>
 						<p class="text-xs mt-2">Symbol: {selectedSymbol}</p>
@@ -599,13 +701,14 @@
 
 				<!-- Order Type Selection -->
 				<div class="mb-4">
-					<label class="mb-2 block text-sm font-medium" class:text-gray-300={isDarkMode} class:text-gray-700={!isDarkMode}>
-						Order Type
-					</label>
+					<fieldset>
+						<legend class="mb-2 block text-sm font-medium" class:text-gray-300={isDarkMode} class:text-gray-700={!isDarkMode}>
+							Order Type
+						</legend>
 					<div class="grid grid-cols-2 gap-2">
 						{#each ['market', 'limit', 'stop', 'stop-limit'] as type}
 							<button
-								on:click={() => orderType = type}
+								on:click={() => orderType = type as typeof orderType}
 								class="rounded-lg border p-2 text-sm font-medium transition-colors"
 								class:bg-teal-600={orderType === type}
 								class:text-white={orderType === type}
@@ -622,6 +725,7 @@
 							</button>
 						{/each}
 					</div>
+					</fieldset>
 				</div>
 
 				<!-- Direction Selection -->
@@ -1017,7 +1121,7 @@
 				{#if closedTrades.length === 0}
 					<div class="flex h-full items-center justify-center text-center">
 						<div class:text-gray-400={isDarkMode} class:text-gray-600={!isDarkMode}>
-							<BarChart3 size={32} class="mx-auto mb-2 opacity-50" />
+							<Activity size={32} class="mx-auto mb-2 opacity-50" />
 							<p>No trade history</p>
 							<p class="text-xs">Closed trades will appear here</p>
 						</div>
@@ -1119,266 +1223,4 @@
 			</div>
 		</div>
 	{/if}
-</div>
-
-	<!-- Main Trading Grid -->
-	<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-		<!-- Price Display -->
-		<div class="lg:col-span-1">
-			<div class="rounded-xl border bg-white p-6 shadow-md">
-				<div class="mb-4 flex items-center justify-between">
-					<h2 class="text-navy text-lg font-semibold">Live Prices</h2>
-					<div class="flex items-center gap-2">
-						<div class="h-2 w-2 animate-pulse rounded-full bg-green-500"></div>
-						<span class="text-xs text-gray-500">Live</span>
-					</div>
-				</div>
-
-				<!-- Symbol Selector -->
-				<div class="mb-4">
-					<label for="symbol-select" class="mb-2 block text-sm font-medium text-gray-700">Symbol</label>
-					<select
-						id="symbol-select"
-						bind:value={selectedSymbol}
-						class="w-full rounded-lg border border-gray-300 p-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20">
-						{#each symbolsData as symbolItem}
-							<option value={symbolItem.symbol}>{symbolItem.symbol} - {symbolItem.name}</option>
-						{/each}
-					</select>
-				</div>
-
-				<!-- Price Data -->
-				{#if priceData}
-					<div class="space-y-3">
-						<div class="flex items-center justify-between">
-							<span class="text-sm text-gray-600">Current Price</span>
-							<span class="text-lg font-bold text-navy">{formatCurrency(priceData.price)}</span>
-						</div>
-
-						<div class="grid grid-cols-2 gap-3">
-							<div class="rounded-lg bg-red-50 p-3">
-								<div class="text-xs text-red-600">BID</div>
-								<div class="font-semibold text-red-700">{formatCurrency(priceData.bid)}</div>
-							</div>
-							<div class="rounded-lg bg-green-50 p-3">
-								<div class="text-xs text-green-600">ASK</div>
-								<div class="font-semibold text-green-700">{formatCurrency(priceData.ask)}</div>
-							</div>
-						</div>
-
-						<div class="flex items-center justify-between">
-							<span class="text-sm text-gray-600">24h Change</span>
-							<span class="flex items-center gap-1 font-semibold"
-								  class:text-green-600={priceData.change >= 0}
-								  class:text-red-600={priceData.change < 0}>
-								{#if priceData.change >= 0}
-									<TrendingUp size={16} />
-									+{priceData.change.toFixed(2)}%
-								{:else}
-									<TrendingDown size={16} />
-									{priceData.change.toFixed(2)}%
-								{/if}
-							</span>
-						</div>
-					</div>
-				{:else}
-					<div class="flex items-center justify-center py-8">
-						<div class="flex items-center gap-2 text-gray-500">
-							<RefreshCw size={16} class="animate-spin" />
-							<span>Loading price data...</span>
-						</div>
-					</div>
-				{/if}
-			</div>
-		</div>
-
-		<!-- Order Form -->
-		<div class="lg:col-span-1">
-			<div class="rounded-xl border bg-white p-6 shadow-md">
-				<h2 class="text-navy mb-4 text-lg font-semibold">Place Order</h2>
-
-				<form on:submit|preventDefault={executeTrade} class="space-y-4">
-					<!-- Direction Selector -->
-					<div>
-						<fieldset>
-							<legend class="mb-2 block text-sm font-medium text-gray-700">Direction</legend>
-						<div class="grid grid-cols-2 gap-2">
-							<button
-								type="button"
-								on:click={() => direction = 'buy'}
-								class="rounded-lg border p-3 text-center font-medium transition-colors"
-								class:bg-green-500={direction === 'buy'}
-								class:text-white={direction === 'buy'}
-								class:border-green-500={direction === 'buy'}
-								class:bg-white={direction !== 'buy'}
-								class:text-green-600={direction !== 'buy'}
-								class:border-green-200={direction !== 'buy'}
-								class:hover:bg-green-50={direction !== 'buy'}>
-								BUY
-							</button>
-							<button
-								type="button"
-								on:click={() => direction = 'sell'}
-								class="rounded-lg border p-3 text-center font-medium transition-colors"
-								class:bg-red-500={direction === 'sell'}
-								class:text-white={direction === 'sell'}
-								class:border-red-500={direction === 'sell'}
-								class:bg-white={direction !== 'sell'}
-								class:text-red-600={direction !== 'sell'}
-								class:border-red-200={direction !== 'sell'}
-								class:hover:bg-red-50={direction !== 'sell'}>
-								SELL
-							</button>
-						</div>
-						</fieldset>
-					</div>
-
-					<!-- Lot Size -->
-					<div>
-						<label for="lot-size" class="mb-2 block text-sm font-medium text-gray-700">Lot Size</label>
-						<input
-							id="lot-size"
-							type="number"
-							bind:value={lotSize}
-							min="0.01"
-							max="100"
-							step="0.01"
-							class="w-full rounded-lg border border-gray-300 p-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
-							placeholder="1.00" />
-					</div>
-
-					<!-- Entry Price Display -->
-					{#if priceData}
-						<div class="rounded-lg bg-gray-50 p-3">
-							<div class="text-sm text-gray-600">Entry Price</div>
-							<div class="font-semibold text-navy">
-								{formatCurrency(direction === 'buy' ? priceData.ask : priceData.bid)}
-							</div>
-						</div>
-					{/if}
-
-					<!-- Submit Button -->
-					<button
-						type="submit"
-						disabled={isLoading || !priceData}
-						class="w-full rounded-lg px-4 py-3 font-semibold text-white transition-colors disabled:opacity-50"
-						class:bg-green-600={direction === 'buy'}
-						class:hover:bg-green-700={direction === 'buy' && !isLoading}
-						class:bg-red-600={direction === 'sell'}
-						class:hover:bg-red-700={direction === 'sell' && !isLoading}>
-						{#if isLoading}
-							<div class="flex items-center justify-center gap-2">
-								<RefreshCw size={16} class="animate-spin" />
-								Executing...
-							</div>
-						{:else}
-							Execute {direction.toUpperCase()} Order
-						{/if}
-					</button>
-				</form>
-			</div>
-		</div>
-
-		<!-- Open Positions -->
-		<div class="lg:col-span-1">
-			<div class="rounded-xl border bg-white p-6 shadow-md">
-				<div class="mb-4 flex items-center justify-between">
-					<h2 class="text-navy text-lg font-semibold">Open Positions</h2>
-					<button
-						on:click={fetchOpenTrades}
-						class="rounded-lg p-2 text-gray-500 hover:bg-gray-100">
-						<RefreshCw size={16} />
-					</button>
-				</div>
-
-				{#if openTrades.length === 0}
-					<div class="py-8 text-center text-gray-500">
-						<DollarSign size={32} class="mx-auto mb-2 opacity-50" />
-						<p>No open positions</p>
-					</div>
-				{:else}
-					<div class="space-y-3">
-						{#each openTrades as trade}
-							<div class="rounded-lg border p-4">
-								<div class="mb-2 flex items-center justify-between">
-									<div class="flex items-center gap-2">
-										<span class="font-semibold text-navy">{trade.symbol}</span>
-										<span class="rounded px-2 py-1 text-xs font-medium"
-											  class:bg-green-100={trade.direction === 'buy'}
-											  class:text-green-700={trade.direction === 'buy'}
-											  class:bg-red-100={trade.direction === 'sell'}
-											  class:text-red-700={trade.direction === 'sell'}>
-											{trade.direction.toUpperCase()}
-										</span>
-									</div>
-									<span class="text-sm text-gray-500">
-										{trade.size} lots
-									</span>
-								</div>
-
-								<div class="mb-3 grid grid-cols-2 gap-2 text-sm">
-									<div>
-										<span class="text-gray-600">Entry:</span>
-										<span class="font-medium">{formatCurrency(trade.entry)}</span>
-									</div>
-									{#if priceData && priceData.symbol === trade.symbol}
-										<div>
-											<span class="text-gray-600">Current:</span>
-											<span class="font-medium">{formatCurrency(priceData.price)}</span>
-										</div>
-									{/if}
-								</div>
-
-								{#if trade.exit && trade.pnl !== undefined}
-									<div class="mb-3 rounded bg-gray-50 p-2 text-sm">
-										<div class="flex justify-between">
-											<span>Exit: {formatCurrency(trade.exit)}</span>
-											<span class="font-semibold"
-												  class:text-green-600={trade.pnl >= 0}
-												  class:text-red-600={trade.pnl < 0}>
-												{formatPnL(trade.pnl)}
-											</span>
-										</div>
-									</div>
-								{:else}
-									<button
-										on:click={() => closeTrade(trade)}
-										class="w-full rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors">
-										Close Position
-									</button>
-								{/if}
-							</div>
-						{/each}
-					</div>
-				{/if}
-			</div>
-		</div>
-	</div>
-
-	<!-- Trading Statistics -->
-	<div class="rounded-xl border bg-white p-6 shadow-md">
-		<h2 class="text-navy mb-4 text-lg font-semibold">Trading Statistics</h2>
-		<div class="grid grid-cols-1 gap-4 md:grid-cols-4">
-			<div class="text-center">
-				<div class="text-2xl font-bold text-navy">{openTrades.length}</div>
-				<div class="text-sm text-gray-600">Open Positions</div>
-			</div>
-			<div class="text-center">
-				<div class="text-2xl font-bold text-teal-600">
-					{openTrades.reduce((sum, trade) => sum + trade.size, 0).toFixed(2)}
-				</div>
-				<div class="text-sm text-gray-600">Total Volume</div>
-			</div>
-			<div class="text-center">
-				<div class="text-2xl font-bold text-navy">
-					{new Set(openTrades.map(t => t.symbol)).size}
-				</div>
-				<div class="text-sm text-gray-600">Symbols Traded</div>
-			</div>
-			<div class="text-center">
-				<div class="text-2xl font-bold text-signal">Live</div>
-				<div class="text-sm text-gray-600">Market Status</div>
-			</div>
-		</div>
-	</div>
 </div>
