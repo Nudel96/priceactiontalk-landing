@@ -10,6 +10,7 @@
 		lotSize: 0,
 		entryDate: '',
 		entryTime: '',
+		entryPrice: 0,
 		stopLoss: 0,
 		takeProfit: 0,
 		whyEnter: '',
@@ -148,6 +149,19 @@
 						id="entry-time"
 						type="time"
 						bind:value={newTrade.entryTime}
+						class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+					/>
+				</div>
+
+				<!-- Entry Price -->
+				<div>
+					<label for="entry-price" class="block text-sm font-medium text-gray-700 mb-2">Entry Price</label>
+					<input
+						id="entry-price"
+						type="number"
+						step="0.00001"
+						bind:value={newTrade.entryPrice}
+						placeholder="1.0890"
 						class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
 					/>
 				</div>

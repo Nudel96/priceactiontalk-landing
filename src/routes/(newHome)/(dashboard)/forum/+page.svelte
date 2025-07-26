@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MessageSquare, Users, Plus, Search, TrendingUp, Brain, Activity, MessageCircle } from '@lucide/svelte';
+	import { MessageSquare, Users, Plus, Search, TrendingUp, Brain, Activity, MessageCircle, X } from '@lucide/svelte';
 
 	// Mock forum data
 	const forumCategories = [
@@ -81,12 +81,40 @@
 	];
 
 	// Forum statistics
-	const forumStats = {
+	let forumStats = {
 		totalThreads: 619,
 		totalPosts: 7461,
 		activeMembers: 923,
 		newestMember: 'trader_joe'
 	};
+
+	// Mock threads list
+	let threads = [
+		{
+			id: 1,
+			title: 'Best trading books for beginners?',
+			author: 'newbie_trader',
+			authorLevel: 1,
+			category: 'general',
+			replies: 23,
+			views: 156,
+			lastActivity: '2h ago',
+			isPinned: false,
+			isLocked: false
+		},
+		{
+			id: 2,
+			title: 'How to handle losing streaks',
+			author: 'struggling_trader',
+			authorLevel: 2,
+			category: 'psychology',
+			replies: 15,
+			views: 89,
+			lastActivity: '4h ago',
+			isPinned: false,
+			isLocked: false
+		}
+	];
 
 	let searchQuery = '';
 	let showNewThreadModal = false;
@@ -116,6 +144,12 @@
 				isPinned: false,
 				isLocked: false
 			};
+
+			// Add to threads list
+			threads = [thread, ...threads];
+
+			// Update forum stats
+			forumStats.totalThreads += 1;
 
 			console.log('Creating new thread:', thread);
 
@@ -219,25 +253,122 @@
 				<div class="text-sm text-gray-600">Newest Member</div>
 			</div>
 		</div>
+
+		<!-- Recent Threads -->
+		<div class="bg-white rounded-xl shadow-md p-6">
+			<div class="flex items-center justify-between mb-6">
+				<h2 class="text-xl font-semibold text-navy">Recent Threads</h2>
+				<span class="text-sm text-gray-500">{threads.length} threads</span>
+			</div>
+			<div class="space-y-4">
+				{#each threads as thread}
+					<div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+						<div class="flex items-start justify-between">
+							<div class="flex-1">
+								<h3 class="font-medium text-navy hover:text-teal-600 cursor-pointer">{thread.title}</h3>
+								<div class="flex items-center gap-4 mt-2 text-sm text-gray-500">
+									<span>by {thread.author}</span>
+									<span class="px-2 py-1 bg-gray-100 rounded-full text-xs">{thread.category}</span>
+									<span>{thread.replies} replies</span>
+									<span>{thread.views} views</span>
+									<span>{thread.lastActivity}</span>
+								</div>
+							</div>
+							{#if thread.isPinned}
+								<div class="ml-4 text-yellow-500">📌</div>
+							{/if}
+							{#if thread.isLocked}
+								<div class="ml-2 text-red-500">🔒</div>
+							{/if}
+						</div>
+					</div>
+				{:else}
+					<div class="text-center py-8 text-gray-500">
+						<MessageSquare class="w-12 h-12 mx-auto mb-4 text-gray-300" />
+						<p>No threads yet. Be the first to start a discussion!</p>
+					</div>
+				{/each}
+			</div>
+		</div>
 	</div>
 </div>
 
-<!-- New Thread Modal (placeholder) -->
+<!-- New Thread Modal -->
 {#if showNewThreadModal}
-	<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-		<div class="bg-white rounded-xl p-6 w-full max-w-md mx-4">
-			<h3 class="text-lg font-semibold text-navy mb-4">Create New Thread</h3>
-			<p class="text-gray-600 mb-4">Thread creation functionality will be implemented here.</p>
-			<div class="flex gap-3">
+	<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+		<div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+			<div class="flex items-center justify-between mb-6">
+				<h3 class="text-xl font-semibold text-navy">Create New Thread</h3>
+				<button on:click={() => showNewThreadModal = false} class="text-gray-400 hover:text-gray-600">
+					<X class="w-5 h-5" />
+				</button>
+			</div>
+
+			<div class="space-y-4">
+				<!-- Category Selection -->
+				<div>
+					<label for="thread-category" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+					<select
+						id="thread-category"
+						bind:value={newThread.category}
+						class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+						<option value="general">General Discussion</option>
+						<option value="trading-strategies">Trading Strategies</option>
+						<option value="market-analysis">Market Analysis</option>
+						<option value="psychology">Trading Psychology</option>
+						<option value="macros-news">Macros & News</option>
+						<option value="community">Community</option>
+					</select>
+				</div>
+
+				<!-- Thread Title -->
+				<div>
+					<label for="thread-title" class="block text-sm font-medium text-gray-700 mb-2">Thread Title</label>
+					<input
+						id="thread-title"
+						type="text"
+						bind:value={newThread.title}
+						placeholder="Enter a descriptive title for your thread"
+						class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+					/>
+				</div>
+
+				<!-- Thread Content -->
+				<div>
+					<label for="thread-content" class="block text-sm font-medium text-gray-700 mb-2">Content</label>
+					<textarea
+						id="thread-content"
+						bind:value={newThread.content}
+						rows="6"
+						placeholder="Write your post content here..."
+						class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none">
+					</textarea>
+				</div>
+
+				<!-- Guidelines -->
+				<div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+					<h4 class="font-medium text-blue-900 mb-2">Community Guidelines</h4>
+					<ul class="text-sm text-blue-800 space-y-1">
+						<li>• Be respectful and constructive in your discussions</li>
+						<li>• Use clear and descriptive titles</li>
+						<li>• Search existing threads before creating new ones</li>
+						<li>• Stay on topic and provide valuable insights</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Action Buttons -->
+			<div class="flex gap-3 mt-6">
 				<button
 					on:click={() => showNewThreadModal = false}
-					class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg transition-colors">
+					class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
 					Cancel
 				</button>
 				<button
-					on:click={() => showNewThreadModal = false}
-					class="flex-1 bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg transition-colors">
-					Create
+					on:click={handleCreateThread}
+					disabled={!newThread.title || !newThread.content}
+					class="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+					Create Thread
 				</button>
 			</div>
 		</div>

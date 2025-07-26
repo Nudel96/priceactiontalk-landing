@@ -6,7 +6,7 @@
 		username: '',
 		email: '',
 		country: '',
-		avatar: null
+		avatar: null as string | null
 	};
 
 	let editForm = { ...user };
@@ -38,7 +38,12 @@
 
 		// Update user object
 		Object.assign(user, editForm);
-		
+
+		// Trigger a page reload to update the sidebar profile picture
+		if (editForm.avatar !== user.avatar) {
+			window.location.reload();
+		}
+
 		// Reset form
 		currentPassword = '';
 		newPassword = '';

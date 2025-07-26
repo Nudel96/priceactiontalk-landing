@@ -82,7 +82,7 @@
 					<h1 class="text-2xl font-bold text-navy">{user.username}</h1>
 					<button
 						on:click={() => showEditModal = true}
-						class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+						class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-teal-100 hover:text-teal-700 rounded-lg transition-colors">
 						<Settings class="w-4 h-4" />
 						<span class="text-sm">Edit Profile</span>
 					</button>

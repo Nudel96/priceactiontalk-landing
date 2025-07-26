@@ -40,6 +40,7 @@
 			lotSize: 0.5,
 			entryDate: '2024-03-15',
 			entryTime: '14:30',
+			entryPrice: 1.0890,
 			stopLoss: 1.0850,
 			takeProfit: 1.0920,
 			status: 'completed',
@@ -58,6 +59,7 @@
 			lotSize: 0.3,
 			entryDate: '2024-03-16',
 			entryTime: '09:15',
+			entryPrice: 187.50,
 			stopLoss: 188.20,
 			takeProfit: 185.50,
 			status: 'pending',
@@ -83,6 +85,7 @@
 		lotSize: 0,
 		entryDate: '',
 		entryTime: '',
+		entryPrice: 0,
 		stopLoss: 0,
 		takeProfit: 0,
 		whyEnter: '',
@@ -133,6 +136,7 @@
 				lotSize: 0,
 				entryDate: '',
 				entryTime: '',
+				entryPrice: 0,
 				stopLoss: 0,
 				takeProfit: 0,
 				whyEnter: '',
@@ -359,7 +363,11 @@
 						</div>
 					</div>
 
-					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-sm">
+						<div>
+							<span class="text-gray-600">Entry:</span>
+							<span class="font-medium ml-1">{trade.entryPrice || 'N/A'}</span>
+						</div>
 						<div>
 							<span class="text-gray-600">Stop Loss:</span>
 							<span class="font-medium ml-1">{trade.stopLoss}</span>

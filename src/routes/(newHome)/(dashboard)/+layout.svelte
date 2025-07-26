@@ -21,7 +21,6 @@
 	} from '@lucide/svelte';
 
 	import ProfileBadge from '$lib/components/ProfileBadge.svelte';
-	import Logo from '$lib/components/Logo.svelte';
 
 	// --- Data from `load` function ---
 	// The `data` prop is automatically passed from your `+layout.ts` file.
@@ -101,9 +100,7 @@
 		class:shadow-xl={isSidebarOpen}
 		class:-translate-x-full={!isSidebarOpen}>
 		<div class="flex h-full flex-col p-4">
-			<div class="mt-2 mb-8">
-				<Logo />
-			</div>
+
 
 			<!-- Use the user object from the `data` prop -->
 			{#if data.user}
@@ -126,8 +123,32 @@
 				{/each}
 			</nav>
 
+			<!-- Logo -->
+			<div class="mt-auto mb-6 flex justify-center">
+				<div class="w-20 h-20 text-white">
+					<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1981.19 1675.57" class="w-full h-full">
+						<defs>
+							<style>
+								.cls-1 {
+									fill: currentColor;
+									stroke: currentColor;
+									stroke-miterlimit: 10;
+									stroke-width: 2px;
+								}
+							</style>
+						</defs>
+						<g id="Ebene_1-2" data-name="Ebene 1">
+							<path class="cls-1" d="M1325.85,1375.09c-148.53-251.36-336.98-570.27-336.98-570.27l-513.3,868.66h250.07s135.15-250.04,135.17-250.07h256.12l135.17,250.07h250.07s-79.72-134.91-176.32-298.39ZM942.66,1271.99l46.21-95.61s45.72,94.7,45.72,94.71l-91.93.9Z"/>
+							<path id="hook_top_blue" data-name="hook top blue" class="cls-1" d="M100.59,1506.12c41.46-70.21,93.6-158.49,151.72-256.91C544.75,754,988.87,1.97,988.87,1.97c0,0,342.02,578.55,342.02,578.55-56.42,32.88-134.1,78.16-186.72,108.83,0,0-155.29-266.21-155.29-266.21L249.32,1673.48H1.75s37.89-64.17,98.83-167.36Z"/>
+							<path id="ARROW_GREEN" data-name="ARROW GREEN" class="cls-1" d="M1245.52,1239.15s212.23-386.2,212.23-386.2c30.22,52.39,67.54,117.08,67.54,117.04,0,0-1.5-366.29-1.51-366.49-16.31,9.51-305.53,178.08-315.45,183.86,2.35,0,74.37.04,133.79.07-.02.02-185.79,300.72-185.79,300.72l89.18,151Z"/>
+							<polygon class="cls-1" points="1565.14 1121.61 1564.54 975.29 1979.44 1674.57 1718.63 1674.57 1391.17 1112.84 1472.97 962.06 1565.14 1121.61"/>
+						</g>
+					</svg>
+				</div>
+			</div>
+
 			<!-- The logout button is now a standard link to a /logout endpoint -->
-			<div class="mt-auto border-t border-gray-700/50 pt-4">
+			<div class="border-t border-gray-700/50 pt-4">
 				<a href="/logout" class="nav-link w-full text-left hover:bg-red-500/20 hover:text-red-500">
 					<LogOut size={20} />
 					<span>Logout</span>
@@ -145,12 +166,6 @@
 						{currentPageTitle}
 					</h1>
 					<div class="flex items-center gap-4">
-						<!-- Use the user object from the `data` prop here as well -->
-						{#if data.user}
-							<div class="hidden md:block">
-								<ProfileBadge user={data.user} compact={true} />
-							</div>
-						{/if}
 						<div class="lg:hidden">
 							<button
 								on:click={() => (isSidebarOpen = true)}

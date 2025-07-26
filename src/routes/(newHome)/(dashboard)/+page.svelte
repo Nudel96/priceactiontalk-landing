@@ -109,14 +109,7 @@
 			</div>
 		</div>
 
-		<div class="h-64 rounded-xl border border-gray-200 bg-white p-6 shadow-md md:h-auto">
-			<div class="mb-3 flex items-center justify-between">
-				<h3 class="font-semibold text-navy">Economic Calendar</h3>
-			</div>
-			<div class="h-[calc(100%-2rem)] flex items-center justify-center">
-				<p class="text-gray-500 text-sm">Economic calendar will be integrated here</p>
-			</div>
-		</div>
+
 	</div>
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
