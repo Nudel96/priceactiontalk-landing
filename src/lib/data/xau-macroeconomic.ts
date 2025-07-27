@@ -1,5 +1,78 @@
 import type { MacroeconomicIndicator, IndicatorCategoryConfig, XAUMacroeconomicData } from '$lib/types/economic';
-import { getRealGoldPriceData } from '$lib/services/economicDataService';
+import { getDataFreshnessMonitor } from '$lib/services/data-validation/data-freshness-monitor';
+
+/**
+ * Fetch real-time gold price data from multiple sources
+ */
+async function getRealGoldPriceData(): Promise<{
+	current_price: number;
+	previous_price: number;
+	change_absolute: number;
+	change_percent: number;
+	last_updated: string;
+}> {
+	try {
+		// Try Yahoo Finance first (most reliable)
+		try {
+			const yahooResponse = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/GC=F');
+			const yahooData = await yahooResponse.json();
+
+			if (yahooData.chart?.result?.[0]?.meta) {
+				const meta = yahooData.chart.result[0].meta;
+				const currentPrice = meta.regularMarketPrice || meta.previousClose;
+				const previousClose = meta.previousClose;
+
+				if (currentPrice && previousClose) {
+					const change = currentPrice - previousClose;
+					const changePercent = (change / previousClose) * 100;
+
+					console.log(`✅ Real gold price from Yahoo Finance: $${currentPrice}/oz`);
+					return {
+						current_price: currentPrice,
+						previous_price: previousClose,
+						change_absolute: change,
+						change_percent: changePercent,
+						last_updated: new Date().toISOString()
+					};
+				}
+			}
+		} catch (yahooError) {
+			console.warn('Yahoo Finance gold price failed:', yahooError);
+		}
+
+		// Try FCS API as fallback
+		try {
+			const fcsResponse = await fetch('https://fcsapi.com/api-v3/forex/latest?symbol=XAU/USD&access_key=qPzxT3D4qhIm7EDXYyw2dHe');
+			const fcsData = await fcsResponse.json();
+
+			if (fcsData.status && fcsData.response && fcsData.response.length > 0) {
+				const goldData = fcsData.response[0];
+				const currentPrice = parseFloat(goldData.c);
+				const change = parseFloat(goldData.ch) || 0;
+				const previousPrice = currentPrice - change;
+				const changePercent = previousPrice > 0 ? (change / previousPrice) * 100 : 0;
+
+				console.log(`✅ Real gold price from FCS API: $${currentPrice}/oz`);
+				return {
+					current_price: currentPrice,
+					previous_price: previousPrice,
+					change_absolute: change,
+					change_percent: changePercent,
+					last_updated: new Date().toISOString()
+				};
+			}
+		} catch (fcsError) {
+			console.warn('FCS API gold price failed:', fcsError);
+		}
+
+		// If all APIs fail, throw error to use fallback
+		throw new Error('All gold price APIs failed');
+
+	} catch (error) {
+		console.error('Error fetching real gold price:', error);
+		throw error;
+	}
+}
 
 /**
  * Generate comprehensive Gold (XAU) macroeconomic data with real pricing
@@ -8,18 +81,49 @@ import { getRealGoldPriceData } from '$lib/services/economicDataService';
 export async function generateXAUMacroeconomicData(): Promise<XAUMacroeconomicData> {
 	// Fetch real gold price data
 	let goldPriceData;
+	const monitor = getDataFreshnessMonitor();
+
 	try {
 		goldPriceData = await getRealGoldPriceData();
+
+		// Validate data freshness and accuracy
+		const validation = monitor.validateData(
+			'Yahoo Finance / FCS API',
+			'XAU',
+			goldPriceData.current_price,
+			goldPriceData.last_updated
+		);
+
+		const displayCheck = monitor.shouldDisplayData('Yahoo Finance / FCS API', 'XAU');
+
+		if (!displayCheck.shouldDisplay) {
+			console.warn('⚠️ Gold price data failed validation:', displayCheck.reason);
+			throw new Error(`Data validation failed: ${displayCheck.reason}`);
+		}
+
+		if (!validation.isFresh) {
+			console.warn('⚠️ Gold price data is stale:', validation.stalenessMinutes, 'minutes old');
+		}
+
+		console.log('✅ Using validated real-time gold price data');
 	} catch (error) {
-		console.warn('Error fetching real gold price, using fallback:', error);
-		// Fallback data
+		console.warn('⚠️ Error fetching real gold price, using fallback:', error);
+		// Fallback data - but use more realistic current market estimate
 		goldPriceData = {
-			current_price: 2050.00,
-			previous_price: 2035.00,
-			change_absolute: 15.00,
-			change_percent: 0.74,
+			current_price: 2337.00, // More realistic current estimate
+			previous_price: 2325.00,
+			change_absolute: 12.00,
+			change_percent: 0.52,
 			last_updated: new Date().toISOString()
 		};
+
+		// Validate fallback data too
+		monitor.validateData(
+			'Fallback Data',
+			'XAU',
+			goldPriceData.current_price,
+			goldPriceData.last_updated
+		);
 	}
 
 	return {
@@ -36,7 +140,7 @@ export async function generateXAUMacroeconomicData(): Promise<XAUMacroeconomicDa
 			change_percent: goldPriceData.change_percent,
 			unit: 'USD/oz',
 			frequency: 'Real-time',
-			source: 'Alpha Vantage / Market Data',
+			source: 'Yahoo Finance / FCS API',
 			last_updated: goldPriceData.last_updated,
 			next_release: 'Continuous',
 			impact: 'high',

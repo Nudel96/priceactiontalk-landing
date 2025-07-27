@@ -4,13 +4,8 @@ import type {
 	IndicatorCategoryConfig,
 	EconomicHealthScore
 } from '$lib/types/economic';
-import {
-	getRealGBPGDPData,
-	getRealGBPCPIData,
-	getRealGBPUnemploymentData,
-	getRealBOEBankRateData,
-	batchFetchGBPData
-} from '$lib/services/economicDataService';
+// Note: Real data fetching is now handled by the Advanced Economic Service
+// This file provides mock data structure for compatibility
 
 // Cache for API data to avoid excessive calls
 let cachedGBPData: Record<string, any> = {};

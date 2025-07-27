@@ -7,12 +7,8 @@ import type {
 	EducationalTooltip
 } from '$lib/types/economic';
 
-import {
-	getRealJPYGDPData,
-	getRealJPYCPIData,
-	getRealJPYUnemploymentData,
-	getRealBOJRateData
-} from '$lib/services/economicDataService';
+// Note: Real data fetching is now handled by the Advanced Economic Service
+// This file provides mock data structure for compatibility
 
 // Generate realistic historical data points
 function generateHistoricalData(

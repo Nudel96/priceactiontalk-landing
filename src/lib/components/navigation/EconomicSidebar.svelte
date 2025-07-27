@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { 
-		TrendingUp, Globe, BarChart3, Calendar, 
+	import {
+		TrendingUp, Globe, BarChart3, Calendar,
 		Users, Building, Percent, Activity,
-		ChevronDown, ChevronRight
+		ChevronDown, ChevronRight, Target
 	} from '@lucide/svelte';
 
 	const dispatch = createEventDispatcher<{
@@ -27,6 +27,7 @@
 			items: [
 				{ id: 'economic-overview', title: 'Economic Overview', icon: Globe },
 				{ id: 'fundamental', title: 'Fundamental Analysis', icon: BarChart3 },
+				{ id: 'bias-scoring', title: 'Bias Scoring System', icon: Target },
 				{ id: 'economic-calendar', title: 'Economic Calendar', icon: Calendar },
 				{ id: 'currency-strength', title: 'Currency Strength', icon: Activity }
 			]

@@ -4,13 +4,8 @@ import type {
 	IndicatorCategoryConfig,
 	EconomicHealthScore
 } from '$lib/types/economic';
-import {
-	getRealEURGDPData,
-	getRealEURHICPData,
-	getRealEURUnemploymentData,
-	getRealECBRateData,
-	batchFetchEURData
-} from '$lib/services/economicDataService';
+// Note: Real data fetching is now handled by the Advanced Economic Service
+// This file provides mock data structure for compatibility
 
 // Cache for API data to avoid excessive calls
 let cachedEURData: Record<string, any> = {};
