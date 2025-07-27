@@ -1,11 +1,49 @@
 import type { MacroeconomicIndicator, IndicatorCategoryConfig, XAGMacroeconomicData } from '$lib/types/economic';
+import { getRealSilverPriceData } from '$lib/services/economicDataService';
 
 /**
- * Generate comprehensive Silver (XAG) macroeconomic data
+ * Generate comprehensive Silver (XAG) macroeconomic data with real pricing
  * Reflects silver's dual nature as industrial commodity and precious metal
  */
-export function generateXAGMacroeconomicData(): XAGMacroeconomicData {
+export async function generateXAGMacroeconomicData(): Promise<XAGMacroeconomicData> {
+	// Fetch real silver price data
+	let silverPriceData;
+	try {
+		silverPriceData = await getRealSilverPriceData();
+	} catch (error) {
+		console.warn('Error fetching real silver price, using fallback:', error);
+		// Fallback data
+		silverPriceData = {
+			current_price: 24.50,
+			previous_price: 24.20,
+			change_absolute: 0.30,
+			change_percent: 1.24,
+			last_updated: new Date().toISOString()
+		};
+	}
+
 	return {
+		// REAL-TIME SILVER PRICING
+		silver_spot_price: {
+			id: 'xag_spot_price',
+			name: 'Silver Spot Price (XAG/USD)',
+			name_de: 'Silber-Kassapreis (XAG/USD)',
+			category: 'pricing',
+			current_value: silverPriceData.current_price,
+			previous_value: silverPriceData.previous_price,
+			forecast_value: silverPriceData.current_price + (silverPriceData.change_absolute * 0.5),
+			change_absolute: silverPriceData.change_absolute,
+			change_percent: silverPriceData.change_percent,
+			unit: 'USD/oz',
+			frequency: 'Real-time',
+			source: 'Alpha Vantage / Market Data',
+			last_updated: silverPriceData.last_updated,
+			next_release: 'Continuous',
+			impact: 'high',
+			market_impact_explanation: 'Real-time silver spot price reflects both industrial demand and precious metal investment flows.',
+			market_impact_explanation_de: 'Der Echtzeit-Silber-Kassapreis spiegelt sowohl industrielle Nachfrage als auch Edelmetall-Investitionsströme wider.'
+		},
+
 		// INDUSTRIAL DEMAND & ECONOMIC GROWTH (Pro-cyclical)
 		global_manufacturing_pmi: {
 			id: 'xag_global_manufacturing_pmi',
@@ -438,6 +476,17 @@ export function generateXAGMacroeconomicData(): XAGMacroeconomicData {
  */
 export function generateXAGIndicatorCategories(): IndicatorCategoryConfig[] {
 	return [
+		{
+			category: 'pricing',
+			name: 'Real-Time Pricing',
+			name_de: 'Echtzeit-Preise',
+			description: 'Live silver spot prices and market data',
+			description_de: 'Live-Silber-Kassapreise und Marktdaten',
+			color: '#94a3b8',
+			icon: '🥈',
+			importance_weight: 35,
+			indicators: ['xag_spot_price']
+		},
 		{
 			category: 'industrial_demand',
 			name: 'Industrial Demand',

@@ -1,12 +1,24 @@
-import type { 
-	MacroeconomicIndicator, 
+import type {
+	MacroeconomicIndicator,
 	MacroeconomicDataPoint,
 	IndicatorCategoryConfig,
 	EconomicHealthScore
 } from '$lib/types/economic';
+import {
+	getRealGBPGDPData,
+	getRealGBPCPIData,
+	getRealGBPUnemploymentData,
+	getRealBOEBankRateData,
+	batchFetchGBPData
+} from '$lib/services/economicDataService';
 
-// Generate realistic historical data points for GBP indicators
-function generateHistoricalData(
+// Cache for API data to avoid excessive calls
+let cachedGBPData: Record<string, any> = {};
+let lastGBPFetchTime = 0;
+const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+
+// Fallback function for when API fails - generates realistic historical data points for GBP indicators
+function generateFallbackData(
 	baseValue: number, 
 	periods: number = 24, 
 	volatility: number = 0.1,
@@ -32,6 +44,44 @@ function generateHistoricalData(
 	}
 	
 	return data;
+}
+
+/**
+ * Fetch real GBP economic data from ONS and BoE APIs
+ */
+async function fetchRealGBPData(): Promise<Record<string, any>> {
+	const now = Date.now();
+
+	// Check if we have cached data that's still fresh
+	if (cachedGBPData && Object.keys(cachedGBPData).length > 0 && (now - lastGBPFetchTime) < CACHE_DURATION) {
+		console.log('Using cached GBP economic data');
+		return cachedGBPData;
+	}
+
+	try {
+		console.log('Fetching fresh GBP economic data from APIs...');
+		const freshData = await batchFetchGBPData();
+
+		// Update cache
+		cachedGBPData = freshData;
+		lastGBPFetchTime = now;
+
+		console.log('GBP economic data fetched and cached successfully');
+		return freshData;
+
+	} catch (error) {
+		console.error('Failed to fetch GBP economic data:', error);
+
+		// Return cached data if available, even if stale
+		if (cachedGBPData && Object.keys(cachedGBPData).length > 0) {
+			console.log('Using stale cached GBP data due to API error');
+			return cachedGBPData;
+		}
+
+		// If no cached data, return empty object (will use fallback values)
+		console.log('No cached GBP data available, using fallback values');
+		return {};
+	}
 }
 
 // Generate next release date for GBP indicators
@@ -107,10 +157,13 @@ export interface GBPMacroeconomicData {
 	social_spending: MacroeconomicIndicator;
 }
 
-// Create comprehensive GBP macroeconomic data
-export function generateGBPMacroeconomicData(): GBPMacroeconomicData {
+// Create comprehensive GBP macroeconomic data with real API integration
+export async function generateGBPMacroeconomicData(): Promise<GBPMacroeconomicData> {
 	const now = new Date().toISOString();
-	
+
+	// Fetch real GBP economic data
+	const realData = await fetchRealGBPData();
+
 	return {
 		// Growth Indicators
 		gdp_growth_quarterly: {
@@ -120,13 +173,13 @@ export function generateGBPMacroeconomicData(): GBPMacroeconomicData {
 			category: 'growth',
 			country: 'United Kingdom',
 			currency: 'GBP',
-			current_value: 0.2,
-			previous_value: -0.1,
-			forecast_value: 0.3,
-			change_absolute: 0.3,
-			change_percent: 300.0,
+			current_value: realData.gdp_growth?.current_value || 0.2,
+			previous_value: realData.gdp_growth?.previous_value || -0.1,
+			forecast_value: (realData.gdp_growth?.current_value || 0.2) + 0.1,
+			change_absolute: realData.gdp_growth?.change_absolute || 0.3,
+			change_percent: realData.gdp_growth?.change_percent || 300.0,
 			impact: 'high',
-			trend: 'up',
+			trend: (realData.gdp_growth?.change_absolute || 0.3) > 0 ? 'up' : 'down',
 			unit: '% QoQ',
 			frequency: 'quarterly',
 			last_updated: now,
@@ -136,7 +189,7 @@ export function generateGBPMacroeconomicData(): GBPMacroeconomicData {
 			market_impact_explanation: 'UK GDP growth directly impacts GBP strength, with the service sector (~80% of economy) being particularly important.',
 			market_impact_explanation_de: 'UK-BIP-Wachstum beeinflusst direkt die GBP-Stärke, wobei der Dienstleistungssektor (~80% der Wirtschaft) besonders wichtig ist.',
 			source: 'ONS',
-			historical_data: generateHistoricalData(0.1, 12, 0.3, 0.1)
+			historical_data: realData.gdp_growth?.historical_data || generateFallbackData(0.1, 12, 0.3, 0.1)
 		},
 
 		gdp_growth_monthly: {
@@ -329,13 +382,13 @@ export function generateGBPMacroeconomicData(): GBPMacroeconomicData {
 			category: 'inflation',
 			country: 'United Kingdom',
 			currency: 'GBP',
-			current_value: 4.0,
-			previous_value: 6.7,
-			forecast_value: 3.8,
-			change_absolute: -2.7,
-			change_percent: -40.3,
+			current_value: realData.cpi?.current_value || 4.0,
+			previous_value: realData.cpi?.previous_value || 6.7,
+			forecast_value: (realData.cpi?.current_value || 4.0) - 0.2,
+			change_absolute: realData.cpi?.change_absolute || -2.7,
+			change_percent: realData.cpi?.change_percent || -40.3,
 			impact: 'high',
-			trend: 'down',
+			trend: (realData.cpi?.change_absolute || -2.7) > 0 ? 'up' : 'down',
 			unit: '% YoY',
 			frequency: 'monthly',
 			last_updated: now,
@@ -345,7 +398,7 @@ export function generateGBPMacroeconomicData(): GBPMacroeconomicData {
 			market_impact_explanation: 'UK CPI approaching BoE\'s 2% target may signal potential for policy easing, affecting GBP strength.',
 			market_impact_explanation_de: 'UK-VPI, der sich dem 2%-Ziel der BoE nähert, kann Potenzial für Politiklockerung signalisieren und GBP-Stärke beeinflussen.',
 			source: 'ONS',
-			historical_data: generateHistoricalData(5.5, 24, 1.2, -0.6)
+			historical_data: realData.cpi?.historical_data || generateFallbackData(5.5, 24, 1.2, -0.6)
 		},
 
 		core_cpi: {
@@ -486,13 +539,13 @@ export function generateGBPMacroeconomicData(): GBPMacroeconomicData {
 			category: 'labor',
 			country: 'United Kingdom',
 			currency: 'GBP',
-			current_value: 4.2,
-			previous_value: 3.9,
-			forecast_value: 4.4,
-			change_absolute: 0.3,
-			change_percent: 7.7,
+			current_value: realData.unemployment_rate?.current_value || 4.2,
+			previous_value: realData.unemployment_rate?.previous_value || 3.9,
+			forecast_value: (realData.unemployment_rate?.current_value || 4.2) + 0.2,
+			change_absolute: realData.unemployment_rate?.change_absolute || 0.3,
+			change_percent: realData.unemployment_rate?.change_percent || 7.7,
 			impact: 'high',
-			trend: 'up',
+			trend: (realData.unemployment_rate?.change_absolute || 0.3) > 0 ? 'up' : 'down',
 			unit: '%',
 			frequency: 'monthly',
 			last_updated: now,
@@ -502,7 +555,7 @@ export function generateGBPMacroeconomicData(): GBPMacroeconomicData {
 			market_impact_explanation: 'Rising unemployment indicates labor market softening, potentially supporting BoE dovish policy stance.',
 			market_impact_explanation_de: 'Steigende Arbeitslosigkeit zeigt Arbeitsmarktschwächung an, könnte BoE-taubenhafte Politikhaltung unterstützen.',
 			source: 'ONS',
-			historical_data: generateHistoricalData(3.8, 24, 0.4, 0.2)
+			historical_data: realData.unemployment_rate?.historical_data || generateFallbackData(3.8, 24, 0.4, 0.2)
 		},
 
 		employment_change: {
@@ -722,13 +775,13 @@ export function generateGBPMacroeconomicData(): GBPMacroeconomicData {
 			category: 'monetary_policy',
 			country: 'United Kingdom',
 			currency: 'GBP',
-			current_value: 5.25,
-			previous_value: 5.00,
-			forecast_value: 5.50,
-			change_absolute: 0.25,
-			change_percent: 5.0,
+			current_value: realData.bank_rate?.current_value || 5.25,
+			previous_value: realData.bank_rate?.previous_value || 5.00,
+			forecast_value: (realData.bank_rate?.current_value || 5.25) + 0.25,
+			change_absolute: realData.bank_rate?.change_absolute || 0.25,
+			change_percent: realData.bank_rate?.change_percent || 5.0,
 			impact: 'high',
-			trend: 'up',
+			trend: (realData.bank_rate?.change_absolute || 0.25) > 0 ? 'up' : 'down',
 			unit: '%',
 			frequency: 'monthly',
 			last_updated: now,
@@ -738,7 +791,7 @@ export function generateGBPMacroeconomicData(): GBPMacroeconomicData {
 			market_impact_explanation: 'BoE Bank Rate directly influences GBP strength through yield differentials and economic expectations.',
 			market_impact_explanation_de: 'BoE-Leitzins beeinflusst direkt GBP-Stärke durch Renditedifferenzen und wirtschaftliche Erwartungen.',
 			source: 'Bank of England',
-			historical_data: generateHistoricalData(4.8, 24, 0.5, 0.2)
+			historical_data: realData.bank_rate?.historical_data || generateFallbackData(4.8, 24, 0.5, 0.2)
 		},
 
 		gilt_2y: {
@@ -1238,6 +1291,19 @@ export function generateGBPMacroeconomicData(): GBPMacroeconomicData {
 			historical_data: generateHistoricalData(22.0, 12, 0.8, -0.3)
 		}
 	};
+}
+
+/**
+ * Initialize real GBP data fetching - call this to populate cache with real API data
+ */
+export async function initializeGBPRealData(): Promise<void> {
+	try {
+		console.log('Initializing GBP real economic data...');
+		await fetchRealGBPData();
+		console.log('GBP real economic data initialized successfully');
+	} catch (error) {
+		console.error('Failed to initialize GBP real economic data:', error);
+	}
 }
 
 // Generate GBP-specific category configurations

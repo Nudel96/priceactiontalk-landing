@@ -1,0 +1,27 @@
+{
+  "name": "economic-data-test",
+  "version": "1.0.0",
+  "description": "API-Test für Wirtschaftsdaten (Finnhub, FRED, MarketAux)",
+  "main": "fetchData.js",
+  "scripts": {
+    "setup": "node setup.js",
+    "fetch": "node fetchData.js",
+    "view": "node viewData.js",
+    "start": "npm run setup && npm run fetch"
+  },
+  "keywords": [
+    "economic-data",
+    "api",
+    "finnhub",
+    "fred",
+    "marketaux",
+    "sqlite"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "dotenv": "^16.0.3",
+    "sqlite3": "^5.1.6"
+  }
+}

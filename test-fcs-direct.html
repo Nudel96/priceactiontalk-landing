@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCS API Direct Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e9; color: #2e7d32; }
+        pre { white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <h1>FCS API Direct Test</h1>
+    <button onclick="testFCSAPI()">Test FCS API</button>
+    <button onclick="testCurrentPrices()">Compare with TradingView Prices</button>
+    
+    <div id="results"></div>
+
+    <script>
+        async function testFCSAPI() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="result">Testing FCS API...</div>';
+            
+            try {
+                // Test FCS API with major pairs
+                const majorPairs = ['EUR/USD', 'GBP/USD', 'USD/JPY', 'AUD/USD', 'USD/CAD', 'USD/CHF', 'NZD/USD'];
+                const symbolParam = majorPairs.join(',');
+                const url = `https://fcsapi.com/api-v3/forex/latest?symbol=${symbolParam}&access_key=qPzxT3D4qhIm7EDXYyw2dHe`;
+                
+                console.log('Testing URL:', url);
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status && data.response) {
+                    let html = '<div class="result success"><h3>✅ FCS API Success!</h3>';
+                    html += `<p><strong>Pairs fetched:</strong> ${data.response.length}</p>`;
+                    html += '<h4>Current Prices:</h4><ul>';
+                    
+                    data.response.forEach(rate => {
+                        html += `<li><strong>${rate.s}:</strong> ${rate.c} (Change: ${rate.ch}, ${rate.cp})</li>`;
+                    });
+                    
+                    html += '</ul>';
+                    html += '<h4>Raw Response:</h4>';
+                    html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                    html += '</div>';
+                    
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `<div class="result error">❌ FCS API Error: ${data.msg}</div>`;
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="result error">❌ Error: ${error.message}</div>`;
+                console.error('FCS API Test Error:', error);
+            }
+        }
+        
+        async function testCurrentPrices() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="result">Comparing prices...</div>';
+            
+            // Expected prices from TradingView (from your screenshot)
+            const tradingViewPrices = {
+                'GBP/USD': 1.34364,
+                'GBP/JPY': 198.291,
+                'EUR/USD': 1.17408,
+                'EUR/JPY': 173.352,
+                'EUR/GBP': 0.87348,
+                'NZD/USD': 0.60130,
+                'NZD/JPY': 88.848,
+                'USD/JPY': 147.650,
+                'USD/CHF': 0.79432,
+                'AUD/NZD': 1.09135,
+                'GBP/AUD': 2.04640
+            };
+            
+            try {
+                // Get FCS prices
+                const majorPairs = Object.keys(tradingViewPrices);
+                const symbolParam = majorPairs.join(',');
+                const url = `https://fcsapi.com/api-v3/forex/latest?symbol=${symbolParam}&access_key=qPzxT3D4qhIm7EDXYyw2dHe`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status && data.response) {
+                    let html = '<div class="result success"><h3>📊 Price Comparison</h3>';
+                    html += '<table border="1" style="border-collapse: collapse; width: 100%;">';
+                    html += '<tr><th>Pair</th><th>TradingView</th><th>FCS API</th><th>Difference</th><th>Status</th></tr>';
+                    
+                    data.response.forEach(rate => {
+                        const symbol = rate.s;
+                        const fcsPrice = parseFloat(rate.c);
+                        const tvPrice = tradingViewPrices[symbol];
+                        
+                        if (tvPrice) {
+                            const diff = Math.abs(fcsPrice - tvPrice);
+                            const diffPercent = ((diff / tvPrice) * 100).toFixed(4);
+                            const status = diff < 0.01 ? '✅ Close' : diff < 0.1 ? '⚠️ Different' : '❌ Very Different';
+                            
+                            html += `<tr>
+                                <td><strong>${symbol}</strong></td>
+                                <td>${tvPrice}</td>
+                                <td>${fcsPrice}</td>
+                                <td>${diff.toFixed(5)} (${diffPercent}%)</td>
+                                <td>${status}</td>
+                            </tr>`;
+                        }
+                    });
+                    
+                    html += '</table></div>';
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `<div class="result error">❌ FCS API Error: ${data.msg}</div>`;
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="result error">❌ Error: ${error.message}</div>`;
+                console.error('Price Comparison Error:', error);
+            }
+        }
+        
+        // Auto-run test on page load
+        window.onload = function() {
+            testFCSAPI();
+        };
+    </script>
+</body>
+</html>

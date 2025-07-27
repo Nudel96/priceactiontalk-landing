@@ -1,11 +1,18 @@
-import type { 
-	JPYMacroeconomicData, 
-	MacroeconomicIndicator, 
+import type {
+	JPYMacroeconomicData,
+	MacroeconomicIndicator,
 	MacroeconomicDataPoint,
 	IndicatorCategoryConfig,
 	EconomicHealthScore,
 	EducationalTooltip
 } from '$lib/types/economic';
+
+import {
+	getRealJPYGDPData,
+	getRealJPYCPIData,
+	getRealJPYUnemploymentData,
+	getRealBOJRateData
+} from '$lib/services/economicDataService';
 
 // Generate realistic historical data points
 function generateHistoricalData(
@@ -50,9 +57,44 @@ function getNextReleaseDate(frequency: string): string {
 }
 
 // Create comprehensive JPY macroeconomic data
-export function generateJPYMacroeconomicData(): JPYMacroeconomicData {
+export async function generateJPYMacroeconomicData(): Promise<JPYMacroeconomicData> {
 	const now = new Date().toISOString();
-	
+
+	// Fetch real data with fallbacks
+	let gdpData, cpiData, unemploymentData, bojRateData;
+
+	try {
+		[gdpData, cpiData, unemploymentData, bojRateData] = await Promise.allSettled([
+			getRealJPYGDPData(),
+			getRealJPYCPIData(),
+			getRealJPYUnemploymentData(),
+			getRealBOJRateData()
+		]);
+	} catch (error) {
+		console.warn('Error fetching real JPY data, using fallback values:', error);
+	}
+
+	// Extract real data or use fallbacks
+	const gdp = gdpData?.status === 'fulfilled' ? gdpData.value : {
+		current_value: 1.2, previous_value: 0.9, change_absolute: 0.3, change_percent: 33.3,
+		historical_data: generateHistoricalData(1.2, 24, 0.3, 0.1)
+	};
+
+	const cpi = cpiData?.status === 'fulfilled' ? cpiData.value : {
+		current_value: 2.8, previous_value: 3.2, change_absolute: -0.4, change_percent: -12.5,
+		historical_data: generateHistoricalData(2.8, 24, 0.4, -0.1)
+	};
+
+	const unemployment = unemploymentData?.status === 'fulfilled' ? unemploymentData.value : {
+		current_value: 2.6, previous_value: 2.7, change_absolute: -0.1, change_percent: -3.7,
+		historical_data: generateHistoricalData(2.6, 24, 0.2, -0.05)
+	};
+
+	const bojRate = bojRateData?.status === 'fulfilled' ? bojRateData.value : {
+		current_value: -0.1, previous_value: -0.1, change_absolute: 0.0, change_percent: 0.0,
+		historical_data: generateHistoricalData(-0.1, 24, 0.0, 0.0)
+	};
+
 	return {
 		// Growth Indicators
 		gdp_growth_rate: {
@@ -61,21 +103,21 @@ export function generateJPYMacroeconomicData(): JPYMacroeconomicData {
 			category: 'growth',
 			country: 'Japan',
 			currency: 'JPY',
-			current_value: 1.2,
-			previous_value: 0.9,
-			forecast_value: 1.4,
-			change_absolute: 0.3,
-			change_percent: 33.3,
+			current_value: gdp.current_value,
+			previous_value: gdp.previous_value,
+			forecast_value: gdp.current_value + 0.2,
+			change_absolute: gdp.change_absolute,
+			change_percent: gdp.change_percent,
 			impact: 'high',
-			trend: 'up',
+			trend: gdp.change_absolute > 0 ? 'up' : gdp.change_absolute < 0 ? 'down' : 'stable',
 			unit: '%',
 			frequency: 'quarterly',
 			last_updated: now,
 			next_release: getNextReleaseDate('quarterly'),
 			description: 'Measures the annualized change in the inflation-adjusted value of all goods and services produced by Japan.',
 			market_impact_explanation: 'Higher GDP growth typically strengthens the JPY as it indicates economic expansion, though Japan\'s ultra-loose monetary policy may limit the impact.',
-			source: 'Cabinet Office',
-			historical_data: generateHistoricalData(1.0, 12, 0.4, 0.1)
+			source: 'Cabinet Office / FRED',
+			historical_data: gdp.historical_data
 		},
 
 		industrial_production: {
@@ -223,21 +265,21 @@ export function generateJPYMacroeconomicData(): JPYMacroeconomicData {
 			category: 'inflation',
 			country: 'Japan',
 			currency: 'JPY',
-			current_value: 2.8,
-			previous_value: 3.2,
-			forecast_value: 2.6,
-			change_absolute: -0.4,
-			change_percent: -12.5,
+			current_value: cpi.current_value,
+			previous_value: cpi.previous_value,
+			forecast_value: cpi.current_value - 0.2,
+			change_absolute: cpi.change_absolute,
+			change_percent: cpi.change_percent,
 			impact: 'high',
-			trend: 'down',
+			trend: cpi.change_absolute > 0 ? 'up' : cpi.change_absolute < 0 ? 'down' : 'stable',
 			unit: '% YoY',
 			frequency: 'monthly',
 			last_updated: now,
 			next_release: getNextReleaseDate('monthly'),
 			description: 'Measures the average change in prices paid by consumers for a basket of goods and services nationwide.',
 			market_impact_explanation: 'CPI above BoJ\'s 2% target may signal potential policy normalization, though BoJ remains committed to ultra-loose policy.',
-			source: 'Ministry of Internal Affairs and Communications',
-			historical_data: generateHistoricalData(3.0, 24, 0.5, -0.1)
+			source: 'Ministry of Internal Affairs and Communications / FRED',
+			historical_data: cpi.historical_data
 		},
 
 		cpi_tokyo: {
@@ -339,21 +381,21 @@ export function generateJPYMacroeconomicData(): JPYMacroeconomicData {
 			category: 'labor',
 			country: 'Japan',
 			currency: 'JPY',
-			current_value: 2.6,
-			previous_value: 2.7,
-			forecast_value: 2.5,
-			change_absolute: -0.1,
-			change_percent: -3.7,
+			current_value: unemployment.current_value,
+			previous_value: unemployment.previous_value,
+			forecast_value: unemployment.current_value - 0.1,
+			change_absolute: unemployment.change_absolute,
+			change_percent: unemployment.change_percent,
 			impact: 'medium',
-			trend: 'down',
+			trend: unemployment.change_absolute > 0 ? 'up' : unemployment.change_absolute < 0 ? 'down' : 'stable',
 			unit: '%',
 			frequency: 'monthly',
 			last_updated: now,
 			next_release: getNextReleaseDate('monthly'),
 			description: 'Percentage of labor force that is unemployed and actively seeking employment.',
 			market_impact_explanation: 'Japan\'s structurally low unemployment reflects tight labor market conditions and demographic challenges.',
-			source: 'Ministry of Internal Affairs and Communications',
-			historical_data: generateHistoricalData(2.7, 24, 0.2, -0.02)
+			source: 'Ministry of Internal Affairs and Communications / FRED',
+			historical_data: unemployment.historical_data
 		},
 
 		job_to_applicant_ratio: {
@@ -571,21 +613,21 @@ export function generateJPYMacroeconomicData(): JPYMacroeconomicData {
 			category: 'monetary_policy',
 			country: 'Japan',
 			currency: 'JPY',
-			current_value: -0.1,
-			previous_value: -0.1,
-			forecast_value: -0.1,
-			change_absolute: 0.0,
-			change_percent: 0.0,
+			current_value: bojRate.current_value,
+			previous_value: bojRate.previous_value,
+			forecast_value: bojRate.current_value,
+			change_absolute: bojRate.change_absolute,
+			change_percent: bojRate.change_percent,
 			impact: 'high',
-			trend: 'stable',
+			trend: bojRate.change_absolute > 0 ? 'up' : bojRate.change_absolute < 0 ? 'down' : 'stable',
 			unit: '%',
 			frequency: 'monthly',
 			last_updated: now,
 			next_release: getNextReleaseDate('monthly'),
 			description: 'The Bank of Japan\'s key policy interest rate, currently in negative territory.',
 			market_impact_explanation: 'BoJ maintains ultra-loose policy with negative rates. Any hint of normalization would significantly impact JPY.',
-			source: 'Bank of Japan',
-			historical_data: generateHistoricalData(-0.1, 24, 0.0, 0.0)
+			source: 'Bank of Japan / FRED',
+			historical_data: bojRate.historical_data
 		},
 
 		jgb_10y_yield: {
