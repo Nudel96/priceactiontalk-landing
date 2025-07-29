@@ -77,15 +77,15 @@
 	</div>
 
 	<!-- Current Level Progress -->
-	<div class="bg-white rounded-xl shadow-md p-6">
+	<div class="bg-gray-800 rounded-xl shadow-md p-6">
 		<div class="flex items-center justify-between mb-6">
 			<div>
-				<h2 class="text-xl font-semibold text-navy">Level {currentUser.level}</h2>
-				<p class="text-gray-600">{currentLevelInfo.description}</p>
+				<h2 class="text-xl font-semibold text-gray-100">Level {currentUser.level}</h2>
+				<p class="text-gray-300">{currentLevelInfo.description}</p>
 			</div>
 			<div class="text-right">
-				<div class="text-3xl font-bold text-navy mb-1">{currentUser.level}</div>
-				<div class="text-sm text-gray-500">Level</div>
+				<div class="text-3xl font-bold text-gray-100 mb-1">{currentUser.level}</div>
+				<div class="text-sm text-gray-400">Level</div>
 			</div>
 		</div>
 
@@ -115,50 +115,50 @@
 	<!-- Stats and XP Sources -->
 	<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 		<!-- Your Stats -->
-		<div class="bg-white rounded-xl shadow-md p-6">
-			<h3 class="text-xl font-semibold text-navy mb-4">Your Stats</h3>
+		<div class="bg-gray-800 rounded-xl shadow-md p-6">
+			<h3 class="text-xl font-semibold text-gray-100 mb-4">Your Stats</h3>
 			<div class="space-y-4">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
-						<div class="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
-							<Target class="w-4 h-4 text-teal-600" />
+						<div class="w-8 h-8 bg-teal-900/30 rounded-full flex items-center justify-center">
+							<Target class="w-4 h-4 text-teal-400" />
 						</div>
-						<span class="text-gray-700">Total XP</span>
+						<span class="text-gray-300">Total XP</span>
 					</div>
-					<span class="font-semibold text-navy">{userStats.totalXp} points</span>
+					<span class="font-semibold text-gray-100">{userStats.totalXp} points</span>
 				</div>
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
-						<div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-							<BookOpen class="w-4 h-4 text-green-600" />
+						<div class="w-8 h-8 bg-green-900/30 rounded-full flex items-center justify-center">
+							<BookOpen class="w-4 h-4 text-green-400" />
 						</div>
-						<span class="text-gray-700">Tasks Completed</span>
+						<span class="text-gray-300">Tasks Completed</span>
 					</div>
-					<span class="font-semibold text-navy">{userStats.tasksCompleted} tasks</span>
+					<span class="font-semibold text-gray-100">{userStats.tasksCompleted} tasks</span>
 				</div>
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
-						<div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-							<Trophy class="w-4 h-4 text-purple-600" />
+						<div class="w-8 h-8 bg-purple-900/30 rounded-full flex items-center justify-center">
+							<Trophy class="w-4 h-4 text-purple-400" />
 						</div>
-						<span class="text-gray-700">Community Rank</span>
+						<span class="text-gray-300">Community Rank</span>
 					</div>
-					<span class="font-semibold text-navy">{userStats.communityRank}</span>
+					<span class="font-semibold text-gray-100">{userStats.communityRank}</span>
 				</div>
 			</div>
 		</div>
 
 		<!-- How to Earn XP -->
-		<div class="bg-white rounded-xl shadow-md p-6">
-			<h3 class="text-xl font-semibold text-navy mb-4">How to Earn XP</h3>
+		<div class="bg-gray-800 rounded-xl shadow-md p-6">
+			<h3 class="text-xl font-semibold text-gray-100 mb-4">How to Earn XP</h3>
 			<div class="space-y-3">
 				{#each xpSources as source}
-					<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+					<div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
 						<div class="flex items-center gap-3">
 							<svelte:component this={source.icon} class="w-5 h-5 {source.color}" />
-							<span class="text-gray-700 text-sm">{source.name}</span>
+							<span class="text-gray-300 text-sm">{source.name}</span>
 						</div>
-						<span class="font-semibold text-teal-600">+{source.xp} XP</span>
+						<span class="font-semibold text-teal-400">+{source.xp} XP</span>
 					</div>
 				{/each}
 			</div>
@@ -166,14 +166,14 @@
 	</div>
 
 	<!-- Top Traders Leaderboard -->
-	<div class="bg-white rounded-xl shadow-md p-6">
+	<div class="bg-gray-800 rounded-xl shadow-md p-6">
 		<div class="flex items-center justify-between mb-6">
-			<h3 class="text-xl font-semibold text-navy">Top Traders</h3>
-			<button class="text-teal-600 text-sm hover:underline">View full leaderboard →</button>
+			<h3 class="text-xl font-semibold text-gray-100">Top Traders</h3>
+			<button class="text-teal-400 text-sm hover:underline">View full leaderboard →</button>
 		</div>
 		<div class="space-y-3">
 			{#each topTraders as trader}
-				<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+				<div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
 					<div class="flex items-center gap-4">
 						<div class="flex items-center justify-center w-8 h-8 rounded-full {trader.rank <= 3 ? 'bg-yellow-100 text-yellow-600' : 'bg-gray-100 text-gray-600'} font-bold text-sm">
 							#{trader.rank}

@@ -1,7 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { ChartBar, Target, CheckCircle, XCircle } from '@lucide/svelte';
   import BiasDashboard from '$lib/components/bias-scoring/BiasDashboard.svelte';
   import BiasScoreCard from '$lib/components/bias-scoring/BiasScoreCard.svelte';
+  import CurrencyIcon from '$lib/components/icons/CurrencyIcon.svelte';
 
   let activeTab: 'dashboard' | 'individual' | 'health' = 'dashboard';
   let selectedAsset: string = 'USD';
@@ -9,17 +11,17 @@
   let healthLoading = false;
 
   const assets = [
-    { code: 'USD', name: 'US Dollar', flag: '🇺🇸' },
-    { code: 'EUR', name: 'Euro', flag: '🇪🇺' },
-    { code: 'GBP', name: 'British Pound', flag: '🇬🇧' },
-    { code: 'JPY', name: 'Japanese Yen', flag: '🇯🇵' },
-    { code: 'AUD', name: 'Australian Dollar', flag: '🇦🇺' },
-    { code: 'CAD', name: 'Canadian Dollar', flag: '🇨🇦' },
-    { code: 'CHF', name: 'Swiss Franc', flag: '🇨🇭' },
-    { code: 'CNY', name: 'Chinese Yuan', flag: '🇨🇳' },
-    { code: 'NZD', name: 'New Zealand Dollar', flag: '🇳🇿' },
-    { code: 'XAU', name: 'Gold', flag: '🥇' },
-    { code: 'XAG', name: 'Silver', flag: '🥈' }
+    { code: 'USD', name: 'US Dollar' },
+    { code: 'EUR', name: 'Euro' },
+    { code: 'GBP', name: 'British Pound' },
+    { code: 'JPY', name: 'Japanese Yen' },
+    { code: 'AUD', name: 'Australian Dollar' },
+    { code: 'CAD', name: 'Canadian Dollar' },
+    { code: 'CHF', name: 'Swiss Franc' },
+    { code: 'CNY', name: 'Chinese Yuan' },
+    { code: 'NZD', name: 'New Zealand Dollar' },
+    { code: 'XAU', name: 'Gold' },
+    { code: 'XAG', name: 'Silver' }
   ];
 
   async function fetchHealthData() {
@@ -79,13 +81,18 @@
   <meta name="description" content="Advanced fundamental analysis with point-based bias scoring for forex pairs and precious metals" />
 </svelte:head>
 
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
     <!-- Page Header -->
     <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">📊 Fundamental Bias Scoring System</h1>
-      <p class="mt-2 text-gray-600">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center transition-colors duration-200">
+          <ChartBar size={20} class="text-white" />
+        </div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 transition-colors duration-200">Fundamental Bias Scoring System</h1>
+      </div>
+      <p class="mt-2 text-gray-600 dark:text-gray-300 transition-colors duration-200">
         Advanced point-based fundamental analysis with real-time change detection and bias scoring for all major currencies and precious metals.
       </p>
     </div>
@@ -94,16 +101,18 @@
     <div class="mb-8">
       <nav class="flex space-x-8" aria-label="Tabs">
         <button
-          class="py-2 px-1 border-b-2 font-medium text-sm {activeTab === 'dashboard' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+          class="py-2 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors duration-200 {activeTab === 'dashboard' ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-500'}"
           on:click={() => activeTab = 'dashboard'}
         >
-          📈 Dashboard Overview
+          <ChartBar size={16} />
+          Dashboard Overview
         </button>
         <button
-          class="py-2 px-1 border-b-2 font-medium text-sm {activeTab === 'individual' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+          class="py-2 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors duration-200 {activeTab === 'individual' ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-500'}"
           on:click={() => activeTab = 'individual'}
         >
-          🎯 Individual Assets
+          <Target size={16} />
+          Individual Assets
         </button>
         <button
           class="py-2 px-1 border-b-2 font-medium text-sm {activeTab === 'health' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
@@ -135,15 +144,15 @@
       <!-- Individual Assets -->
       <div class="space-y-6">
         <!-- Asset Selector -->
-        <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-          <h2 class="text-lg font-semibold text-gray-900 mb-4">Select Asset for Detailed Analysis</h2>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-600 p-6 transition-colors duration-200">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 transition-colors duration-200">Select Asset for Detailed Analysis</h2>
           <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
             {#each assets as asset}
               <button
                 class="flex items-center space-x-2 p-3 rounded-lg border-2 transition-colors {selectedAsset === asset.code ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}"
                 on:click={() => selectedAsset = asset.code}
               >
-                <span class="text-xl">{asset.flag}</span>
+                <CurrencyIcon currency={asset.code} size={20} />
                 <div class="text-left">
                   <div class="font-semibold text-sm">{asset.code}</div>
                   <div class="text-xs text-gray-600">{asset.name}</div>
@@ -158,8 +167,8 @@
           <BiasScoreCard asset={selectedAsset} showDetails={true} />
           
           <!-- Additional Asset Information -->
-          <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">📋 Fundamental Factors</h3>
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-600 p-6 transition-colors duration-200">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 transition-colors duration-200">📋 Fundamental Factors</h3>
             <div class="space-y-3">
               <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
                 <span class="font-medium">Earnings Growth</span>
@@ -194,9 +203,9 @@
       <!-- System Health -->
       <div class="space-y-6">
         <!-- Health Overview -->
-        <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-600 p-6 transition-colors duration-200">
           <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-semibold text-gray-900">🔧 System Health Monitor</h2>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">🔧 System Health Monitor</h2>
             <div class="flex space-x-3">
               <button
                 on:click={fetchHealthData}
@@ -295,7 +304,11 @@
                       <div class="flex items-center justify-between mb-2">
                         <span class="font-medium capitalize">{testName}</span>
                         <span class={testResult.status === 'PASSED' ? 'text-green-600' : 'text-red-600'}>
-                          {testResult.status === 'PASSED' ? '✅' : '❌'}
+                          {#if testResult.status === 'PASSED'}
+                            <CheckCircle size={16} />
+                          {:else}
+                            <XCircle size={16} />
+                          {/if}
                         </span>
                       </div>
                       <div class="text-sm text-gray-600">

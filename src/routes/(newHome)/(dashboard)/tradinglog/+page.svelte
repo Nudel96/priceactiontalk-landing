@@ -173,8 +173,8 @@
 	<!-- Header -->
 	<div class="flex items-center justify-between">
 		<div>
-			<h1 class="text-3xl font-bold text-navy">Trading Log</h1>
-			<p class="text-gray-600 mt-2">Track and analyze your trading performance</p>
+			<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Trading Log</h1>
+			<p class="text-gray-600 dark:text-gray-300 mt-2">Track and analyze your trading performance</p>
 		</div>
 		<div class="flex gap-3">
 			<a
@@ -199,33 +199,33 @@
 	</div>
 
 	<!-- Account Selection -->
-	<div class="bg-white rounded-xl shadow-md p-6">
-		<h2 class="text-xl font-semibold text-navy mb-4">Select Trading Account</h2>
+	<div class="bg-gray-800 rounded-xl shadow-md p-6">
+		<h2 class="text-xl font-semibold text-gray-100 mb-4">Select Trading Account</h2>
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 			{#each accounts as account}
 				<button
 					class="p-4 rounded-lg border-2 transition-all duration-200 text-left {selectedAccount.id === account.id
-						? 'border-teal-500 bg-teal-50'
-						: 'border-gray-200 hover:border-gray-300'}"
+						? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20'
+						: 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'}"
 					on:click={() => selectedAccount = account}>
 					<div class="flex items-center justify-between mb-2">
-						<h3 class="font-semibold text-navy">{account.name}</h3>
-						<span class="text-sm text-gray-500">#{account.id}</span>
+						<h3 class="font-semibold text-gray-900 dark:text-gray-100">{account.name}</h3>
+						<span class="text-sm text-gray-600 dark:text-gray-400">#{account.id}</span>
 					</div>
 					<div class="space-y-1 text-sm">
 						<div class="flex justify-between">
-							<span class="text-gray-600">Starting:</span>
-							<span class="font-medium">${account.startingCapital.toLocaleString()}</span>
+							<span class="text-gray-600 dark:text-gray-400">Starting:</span>
+							<span class="font-medium text-gray-900 dark:text-gray-100">${account.startingCapital.toLocaleString()}</span>
 						</div>
 						<div class="flex justify-between">
-							<span class="text-gray-600">Current:</span>
-							<span class="font-medium {account.currentBalance >= account.startingCapital ? 'text-green-600' : 'text-red-600'}">
+							<span class="text-gray-600 dark:text-gray-400">Current:</span>
+							<span class="font-medium {account.currentBalance >= account.startingCapital ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
 								${account.currentBalance.toLocaleString()}
 							</span>
 						</div>
 						<div class="flex justify-between">
-							<span class="text-gray-600">P&L:</span>
-							<span class="font-medium {account.currentBalance >= account.startingCapital ? 'text-green-600' : 'text-red-600'}">
+							<span class="text-gray-600 dark:text-gray-400">P&L:</span>
+							<span class="font-medium {account.currentBalance >= account.startingCapital ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
 								{account.currentBalance >= account.startingCapital ? '+' : ''}${(account.currentBalance - account.startingCapital).toLocaleString()}
 							</span>
 						</div>
@@ -237,70 +237,70 @@
 
 	<!-- Account Statistics -->
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-gray-800 rounded-xl shadow-md p-6">
 			<div class="flex items-center gap-3 mb-2">
-				<div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-					<Activity class="w-5 h-5 text-blue-600" />
+				<div class="w-10 h-10 bg-blue-900/30 rounded-lg flex items-center justify-center">
+					<Activity class="w-5 h-5 text-blue-400" />
 				</div>
-				<h3 class="font-semibold text-navy">Total Trades</h3>
+				<h3 class="font-semibold text-gray-100">Total Trades</h3>
 			</div>
-			<p class="text-2xl font-bold text-navy">{accountStats.total}</p>
-			<p class="text-sm text-gray-500">{accountStats.pending} pending</p>
+			<p class="text-2xl font-bold text-gray-100">{accountStats.total}</p>
+			<p class="text-sm text-gray-400">{accountStats.pending} pending</p>
 		</div>
 
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-gray-800 rounded-xl shadow-md p-6">
 			<div class="flex items-center gap-3 mb-2">
-				<div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-					<TrendingUp class="w-5 h-5 text-green-600" />
+				<div class="w-10 h-10 bg-green-900/30 rounded-lg flex items-center justify-center">
+					<TrendingUp class="w-5 h-5 text-green-400" />
 				</div>
-				<h3 class="font-semibold text-navy">Win Rate</h3>
+				<h3 class="font-semibold text-gray-100">Win Rate</h3>
 			</div>
-			<p class="text-2xl font-bold text-navy">{accountStats.winRate}%</p>
-			<p class="text-sm text-gray-500">{accountStats.completed} completed</p>
+			<p class="text-2xl font-bold text-gray-100">{accountStats.winRate}%</p>
+			<p class="text-sm text-gray-400">{accountStats.completed} completed</p>
 		</div>
 
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-gray-800 rounded-xl shadow-md p-6">
 			<div class="flex items-center gap-3 mb-2">
-				<div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-					<DollarSign class="w-5 h-5 text-purple-600" />
+				<div class="w-10 h-10 bg-purple-900/30 rounded-lg flex items-center justify-center">
+					<DollarSign class="w-5 h-5 text-purple-400" />
 				</div>
-				<h3 class="font-semibold text-navy">Total P&L</h3>
+				<h3 class="font-semibold text-gray-100">Total P&L</h3>
 			</div>
-			<p class="text-2xl font-bold {accountStats.totalPnL >= 0 ? 'text-green-600' : 'text-red-600'}">
+			<p class="text-2xl font-bold {accountStats.totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}">
 				{accountStats.totalPnL >= 0 ? '+' : ''}${accountStats.totalPnL.toLocaleString()}
 			</p>
-			<p class="text-sm text-gray-500">From completed trades</p>
+			<p class="text-sm text-gray-400">From completed trades</p>
 		</div>
 
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-gray-800 rounded-xl shadow-md p-6">
 			<div class="flex items-center gap-3 mb-2">
-				<div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
-					<Calendar class="w-5 h-5 text-teal-600" />
+				<div class="w-10 h-10 bg-teal-900/30 rounded-lg flex items-center justify-center">
+					<Calendar class="w-5 h-5 text-teal-400" />
 				</div>
-				<h3 class="font-semibold text-navy">Account Age</h3>
+				<h3 class="font-semibold text-gray-100">Account Age</h3>
 			</div>
-			<p class="text-2xl font-bold text-navy">
+			<p class="text-2xl font-bold text-gray-100">
 				{Math.floor((new Date().getTime() - new Date(selectedAccount.createdAt).getTime()) / (1000 * 60 * 60 * 24))}
 			</p>
-			<p class="text-sm text-gray-500">days active</p>
+			<p class="text-sm text-gray-400">days active</p>
 		</div>
 	</div>
 
 	<!-- Tab Navigation -->
-	<div class="bg-white rounded-xl shadow-md">
-		<div class="border-b border-gray-200">
+	<div class="bg-gray-800 rounded-xl shadow-md">
+		<div class="border-b border-gray-600">
 			<nav class="flex space-x-8 px-6">
 				<button
 					class="py-4 px-1 border-b-2 font-medium text-sm transition-colors {activeTab === 'trades'
-						? 'border-teal-500 text-teal-600'
-						: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+						? 'border-teal-500 text-teal-400'
+						: 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-500'}"
 					on:click={() => activeTab = 'trades'}>
 					Trades List
 				</button>
 				<button
 					class="py-4 px-1 border-b-2 font-medium text-sm transition-colors {activeTab === 'calendar'
-						? 'border-teal-500 text-teal-600'
-						: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+						? 'border-teal-500 text-teal-400'
+						: 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-500'}"
 					on:click={() => activeTab = 'calendar'}>
 					<div class="flex items-center gap-2">
 						<Calendar class="w-4 h-4" />
@@ -315,15 +315,15 @@
 			{#if activeTab === 'trades'}
 				<!-- Trades List -->
 				<div class="flex items-center justify-between mb-6">
-					<h2 class="text-xl font-semibold text-navy">Trades for {selectedAccount.name}</h2>
+					<h2 class="text-xl font-semibold text-gray-100">Trades for {selectedAccount.name}</h2>
 			<div class="flex gap-2">
-				<button class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+				<button class="px-3 py-1 text-sm bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 transition-colors">
 					All
 				</button>
-				<button class="px-3 py-1 text-sm bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors">
+				<button class="px-3 py-1 text-sm bg-yellow-900/30 text-yellow-400 rounded-lg hover:bg-yellow-900/40 transition-colors">
 					Pending
 				</button>
-				<button class="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors">
+				<button class="px-3 py-1 text-sm bg-green-900/30 text-green-400 rounded-lg hover:bg-green-900/40 transition-colors">
 					Completed
 				</button>
 			</div>
@@ -331,31 +331,31 @@
 
 		<div class="space-y-4">
 			{#each accountTrades as trade}
-				<div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+				<div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
 					<div class="flex items-start justify-between mb-3">
 						<div class="flex items-center gap-3">
-							<div class="w-10 h-10 bg-{trade.type === 'buy' ? 'green' : 'red'}-100 rounded-lg flex items-center justify-center">
+							<div class="w-10 h-10 bg-{trade.type === 'buy' ? 'green' : 'red'}-100 dark:bg-{trade.type === 'buy' ? 'green' : 'red'}-900/30 rounded-lg flex items-center justify-center">
 								{#if trade.type === 'buy'}
-									<TrendingUp class="w-5 h-5 text-green-600" />
+									<TrendingUp class="w-5 h-5 text-green-600 dark:text-green-400" />
 								{:else}
-									<TrendingDown class="w-5 h-5 text-red-600" />
+									<TrendingDown class="w-5 h-5 text-red-600 dark:text-red-400" />
 								{/if}
 							</div>
 							<div>
-								<h3 class="font-semibold text-navy">{trade.pair}</h3>
-								<p class="text-sm text-gray-500">
+								<h3 class="font-semibold text-gray-900 dark:text-gray-100">{trade.pair}</h3>
+								<p class="text-sm text-gray-600 dark:text-gray-400">
 									{trade.type.toUpperCase()} • {trade.lotSize} lots • {trade.entryDate} {trade.entryTime}
 								</p>
 							</div>
 						</div>
 						<div class="flex items-center gap-2">
 							{#if trade.status === 'pending'}
-								<span class="flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">
+								<span class="flex items-center gap-1 px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full text-xs">
 									<Clock class="w-3 h-3" />
 									Pending
 								</span>
 							{:else}
-								<span class="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
+								<span class="flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs">
 									<CheckCircle class="w-3 h-3" />
 									Completed
 								</span>
@@ -365,21 +365,21 @@
 
 					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-sm">
 						<div>
-							<span class="text-gray-600">Entry:</span>
-							<span class="font-medium ml-1">{trade.entryPrice || 'N/A'}</span>
+							<span class="text-gray-600 dark:text-gray-400">Entry:</span>
+							<span class="font-medium ml-1 text-gray-900 dark:text-gray-100">{trade.entryPrice || 'N/A'}</span>
 						</div>
 						<div>
-							<span class="text-gray-600">Stop Loss:</span>
-							<span class="font-medium ml-1">{trade.stopLoss}</span>
+							<span class="text-gray-600 dark:text-gray-400">Stop Loss:</span>
+							<span class="font-medium ml-1 text-gray-900 dark:text-gray-100">{trade.stopLoss}</span>
 						</div>
 						<div>
-							<span class="text-gray-600">Take Profit:</span>
-							<span class="font-medium ml-1">{trade.takeProfit}</span>
+							<span class="text-gray-600 dark:text-gray-400">Take Profit:</span>
+							<span class="font-medium ml-1 text-gray-900 dark:text-gray-100">{trade.takeProfit}</span>
 						</div>
 						{#if trade.result !== null}
 							<div>
-								<span class="text-gray-600">Result:</span>
-								<span class="font-medium ml-1 {trade.result >= 0 ? 'text-green-600' : 'text-red-600'}">
+								<span class="text-gray-600 dark:text-gray-400">Result:</span>
+								<span class="font-medium ml-1 {trade.result >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
 									{trade.result >= 0 ? '+' : ''}${trade.result}
 								</span>
 							</div>
@@ -387,10 +387,10 @@
 					</div>
 
 					{#if trade.whyEnter}
-						<div class="mt-3 p-3 bg-gray-50 rounded-lg">
-							<p class="text-sm text-gray-700"><strong>Why I entered:</strong> {trade.whyEnter}</p>
+						<div class="mt-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+							<p class="text-sm text-gray-700 dark:text-gray-300"><strong class="text-gray-900 dark:text-gray-100">Why I entered:</strong> {trade.whyEnter}</p>
 							{#if trade.howFeel}
-								<p class="text-sm text-gray-700 mt-1"><strong>How I felt:</strong> {trade.howFeel}</p>
+								<p class="text-sm text-gray-700 dark:text-gray-300 mt-1"><strong class="text-gray-900 dark:text-gray-100">How I felt:</strong> {trade.howFeel}</p>
 							{/if}
 						</div>
 					{/if}
@@ -400,7 +400,7 @@
 							<button class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm">
 								End Trade
 							</button>
-							<button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+							<button class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm">
 								Edit
 							</button>
 						</div>
@@ -409,8 +409,8 @@
 			{:else}
 				<div class="text-center py-12">
 					<Clock class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-					<h3 class="text-lg font-medium text-gray-900 mb-2">No trades yet</h3>
-					<p class="text-gray-500 mb-4">Start tracking your trades by creating your first trade entry.</p>
+					<h3 class="text-lg font-medium text-gray-100 mb-2">No trades yet</h3>
+					<p class="text-gray-600 dark:text-gray-400 mb-4">Start tracking your trades by creating your first trade entry.</p>
 					<button
 						on:click={handleNewTrade}
 						class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 mx-auto transition-colors">

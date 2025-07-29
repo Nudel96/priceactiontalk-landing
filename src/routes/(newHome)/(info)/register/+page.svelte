@@ -34,9 +34,9 @@
 <main class="flex flex-grow items-center justify-center px-4 py-10">
 	<div
 		in:fly={{ y: 20, duration: 400 }}
-		class="w-full max-w-md rounded-lg bg-white p-6 shadow-lg md:p-8">
-		<h1 class="text-navy mb-2 text-2xl font-bold">Create your account</h1>
-		<p class="text-graphite/80 mb-6">
+		class="w-full max-w-md rounded-lg bg-gray-800 p-6 shadow-lg md:p-8 transition-colors duration-200">
+		<h1 class="text-gray-100 mb-2 text-2xl font-bold">Create your account</h1>
+		<p class="text-gray-300 mb-6">
 			Join the PriceActionTalk community and start your trading journey
 		</p>
 

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { ChevronDown } from '@lucide/svelte';
+	import CurrencyIcon from '$lib/components/icons/CurrencyIcon.svelte';
 
 	export let selectedAsset: string = 'USD';
 	export let availableAssets: Array<{
 		code: string;
 		name: string;
 		type: 'currency' | 'precious_metal';
-		emoji: string;
 	}> = [];
 
 	const dispatch = createEventDispatcher<{
@@ -43,14 +43,14 @@
 	<button
 		type="button"
 		on:click={toggleDropdown}
-		class="w-full flex items-center justify-between p-3 bg-white border border-gray-300 rounded-lg hover:border-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors"
+		class="w-full flex items-center justify-between p-3 bg-gray-700 border border-gray-600 rounded-lg hover:border-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors"
 	>
 		<div class="flex items-center gap-3">
 			{#if selectedAssetInfo}
-				<span class="text-lg">{selectedAssetInfo.emoji}</span>
+				<CurrencyIcon currency={selectedAssetInfo.code} size={24} />
 				<div class="text-left">
-					<div class="font-semibold text-navy">{selectedAssetInfo.code}</div>
-					<div class="text-sm text-gray-600">{selectedAssetInfo.name}</div>
+					<div class="font-semibold text-gray-100">{selectedAssetInfo.code}</div>
+					<div class="text-sm text-gray-300">{selectedAssetInfo.name}</div>
 				</div>
 			{/if}
 		</div>
@@ -58,22 +58,22 @@
 	</button>
 
 	{#if isOpen}
-		<div class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
+		<div class="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-lg">
 			{#each Object.entries(groupedAssets) as [type, assets]}
 				<div class="p-2">
-					<div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 px-2">
+					<div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2 px-2">
 						{type === 'currency' ? 'Currencies' : 'Precious Metals'}
 					</div>
 					{#each assets as asset}
 						<button
 							type="button"
 							on:click={() => selectAsset(asset.code)}
-							class="w-full flex items-center gap-3 p-2 rounded-md hover:bg-gray-50 transition-colors {selectedAsset === asset.code ? 'bg-teal-50 text-teal-700' : 'text-gray-700'}"
+							class="w-full flex items-center gap-3 p-2 rounded-md hover:bg-gray-700 transition-colors {selectedAsset === asset.code ? 'bg-teal-900/30 text-teal-400' : 'text-gray-300'}"
 						>
-							<span class="text-lg">{asset.emoji}</span>
+							<CurrencyIcon currency={asset.code} size={20} />
 							<div class="text-left">
 								<div class="font-medium">{asset.code}</div>
-								<div class="text-sm text-gray-500">{asset.name}</div>
+								<div class="text-sm text-gray-400">{asset.name}</div>
 							</div>
 						</button>
 					{/each}

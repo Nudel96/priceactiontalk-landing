@@ -90,20 +90,20 @@
 	{#if !multiSelect}
 		<button
 			on:click={toggleDropdown}
-			class="w-full flex items-center justify-between border border-gray-300 rounded-lg bg-white transition-colors
+			class="w-full flex items-center justify-between border border-gray-600 rounded-lg bg-gray-700 transition-colors
 				{sizeClasses}
-				{disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500'}
+				{disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-teal-500'}
 				{isOpen ? 'border-teal-500 ring-2 ring-teal-500' : ''}"
 			{disabled}
 		>
 			<div class="flex items-center gap-3">
 				{#if selectedAssetData}
 					<div>
-						<div class="font-semibold text-navy">{selectedAssetData.symbol}</div>
-						<div class="text-xs text-gray-600">{selectedAssetData.name}</div>
+						<div class="font-semibold text-gray-100">{selectedAssetData.symbol}</div>
+						<div class="text-xs text-gray-300">{selectedAssetData.name}</div>
 					</div>
 				{:else}
-					<span class="text-gray-500">{placeholder}</span>
+					<span class="text-gray-400">{placeholder}</span>
 				{/if}
 			</div>
 			<ChevronDown class="w-5 h-5 text-gray-400 transition-transform {isOpen ? 'rotate-180' : ''}" />
@@ -119,11 +119,11 @@
 				{#each selectedAssets as assetSymbol}
 					{@const asset = assets.find(a => a.symbol === assetSymbol)}
 					{#if asset}
-						<span class="inline-flex items-center gap-1 px-2 py-1 bg-teal-100 text-teal-700 rounded-md text-sm">
+						<span class="inline-flex items-center gap-1 px-2 py-1 bg-teal-900/30 text-teal-400 rounded-md text-sm">
 							{asset.symbol}
 							<button
 								on:click={() => removeAsset(assetSymbol)}
-								class="hover:bg-teal-200 rounded-full p-0.5"
+								class="hover:bg-teal-800 rounded-full p-0.5"
 								disabled={disabled}
 							>
 								<X class="w-3 h-3" />
@@ -134,7 +134,7 @@
 				
 				<button
 					on:click={toggleDropdown}
-					class="text-gray-500 hover:text-gray-700 text-sm"
+					class="text-gray-400 hover:text-gray-300 text-sm"
 					disabled={disabled}
 				>
 					{selectedAssets.length === 0 ? placeholder : 'Add more...'}
@@ -145,10 +145,10 @@
 
 	<!-- Dropdown -->
 	{#if isOpen}
-		<div class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-hidden">
+		<div class="absolute z-50 w-full mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-lg max-h-64 overflow-hidden">
 			<!-- Search Input -->
 			{#if showSearch}
-				<div class="p-3 border-b border-gray-200">
+				<div class="p-3 border-b border-gray-600">
 					<div class="relative">
 						<Search class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
 						<input
@@ -156,7 +156,7 @@
 							bind:value={searchTerm}
 							type="text"
 							placeholder="Search assets..."
-							class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+							class="w-full pl-10 pr-4 py-2 border border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-gray-700 text-gray-100"
 						/>
 					</div>
 				</div>
@@ -167,17 +167,17 @@
 				{#each filteredAssets as asset}
 					<button
 						on:click={() => selectAsset(asset)}
-						class="w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0
-							{multiSelect && selectedAssets.includes(asset.symbol) ? 'bg-teal-50 text-teal-700' : ''}
-							{!multiSelect && selectedAsset === asset.symbol ? 'bg-teal-50 text-teal-700' : ''}"
+						class="w-full px-4 py-3 text-left hover:bg-gray-700 transition-colors border-b border-gray-600 last:border-b-0
+							{multiSelect && selectedAssets.includes(asset.symbol) ? 'bg-teal-900/30 text-teal-400' : ''}
+							{!multiSelect && selectedAsset === asset.symbol ? 'bg-teal-900/30 text-teal-400' : ''}"
 					>
 						<div class="flex items-center justify-between">
 							<div>
-								<div class="font-semibold text-navy">{asset.symbol}</div>
-								<div class="text-sm text-gray-600">{asset.name}</div>
+								<div class="font-semibold text-gray-100">{asset.symbol}</div>
+								<div class="text-sm text-gray-300">{asset.name}</div>
 							</div>
 							<div class="text-right">
-								<div class="font-semibold text-navy">{asset.price.toFixed(asset.symbol.includes('JPY') ? 2 : 4)}</div>
+								<div class="font-semibold text-gray-100">{asset.price.toFixed(asset.symbol.includes('JPY') ? 2 : 4)}</div>
 								<div class="text-sm {asset.changePercent >= 0 ? 'text-green-600' : 'text-red-600'}">
 									{asset.changePercent >= 0 ? '+' : ''}{asset.changePercent.toFixed(2)}%
 								</div>
@@ -185,7 +185,7 @@
 						</div>
 					</button>
 				{:else}
-					<div class="px-4 py-3 text-center text-gray-500">
+					<div class="px-4 py-3 text-center text-gray-400">
 						No assets found
 					</div>
 				{/each}

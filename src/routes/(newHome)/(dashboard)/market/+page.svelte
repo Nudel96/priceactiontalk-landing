@@ -163,12 +163,12 @@
 	<!-- Header -->
 	<div class="flex items-center justify-between">
 		<div>
-			<h1 class="text-3xl font-bold text-navy">Market Analysis</h1>
-			<p class="text-gray-600 mt-2">Share your trading ideas and market analysis with the community</p>
+			<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Market Analysis</h1>
+			<p class="text-gray-600 dark:text-gray-300 mt-2">Share your trading ideas and market analysis with the community</p>
 		</div>
 		<button
 			on:click={handleNewPost}
-			class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+			class="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
 			<Plus class="w-4 h-4" />
 			New Analysis
 		</button>
@@ -179,23 +179,23 @@
 		{#each marketPosts as post}
 			{@const biasInfo = getBiasInfo(post.bias)}
 			{@const levelInfo = getLevelInfo(post.authorLevel)}
-			<div class="bg-white rounded-xl shadow-md p-6">
+			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-600 transition-colors duration-200">
 				<!-- Post Header -->
 				<div class="flex items-start justify-between mb-4">
 					<div class="flex items-center gap-3">
-						<div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-							<span class="text-teal-600 font-semibold text-sm">{post.author.charAt(0).toUpperCase()}</span>
+						<div class="w-10 h-10 bg-teal-100 dark:bg-teal-900/30 rounded-full flex items-center justify-center">
+							<span class="text-teal-600 dark:text-teal-400 font-semibold text-sm">{post.author.charAt(0).toUpperCase()}</span>
 						</div>
 						<div>
-							<div class="font-semibold text-navy">{post.author}</div>
-							<div class="text-sm text-gray-500">
+							<div class="font-semibold text-gray-900 dark:text-gray-100">{post.author}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">
 								Level {post.authorLevel} • <span class="{levelInfo.color}">{levelInfo.description}</span> • {post.timestamp}
 							</div>
 						</div>
 					</div>
 					<div class="flex items-center gap-2">
-						<span class="px-2 py-1 bg-gray-100 text-gray-700 text-sm rounded font-medium">{post.pair}</span>
-						<div class="flex items-center gap-1 px-2 py-1 {biasInfo.bgColor} rounded">
+						<span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm rounded font-medium">{post.pair}</span>
+						<div class="flex items-center gap-1 px-2 py-1 {biasInfo.bgColor} dark:bg-opacity-20 rounded">
 							<svelte:component this={biasInfo.icon} class="w-4 h-4 {biasInfo.color}" />
 							<span class="text-sm font-medium {biasInfo.color}">{biasInfo.label}</span>
 						</div>
@@ -203,12 +203,12 @@
 				</div>
 
 				<!-- Post Content -->
-				<h3 class="text-lg font-semibold text-navy mb-2">{post.title}</h3>
-				<p class="text-gray-700 mb-4">{post.description}</p>
+				<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{post.title}</h3>
+				<p class="text-gray-700 dark:text-gray-300 mb-4">{post.description}</p>
 
 				<!-- TradingView Screenshot Preview -->
-				<div class="bg-gray-50 rounded-lg p-3 mb-4">
-					<div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+				<div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-4 transition-colors duration-200">
+					<div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-3">
 						<ExternalLink class="w-4 h-4" />
 						<span>TradingView Analysis</span>
 					</div>
@@ -220,32 +220,32 @@
 						<img
 							src={getTradingViewScreenshot(post.tradingViewLink)}
 							alt="TradingView Chart Analysis"
-							class="w-full h-48 object-cover rounded-lg border border-gray-200 shadow-sm"
+							class="w-full h-48 object-cover rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm"
 							on:error={(e) => {
 								(e.currentTarget as HTMLImageElement).src = 'https://via.placeholder.com/600x300/f3f4f6/6b7280?text=Chart+Preview';
 							}}
 						/>
 					</a>
-					<p class="text-xs text-gray-500 mt-2">Click to view full analysis on TradingView</p>
+					<p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Click to view full analysis on TradingView</p>
 				</div>
 
 				<!-- Post Actions -->
-				<div class="flex items-center justify-between pt-4 border-t border-gray-100">
+				<div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-600">
 					<div class="flex items-center gap-4">
 						<button
 							on:click={() => handleVote(post.id, 'up')}
-							class="flex items-center gap-1 px-3 py-1 rounded-lg transition-colors {post.userVote === 'up' ? 'bg-green-100 text-green-600' : 'hover:bg-gray-100 text-gray-600'}">
+							class="flex items-center gap-1 px-3 py-1 rounded-lg transition-colors {post.userVote === 'up' ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}">
 							<ThumbsUp class="w-4 h-4" />
 							<span class="text-sm">{post.upvotes}</span>
 						</button>
 						<button
 							on:click={() => handleVote(post.id, 'down')}
-							class="flex items-center gap-1 px-3 py-1 rounded-lg transition-colors {post.userVote === 'down' ? 'bg-red-100 text-red-600' : 'hover:bg-gray-100 text-gray-600'}">
+							class="flex items-center gap-1 px-3 py-1 rounded-lg transition-colors {post.userVote === 'down' ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400' : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}">
 							<ThumbsDown class="w-4 h-4" />
 							<span class="text-sm">{post.downvotes}</span>
 						</button>
 					</div>
-					<button class="flex items-center gap-1 px-3 py-1 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors">
+					<button class="flex items-center gap-1 px-3 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors">
 						<MessageCircle class="w-4 h-4" />
 						<span class="text-sm">{post.comments} comments</span>
 					</button>
@@ -258,7 +258,7 @@
 <!-- New Analysis Modal -->
 {#if showNewPostModal}
 	<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-		<div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+		<div class="bg-gray-800 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
 			<h3 class="text-xl font-semibold text-navy mb-6">Share Market Analysis</h3>
 
 			<form on:submit|preventDefault={handleSubmitPost} class="space-y-4">

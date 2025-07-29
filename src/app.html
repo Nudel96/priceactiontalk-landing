@@ -4,6 +4,34 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- Theme initialization script - runs before page render -->
+		<script>
+			(function() {
+				// Get theme from localStorage or system preference
+				const stored = localStorage.getItem('theme');
+				let theme;
+
+				if (stored === 'light' || stored === 'dark') {
+					theme = stored;
+				} else {
+					// Fall back to system preference
+					const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+					theme = prefersDark ? 'dark' : 'light';
+				}
+
+				// Apply theme immediately to prevent flash
+				if (theme === 'dark') {
+					document.documentElement.classList.add('dark');
+				} else {
+					document.documentElement.classList.remove('dark');
+				}
+
+				// Store the theme for consistency
+				localStorage.setItem('theme', theme);
+			})();
+		</script>
+
 		%sveltekit.head%
 		<link rel="stylesheet" href="/src/app.css" />
 	</head>

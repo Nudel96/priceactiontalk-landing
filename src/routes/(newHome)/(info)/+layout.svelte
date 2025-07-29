@@ -4,9 +4,9 @@
 	const STRIPE_CHECKOUT_URL = 'https://dein-stripe-link.com/checkout';
 </script>
 
-<div class="flex flex-col font-[Manrope,sans-serif]">
+<div class="flex flex-col font-[Manrope,sans-serif] min-h-screen bg-gray-900 transition-colors duration-200">
 	<header
-		class="from-navy flex items-center justify-between bg-gradient-to-b to-[#16243c] px-8 py-4 shadow-md">
+		class="from-gray-800 flex items-center justify-between bg-gradient-to-b to-gray-900 px-8 py-4 shadow-md transition-colors duration-200">
 		<div class="flex items-center gap-4 text-white">
 			<Logo />
 			<span class="text-xl font-bold tracking-tight">PriceActionTalk</span>
@@ -37,6 +37,7 @@
 				href="/contact">
 				Contact
 			</a>
+
 			<a
 				class="joinnowbtn from-teal to-signal text-navy rounded-md bg-gradient-to-r px-6 py-3 text-sm font-bold shadow hover:opacity-90"
 				href={STRIPE_CHECKOUT_URL}>
@@ -57,8 +58,4 @@
 	<slot />
 </div>
 
-<style lang="postcss">
-	:global(body) {
-		background-color: #0d1b2a;
-	}
-</style>
+

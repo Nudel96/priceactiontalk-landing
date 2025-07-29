@@ -66,86 +66,86 @@
 	<div class="flex items-center gap-4">
 		<button
 			on:click={goBack}
-			class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-			<ArrowLeft class="w-5 h-5 text-gray-600" />
+			class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+			<ArrowLeft class="w-5 h-5 text-gray-600 dark:text-gray-400" />
 		</button>
 		<div>
-			<h1 class="text-3xl font-bold text-navy">Trading Metrics</h1>
-			<p class="text-gray-600 mt-2">Detailed performance analysis for {accountData.name}</p>
+			<h1 class="text-3xl font-bold text-navy dark:text-dark-text-primary">Trading Metrics</h1>
+			<p class="text-gray-600 dark:text-dark-text-secondary mt-2">Detailed performance analysis for {accountData.name}</p>
 		</div>
 	</div>
 
 	<!-- Key Performance Indicators -->
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-white dark:bg-dark-surface rounded-xl shadow-md p-6 transition-colors duration-200">
 			<div class="flex items-center gap-3 mb-2">
-				<div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-					<DollarSign class="w-5 h-5 text-green-600" />
+				<div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+					<DollarSign class="w-5 h-5 text-green-600 dark:text-green-400" />
 				</div>
-				<h3 class="font-semibold text-navy">Total P&L</h3>
+				<h3 class="font-semibold text-navy dark:text-dark-text-primary">Total P&L</h3>
 			</div>
-			<p class="text-2xl font-bold text-green-600">+${accountData.totalPnL.toLocaleString()}</p>
-			<p class="text-sm text-gray-500">{((accountData.totalPnL / accountData.startingCapital) * 100).toFixed(1)}% return</p>
+			<p class="text-2xl font-bold text-green-600 dark:text-green-400">+${accountData.totalPnL.toLocaleString()}</p>
+			<p class="text-sm text-gray-500 dark:text-dark-text-muted">{((accountData.totalPnL / accountData.startingCapital) * 100).toFixed(1)}% return</p>
 		</div>
 
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-white dark:bg-dark-surface rounded-xl shadow-md p-6 transition-colors duration-200">
 			<div class="flex items-center gap-3 mb-2">
-				<div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-					<Target class="w-5 h-5 text-blue-600" />
+				<div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+					<Target class="w-5 h-5 text-blue-600 dark:text-blue-400" />
 				</div>
-				<h3 class="font-semibold text-navy">Win Rate</h3>
+				<h3 class="font-semibold text-navy dark:text-dark-text-primary">Win Rate</h3>
 			</div>
-			<p class="text-2xl font-bold text-navy">{accountData.winRate}%</p>
-			<p class="text-sm text-gray-500">{accountData.winningTrades}/{accountData.totalTrades} trades</p>
+			<p class="text-2xl font-bold text-navy dark:text-dark-text-primary">{accountData.winRate}%</p>
+			<p class="text-sm text-gray-500 dark:text-dark-text-muted">{accountData.winningTrades}/{accountData.totalTrades} trades</p>
 		</div>
 
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-white dark:bg-dark-surface rounded-xl shadow-md p-6 transition-colors duration-200">
 			<div class="flex items-center gap-3 mb-2">
-				<div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-					<TrendingUp class="w-5 h-5 text-purple-600" />
+				<div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+					<TrendingUp class="w-5 h-5 text-purple-600 dark:text-purple-400" />
 				</div>
-				<h3 class="font-semibold text-navy">Profit Factor</h3>
+				<h3 class="font-semibold text-navy dark:text-dark-text-primary">Profit Factor</h3>
 			</div>
-			<p class="text-2xl font-bold text-navy">{accountData.profitFactor}</p>
-			<p class="text-sm text-gray-500">Gross profit / Gross loss</p>
+			<p class="text-2xl font-bold text-navy dark:text-dark-text-primary">{accountData.profitFactor}</p>
+			<p class="text-sm text-gray-500 dark:text-dark-text-muted">Gross profit / Gross loss</p>
 		</div>
 
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-white dark:bg-dark-surface rounded-xl shadow-md p-6 transition-colors duration-200">
 			<div class="flex items-center gap-3 mb-2">
-				<div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-					<TrendingDown class="w-5 h-5 text-red-600" />
+				<div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+					<TrendingDown class="w-5 h-5 text-red-600 dark:text-red-400" />
 				</div>
-				<h3 class="font-semibold text-navy">Max Drawdown</h3>
+				<h3 class="font-semibold text-navy dark:text-dark-text-primary">Max Drawdown</h3>
 			</div>
-			<p class="text-2xl font-bold text-red-600">{accountData.maxDrawdown}%</p>
-			<p class="text-sm text-gray-500">Largest peak-to-trough decline</p>
+			<p class="text-2xl font-bold text-red-600 dark:text-red-400">{accountData.maxDrawdown}%</p>
+			<p class="text-sm text-gray-500 dark:text-dark-text-muted">Largest peak-to-trough decline</p>
 		</div>
 	</div>
 
 	<!-- Charts Row 1 -->
 	<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 		<!-- Balance Curve -->
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-white dark:bg-dark-surface rounded-xl shadow-md p-6 transition-colors duration-200">
 			<div class="flex items-center gap-3 mb-6">
-				<Activity class="w-5 h-5 text-teal-600" />
-				<h3 class="text-lg font-semibold text-navy">Balance Curve</h3>
+				<Activity class="w-5 h-5 text-teal-600 dark:text-teal-400" />
+				<h3 class="text-lg font-semibold text-navy dark:text-dark-text-primary">Balance Curve</h3>
 			</div>
 			<div class="h-64 flex items-end justify-between gap-2">
 				{#each balanceCurveData as point, i}
 					{@const height = ((point.balance - 10000) / 2500) * 100}
 					<div class="flex flex-col items-center flex-1">
-						<div 
-							class="w-full bg-teal-500 rounded-t-sm transition-all duration-500"
+						<div
+							class="w-full bg-teal-500 dark:bg-teal-400 rounded-t-sm transition-all duration-500"
 							style="height: {Math.max(height, 5)}%">
 						</div>
-						<span class="text-xs text-gray-500 mt-2 transform -rotate-45 origin-left">
+						<span class="text-xs text-gray-500 dark:text-dark-text-muted mt-2 transform -rotate-45 origin-left">
 							{new Date(point.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
 						</span>
 					</div>
 				{/each}
 			</div>
 			<div class="mt-4 text-center">
-				<p class="text-sm text-gray-600">Account balance over time</p>
+				<p class="text-sm text-gray-600 dark:text-dark-text-secondary">Account balance over time</p>
 			</div>
 		</div>
 

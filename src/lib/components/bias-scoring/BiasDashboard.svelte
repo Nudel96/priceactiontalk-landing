@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { ChartBar, RefreshCw, Loader2 } from '@lucide/svelte';
   import BiasScoreCard from './BiasScoreCard.svelte';
   
   interface AssetBiasOverview {
@@ -156,20 +157,31 @@
 <div class="space-y-6">
   <!-- Header -->
   <div class="flex items-center justify-between">
-    <h2 class="text-2xl font-bold text-gray-900">📊 Fundamental Bias Scoring Dashboard</h2>
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+        <ChartBar size={20} class="text-white" />
+      </div>
+      <h2 class="text-2xl font-bold text-gray-900">Fundamental Bias Scoring Dashboard</h2>
+    </div>
     <div class="flex items-center space-x-3">
-      <button 
+      <button
         on:click={fetchAllData}
-        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
         disabled={loading}
       >
-        {loading ? '⟳' : '🔄'} Refresh
+        {#if loading}
+          <Loader2 size={16} class="animate-spin" />
+        {:else}
+          <RefreshCw size={16} />
+        {/if}
+        Refresh
       </button>
-      <button 
+      <button
         on:click={recalculateAllScores}
-        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center gap-2"
       >
-        🔄 Recalculate All
+        <RefreshCw size={16} />
+        Recalculate All
       </button>
     </div>
   </div>
@@ -279,8 +291,8 @@
   <!-- Bias Scores Display -->
   {#if loading && allBiasScores.length === 0}
     <div class="flex items-center justify-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      <span class="ml-3 text-gray-600">Loading bias scores...</span>
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400"></div>
+      <span class="ml-3 text-gray-600 dark:text-dark-text-secondary">Loading bias scores...</span>
     </div>
   {:else if selectedView === 'grid'}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -289,23 +301,23 @@
       {/each}
     </div>
   {:else}
-    <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+    <div class="bg-white dark:bg-dark-surface rounded-lg shadow-md border border-gray-200 dark:border-dark-border overflow-hidden transition-colors duration-200">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-dark-border">
+        <thead class="bg-gray-50 dark:bg-dark-card">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asset</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bias</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Confidence</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quality</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-text-muted uppercase tracking-wider">Asset</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-text-muted uppercase tracking-wider">Bias</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-text-muted uppercase tracking-wider">Score</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-text-muted uppercase tracking-wider">Confidence</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-text-muted uppercase tracking-wider">Quality</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-text-muted uppercase tracking-wider">Updated</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody class="bg-white dark:bg-dark-surface divide-y divide-gray-200 dark:divide-dark-border">
           {#each filteredScores as score (score.asset)}
-            <tr class="hover:bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{score.asset}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{score.currentBias.replace('_', ' ')}</td>
+            <tr class="hover:bg-gray-50 dark:hover:bg-dark-card transition-colors duration-200">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-dark-text-primary">{score.asset}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-dark-text-primary">{score.currentBias.replace('_', ' ')}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{score.score}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{(score.confidence * 100).toFixed(1)}%</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{score.dataQuality}</td>

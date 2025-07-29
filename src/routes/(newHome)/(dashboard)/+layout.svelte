@@ -72,12 +72,12 @@
 	];
 </script>
 
-<div class="flex h-screen overflow-hidden bg-gray-50">
+<div class="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
 	<!-- Mobile sidebar toggle -->
 	<div class="fixed top-4 left-4 z-30 lg:hidden">
 		<button
 			on:click={() => (isSidebarOpen = !isSidebarOpen)}
-			class="bg-navy rounded-full p-2 text-white shadow-lg"
+			class="bg-teal-600 dark:bg-navy rounded-full p-2 text-white shadow-lg"
 			aria-label="Toggle sidebar">
 			{#if isSidebarOpen}
 				<X size={24} />
@@ -98,8 +98,8 @@
 
 	<!-- Sidebar -->
 	<aside
-		class="bg-navy fixed inset-y-0 left-0 z-20 w-75 overflow-y-auto text-white
-           transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0"
+		class="bg-white dark:bg-gray-800 fixed inset-y-0 left-0 z-20 w-75 overflow-y-auto text-gray-900 dark:text-gray-100
+           transition-all duration-300 ease-in-out lg:relative lg:translate-x-0"
 		class:translate-x-0={isSidebarOpen}
 		class:shadow-xl={isSidebarOpen}
 		class:-translate-x-full={!isSidebarOpen}>
@@ -108,7 +108,7 @@
 
 			<!-- Use the user object from the `data` prop -->
 			{#if data.user}
-				<div class="mb-6 rounded-lg border border-gray-600/50 bg-gray-700/30 p-3">
+				<div class="mb-6 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-gray-700/50 p-3 transition-colors duration-200">
 					<ProfileBadge user={data.user} showXp={true} />
 				</div>
 			{/if}
@@ -119,7 +119,7 @@
 						href={item.href}
 						class="nav-link {(item.href === '/' && ($page.url.pathname === '/' || $page.url.pathname === '')) ||
 							(item.href !== '/' && $page.url.pathname.startsWith(item.href))
-							? 'bg-white/10 font-semibold'
+							? 'bg-teal-100 dark:bg-white/10 text-teal-700 dark:text-white font-semibold'
 							: ''}">
 						<svelte:component this={item.icon} size={20} />
 						<span>{t(item.labelKey, $language)}</span>
@@ -167,17 +167,17 @@
 
 	<!-- Main content -->
 	<main class="flex-1 overflow-y-auto">
-		<div class="sticky top-0 z-10 bg-white shadow-sm">
+		<div class="sticky top-0 z-10 bg-white dark:bg-gray-800 shadow-sm transition-colors duration-200 border-b border-gray-200 dark:border-gray-700">
 			<div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
 				<div class="flex h-16 items-center justify-between">
-					<h1 class="text-navy text-xl font-semibold">
+					<h1 class="text-gray-900 dark:text-gray-100 text-xl font-semibold transition-colors duration-200">
 						{currentPageTitle}
 					</h1>
 					<div class="flex items-center gap-4">
 						<div class="lg:hidden">
 							<button
 								on:click={() => (isSidebarOpen = true)}
-								class="rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+								class="rounded-md p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100"
 								aria-label="Open sidebar">
 								<Menu size={24} />
 							</button>
@@ -186,11 +186,13 @@
 				</div>
 			</div>
 		</div>
-		<div class="p-4 md:p-6 lg:p-8">
+		<div class="p-4 md:p-6 lg:p-8 min-h-full">
 			<slot />
 		</div>
 	</main>
 </div>
+
+
 
 <style>
 	.nav-link {
@@ -200,13 +202,27 @@
 		padding: 0.5rem 0.75rem;
 		border-radius: 0.375rem;
 		font-weight: 500;
-		color: rgba(255, 255, 255, 0.7);
 		transition:
 			background-color 0.2s,
 			color 0.2s;
 	}
+
+	/* Light mode styles */
+	.nav-link {
+		color: rgba(55, 65, 81, 0.8); /* gray-700 with opacity */
+	}
 	.nav-link:hover {
-		background-color: rgba(255, 255, 255, 0.1);
-		color: white;
+		background-color: rgba(55, 65, 81, 0.1);
+		color: rgb(55, 65, 81);
+	}
+
+	/* Dark mode styles */
+	:global(.dark) .nav-link {
+		color: rgba(248, 250, 252, 0.8);
+	}
+
+	:global(.dark) .nav-link:hover {
+		background-color: rgba(248, 250, 252, 0.15);
+		color: rgb(248, 250, 252);
 	}
 </style>

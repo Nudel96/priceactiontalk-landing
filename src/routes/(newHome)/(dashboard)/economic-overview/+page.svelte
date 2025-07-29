@@ -4,7 +4,7 @@
 		TrendingUp, TrendingDown, Activity, Calendar,
 		DollarSign, Globe, Users, AlertTriangle,
 		RefreshCw, ArrowRight, Eye, Gauge,
-		Building, Percent
+		Building, Percent, ChartBar, Target
 	} from '@lucide/svelte';
 
 	// Import reusable components
@@ -13,6 +13,7 @@
 	import TradingViewChart from '$lib/components/charts/TradingViewChart.svelte';
 	import DataValidationPanel from '$lib/components/testing/DataValidationPanel.svelte';
 	import BiasDashboard from '$lib/components/bias-scoring/BiasDashboard.svelte';
+	import CurrencyIcon from '$lib/components/icons/CurrencyIcon.svelte';
 	import { AdvancedEconomicService } from '$lib/services/advanced-economic-service';
 
 	// Import types and data
@@ -103,17 +104,17 @@
 
 	// Asset Strength (Currencies + Precious Metals)
 	let assetStrength = [
-		{ asset: 'USD', name: 'US Dollar', strength: 7.2, change: 0.3, rank: 1, type: 'currency', emoji: '🇺🇸' },
-		{ asset: 'XAU', name: 'Gold', strength: 7.0, change: 0.8, rank: 2, type: 'precious_metal', emoji: '🥇' },
-		{ asset: 'EUR', name: 'Euro', strength: 6.8, change: -0.1, rank: 3, type: 'currency', emoji: '🇪🇺' },
-		{ asset: 'GBP', name: 'British Pound', strength: 6.5, change: 0.2, rank: 4, type: 'currency', emoji: '🇬🇧' },
-		{ asset: 'XAG', name: 'Silver', strength: 6.2, change: 1.2, rank: 5, type: 'precious_metal', emoji: '🥈' },
-		{ asset: 'JPY', name: 'Japanese Yen', strength: 5.9, change: -0.4, rank: 6, type: 'currency', emoji: '🇯🇵' },
-		{ asset: 'CHF', name: 'Swiss Franc', strength: 5.7, change: 0.1, rank: 7, type: 'currency', emoji: '🇨🇭' },
-		{ asset: 'AUD', name: 'Australian Dollar', strength: 5.3, change: 0.2, rank: 8, type: 'currency', emoji: '🇦🇺' },
-		{ asset: 'CAD', name: 'Canadian Dollar', strength: 5.1, change: -0.2, rank: 9, type: 'currency', emoji: '🇨🇦' },
-		{ asset: 'CNY', name: 'Chinese Yuan', strength: 4.9, change: -0.3, rank: 10, type: 'currency', emoji: '🇨🇳' },
-		{ asset: 'NZD', name: 'New Zealand Dollar', strength: 4.8, change: 0.1, rank: 11, type: 'currency', emoji: '🇳🇿' }
+		{ asset: 'USD', name: 'US Dollar', strength: 7.2, change: 0.3, rank: 1, type: 'currency' },
+		{ asset: 'XAU', name: 'Gold', strength: 7.0, change: 0.8, rank: 2, type: 'precious_metal' },
+		{ asset: 'EUR', name: 'Euro', strength: 6.8, change: -0.1, rank: 3, type: 'currency' },
+		{ asset: 'GBP', name: 'British Pound', strength: 6.5, change: 0.2, rank: 4, type: 'currency' },
+		{ asset: 'XAG', name: 'Silver', strength: 6.2, change: 1.2, rank: 5, type: 'precious_metal' },
+		{ asset: 'JPY', name: 'Japanese Yen', strength: 5.9, change: -0.4, rank: 6, type: 'currency' },
+		{ asset: 'CHF', name: 'Swiss Franc', strength: 5.7, change: 0.1, rank: 7, type: 'currency' },
+		{ asset: 'AUD', name: 'Australian Dollar', strength: 5.3, change: 0.2, rank: 8, type: 'currency' },
+		{ asset: 'CAD', name: 'Canadian Dollar', strength: 5.1, change: -0.2, rank: 9, type: 'currency' },
+		{ asset: 'CNY', name: 'Chinese Yuan', strength: 4.9, change: -0.3, rank: 10, type: 'currency' },
+		{ asset: 'NZD', name: 'New Zealand Dollar', strength: 4.8, change: 0.1, rank: 11, type: 'currency' }
 	];
 
 
@@ -700,27 +701,27 @@
 	<meta name="description" content="Comprehensive economic analysis dashboard with market sentiment, events, and asset analysis." />
 </svelte:head>
 
-<div class="space-y-6">
+<div class="space-y-6 transition-colors duration-200">
 	<!-- Redesigned Header with Unified Controls -->
-	<div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200 p-4 lg:p-6">
+	<div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-xl border border-blue-200 dark:border-gray-600 p-4 lg:p-6 transition-colors duration-200">
 		<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 			<div class="text-center lg:text-left">
-				<h1 class="text-2xl lg:text-3xl font-bold text-navy">{t('economic.overview', $language)}</h1>
-				<p class="text-sm lg:text-base text-gray-600 mt-1">Real-time economic analysis for {selectedCurrency} • Last updated: {new Date().toLocaleTimeString()}</p>
+				<h1 class="text-2xl lg:text-3xl font-bold text-navy dark:text-gray-100 transition-colors duration-200">{t('economic.overview', $language)}</h1>
+				<p class="text-sm lg:text-base text-gray-600 dark:text-gray-300 mt-1 transition-colors duration-200">Real-time economic analysis for {selectedCurrency} • Last updated: {new Date().toLocaleTimeString()}</p>
 			</div>
 
 			<!-- Unified Currency Selector with Visual Feedback -->
 			<div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
 				<div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-					<span class="text-sm font-medium text-gray-700">Select Currency:</span>
-					<div class="grid grid-cols-3 sm:flex sm:items-center gap-1 bg-white border border-gray-300 rounded-lg p-1 shadow-sm w-full sm:w-auto">
+					<span class="text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-200">Select Currency:</span>
+					<div class="grid grid-cols-3 sm:flex sm:items-center gap-1 bg-gray-800 border border-gray-600 rounded-lg p-1 shadow-sm w-full sm:w-auto transition-colors duration-200">
 						{#each ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'NZD', 'XAU', 'XAG'] as currency}
 							<button
 								on:click={() => handleCurrencyChange(currency)}
 								class="px-2 sm:px-3 py-2 rounded text-xs sm:text-sm font-medium transition-all duration-200 text-center
 									{selectedCurrency === currency
 										? 'bg-blue-600 text-white shadow-md transform scale-105'
-										: 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}"
+										: 'text-gray-300 hover:text-gray-100 hover:bg-gray-700'}"
 							>
 								{currency}
 							</button>
@@ -749,20 +750,22 @@
 	</div>
 
 	<!-- Tab Navigation for Reduced Scrolling -->
-	<div class="bg-white rounded-xl border border-gray-200 shadow-sm mb-6">
-		<div class="border-b border-gray-200">
+	<div class="bg-gray-800 rounded-xl border border-gray-600 shadow-sm mb-6 transition-colors duration-200">
+		<div class="border-b border-gray-200 dark:border-gray-600 transition-colors duration-200">
 			<nav class="flex space-x-8 px-6" aria-label="Tabs">
 				<button
-					class="py-4 px-1 border-b-2 font-medium text-sm transition-colors {activeTab === 'market' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+					class="py-4 px-1 border-b-2 font-medium text-sm transition-colors flex items-center gap-2 {activeTab === 'market' ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-500'}"
 					on:click={() => activeTab = 'market'}
 				>
-					📊 Market Overview
+					<ChartBar size={16} />
+					Market Overview
 				</button>
 				<button
-					class="py-4 px-1 border-b-2 font-medium text-sm transition-colors {activeTab === 'bias' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+					class="py-4 px-1 border-b-2 font-medium text-sm transition-colors flex items-center gap-2 {activeTab === 'bias' ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-500'}"
 					on:click={() => activeTab = 'bias'}
 				>
-					🎯 Bias Scoring
+					<Target size={16} />
+					Bias Scoring
 				</button>
 				<button
 					class="py-4 px-1 border-b-2 font-medium text-sm transition-colors {activeTab === 'assets' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
@@ -785,12 +788,12 @@
 	<!-- Market Overview Tab -->
 	<div class="space-y-6">
 		<!-- Key Economic Indicators for Selected Currency -->
-		<div class="bg-white rounded-xl border border-gray-200 shadow-sm">
-			<div class="p-6 border-b border-gray-200">
+		<div class="bg-gray-800 rounded-xl border border-gray-600 shadow-sm transition-colors duration-200">
+			<div class="p-6 border-b border-gray-200 dark:border-gray-600 transition-colors duration-200">
 				<div class="flex items-center gap-3">
-					<Activity class="w-6 h-6 text-blue-600" />
-					<h2 class="text-xl font-bold text-navy">Key {selectedCurrency} Economic Indicators</h2>
-					<div class="ml-auto flex items-center gap-2 text-sm text-gray-500">
+					<Activity class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+					<h2 class="text-xl font-bold text-navy dark:text-gray-100 transition-colors duration-200">Key {selectedCurrency} Economic Indicators</h2>
+					<div class="ml-auto flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">
 						<Globe class="w-4 h-4" />
 						<span>Real-time data from official sources</span>
 					</div>
@@ -801,78 +804,78 @@
 	<div class="p-6">
 		<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
 			<!-- GDP Growth -->
-			<div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 border border-green-200">
+			<div class="bg-green-900/20 rounded-lg p-4 border border-green-600/30">
 				<div class="flex items-center gap-2 mb-2">
-					<TrendingUp class="w-5 h-5 text-green-600" />
-					<h3 class="font-semibold text-gray-800">GDP Growth</h3>
+					<TrendingUp class="w-5 h-5 text-green-400" />
+					<h3 class="font-semibold text-gray-100">GDP Growth</h3>
 				</div>
 				<div class="space-y-1">
-					<div class="text-2xl font-bold text-green-700">
+					<div class="text-2xl font-bold text-green-400">
 						{#if macroeconomicIndicators.find(i => i.id.includes('gdp_growth'))}
 							{macroeconomicIndicators.find(i => i.id.includes('gdp_growth'))?.current_value || '2.4'}%
 						{:else}
 							2.4%
 						{/if}
 					</div>
-					<div class="text-sm text-gray-600">Quarterly, annualized</div>
-					<div class="text-xs text-green-600">↗ Economic expansion</div>
+					<div class="text-sm text-gray-300">Quarterly, annualized</div>
+					<div class="text-xs text-green-400">↗ Economic expansion</div>
 				</div>
 			</div>
 
 			<!-- Inflation Rate -->
-			<div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-4 border border-orange-200">
+			<div class="bg-orange-900/20 rounded-lg p-4 border border-orange-600/30">
 				<div class="flex items-center gap-2 mb-2">
-					<Percent class="w-5 h-5 text-orange-600" />
-					<h3 class="font-semibold text-gray-800">Inflation (CPI)</h3>
+					<Percent class="w-5 h-5 text-orange-400" />
+					<h3 class="font-semibold text-gray-100">Inflation (CPI)</h3>
 				</div>
 				<div class="space-y-1">
-					<div class="text-2xl font-bold text-orange-700">
+					<div class="text-2xl font-bold text-orange-400">
 						{#if macroeconomicIndicators.find(i => i.id.includes('cpi'))}
 							{macroeconomicIndicators.find(i => i.id.includes('cpi'))?.current_value || '3.2'}%
 						{:else}
 							3.2%
 						{/if}
 					</div>
-					<div class="text-sm text-gray-600">Year-over-year</div>
-					<div class="text-xs text-orange-600">↘ Moderating pressure</div>
+					<div class="text-sm text-gray-300">Year-over-year</div>
+					<div class="text-xs text-orange-400">↘ Moderating pressure</div>
 				</div>
 			</div>
 
 			<!-- Unemployment -->
-			<div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+			<div class="bg-blue-900/20 rounded-lg p-4 border border-blue-600/30">
 				<div class="flex items-center gap-2 mb-2">
-					<Users class="w-5 h-5 text-blue-600" />
-					<h3 class="font-semibold text-gray-800">Unemployment</h3>
+					<Users class="w-5 h-5 text-blue-400" />
+					<h3 class="font-semibold text-gray-100">Unemployment</h3>
 				</div>
 				<div class="space-y-1">
-					<div class="text-2xl font-bold text-blue-700">
+					<div class="text-2xl font-bold text-blue-400">
 						{#if macroeconomicIndicators.find(i => i.id.includes('unemployment'))}
 							{macroeconomicIndicators.find(i => i.id.includes('unemployment'))?.current_value || '3.7'}%
 						{:else}
 							3.7%
 						{/if}
 					</div>
-					<div class="text-sm text-gray-600">Labor force</div>
-					<div class="text-xs text-blue-600">→ Stable levels</div>
+					<div class="text-sm text-gray-300">Labor force</div>
+					<div class="text-xs text-blue-400">→ Stable levels</div>
 				</div>
 			</div>
 
 			<!-- Interest Rate -->
-			<div class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg p-4 border border-purple-200">
+			<div class="bg-purple-900/20 rounded-lg p-4 border border-purple-600/30">
 				<div class="flex items-center gap-2 mb-2">
-					<DollarSign class="w-5 h-5 text-purple-600" />
-					<h3 class="font-semibold text-gray-800">Interest Rate</h3>
+					<DollarSign class="w-5 h-5 text-purple-400" />
+					<h3 class="font-semibold text-gray-100">Interest Rate</h3>
 				</div>
 				<div class="space-y-1">
-					<div class="text-2xl font-bold text-purple-700">
+					<div class="text-2xl font-bold text-purple-400">
 						{#if macroeconomicIndicators.find(i => i.id.includes('fed_funds') || i.id.includes('interest'))}
 							{macroeconomicIndicators.find(i => i.id.includes('fed_funds') || i.id.includes('interest'))?.current_value || '4.75'}%
 						{:else}
 							4.75%
 						{/if}
 					</div>
-					<div class="text-sm text-gray-600">Central bank rate</div>
-					<div class="text-xs text-purple-600">↗ Restrictive policy</div>
+					<div class="text-sm text-gray-300">Central bank rate</div>
+					<div class="text-xs text-purple-400">↗ Restrictive policy</div>
 				</div>
 			</div>
 		</div>
@@ -884,12 +887,12 @@
 		<!-- Left Column: Market Overview -->
 		<div class="xl:col-span-2 space-y-4 lg:space-y-6">
 			<!-- Major Indices -->
-			<div class="bg-white rounded-xl border border-gray-200 shadow-sm">
-				<div class="p-6 border-b border-gray-200">
+			<div class="bg-gray-800 rounded-xl border border-gray-600 shadow-sm transition-colors duration-200">
+				<div class="p-6 border-b border-gray-200 dark:border-gray-600 transition-colors duration-200">
 					<div class="flex items-center gap-3">
-						<TrendingUp class="w-6 h-6 text-blue-600" />
-						<h2 class="text-xl font-bold text-navy">Major Market Indices</h2>
-						<div class="ml-auto text-sm text-gray-500">Live Prices</div>
+						<TrendingUp class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+						<h2 class="text-xl font-bold text-navy dark:text-gray-100 transition-colors duration-200">Major Market Indices</h2>
+						<div class="ml-auto text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">Live Prices</div>
 					</div>
 				</div>
 				<div class="p-4 lg:p-6">
@@ -926,11 +929,11 @@
 			</div>
 
 			<!-- Key Market Indicators -->
-			<div class="bg-white rounded-xl border border-gray-200 shadow-sm">
-				<div class="p-6 border-b border-gray-200">
+			<div class="bg-gray-800 rounded-xl border border-gray-600 shadow-sm transition-colors duration-200">
+				<div class="p-6 border-b border-gray-200 dark:border-gray-600 transition-colors duration-200">
 					<div class="flex items-center gap-3">
-						<Gauge class="w-6 h-6 text-purple-600" />
-						<h2 class="text-xl font-bold text-navy">Key Market Indicators</h2>
+						<Gauge class="w-6 h-6 text-purple-600 dark:text-purple-400" />
+						<h2 class="text-xl font-bold text-navy dark:text-gray-100 transition-colors duration-200">Key Market Indicators</h2>
 					</div>
 				</div>
 				<div class="p-4 lg:p-6">
@@ -970,11 +973,11 @@
 		<!-- Right Column: Market Sentiment & Quick Info -->
 		<div class="space-y-4 lg:space-y-6">
 			<!-- Market Sentiment -->
-			<div class="bg-white rounded-xl border border-gray-200 shadow-sm">
-				<div class="p-6 border-b border-gray-200">
+			<div class="bg-gray-800 rounded-xl border border-gray-600 shadow-sm transition-colors duration-200">
+				<div class="p-6 border-b border-gray-200 dark:border-gray-600 transition-colors duration-200">
 					<div class="flex items-center gap-3">
-						<Eye class="w-6 h-6 text-indigo-600" />
-						<h2 class="text-xl font-bold text-navy">Market Sentiment</h2>
+						<Eye class="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+						<h2 class="text-xl font-bold text-navy dark:text-gray-100 transition-colors duration-200">Market Sentiment</h2>
 					</div>
 				</div>
 				<div class="p-6 space-y-4">
@@ -1006,20 +1009,20 @@
 			</div>
 
 			<!-- Asset Strength Meter -->
-			<div class="bg-white rounded-xl border border-gray-200 shadow-sm">
-				<div class="p-6 border-b border-gray-200">
+			<div class="bg-gray-800 rounded-xl border border-gray-600 shadow-sm transition-colors duration-200">
+				<div class="p-6 border-b border-gray-200 dark:border-gray-600 transition-colors duration-200">
 					<div class="flex items-center gap-3">
-						<Globe class="w-6 h-6 text-indigo-600" />
-						<h2 class="text-xl font-bold text-navy">Currency Strength</h2>
+						<Globe class="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+						<h2 class="text-xl font-bold text-navy dark:text-gray-100 transition-colors duration-200">Currency Strength</h2>
 					</div>
 				</div>
 				<div class="p-4 lg:p-6">
 					<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-2 lg:gap-3">
 						{#each assetStrength.slice(0, 8) as asset}
-							<div class="text-center p-3 border border-gray-200 rounded-lg">
+							<div class="text-center p-3 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors duration-200">
 								<div class="flex items-center justify-center gap-1 mb-2">
-									<span class="text-sm">{asset.emoji}</span>
-									<div class="font-bold text-sm text-navy">{asset.asset}</div>
+									<CurrencyIcon currency={asset.asset} size={16} />
+									<div class="font-bold text-sm text-navy dark:text-gray-100 transition-colors duration-200">{asset.asset}</div>
 								</div>
 								<div class="w-full bg-gray-200 rounded-full h-2 mb-2">
 									<div
@@ -1049,7 +1052,7 @@
 			<div class="flex items-start gap-4">
 				<div class="flex-shrink-0">
 					<div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-						<span class="text-2xl">🎯</span>
+						<Target size={24} class="text-white" />
 					</div>
 				</div>
 				<div>
@@ -1080,11 +1083,11 @@
 		<!-- Top Movers & Quick Analysis -->
 		<div class="space-y-4 lg:space-y-6">
 			<!-- Top Movers -->
-			<div class="bg-white rounded-xl border border-gray-200 shadow-sm">
-				<div class="p-6 border-b border-gray-200">
+			<div class="bg-gray-800 rounded-xl border border-gray-600 shadow-sm transition-colors duration-200">
+				<div class="p-6 border-b border-gray-200 dark:border-gray-600 transition-colors duration-200">
 					<div class="flex items-center gap-3">
-						<Activity class="w-6 h-6 text-orange-600" />
-						<h2 class="text-xl font-bold text-navy">Top Movers</h2>
+						<Activity class="w-6 h-6 text-orange-600 dark:text-orange-400" />
+						<h2 class="text-xl font-bold text-navy dark:text-gray-100 transition-colors duration-200">Top Movers</h2>
 					</div>
 				</div>
 				<div class="p-4 lg:p-6">
@@ -1116,11 +1119,11 @@
 			</div>
 
 			<!-- Quick Asset Analysis -->
-			<div class="bg-white rounded-xl border border-gray-200 shadow-sm">
-				<div class="p-6 border-b border-gray-200">
+			<div class="bg-gray-800 rounded-xl border border-gray-600 shadow-sm transition-colors duration-200">
+				<div class="p-6 border-b border-gray-200 dark:border-gray-600 transition-colors duration-200">
 					<div class="flex items-center gap-3">
-						<DollarSign class="w-6 h-6 text-green-600" />
-						<h2 class="text-xl font-bold text-navy">Quick Asset Analysis</h2>
+						<DollarSign class="w-6 h-6 text-green-600 dark:text-green-400" />
+						<h2 class="text-xl font-bold text-navy dark:text-gray-100 transition-colors duration-200">Quick Asset Analysis</h2>
 					</div>
 				</div>
 				<div class="p-6">
@@ -1165,9 +1168,9 @@
 							title="{selectedQuickAsset} Price Chart"
 						/>
 					{:else}
-						<div class="text-center text-gray-500 bg-gray-50 rounded-lg p-4">
+						<div class="text-center text-gray-400 bg-gray-700 rounded-lg p-4 transition-colors duration-200">
 							<p class="text-sm">Select an asset above to view detailed analysis</p>
-							<p class="text-xs text-gray-400 mt-1">Real-time data and technical indicators</p>
+							<p class="text-xs text-gray-500 mt-1 transition-colors duration-200">Real-time data and technical indicators</p>
 						</div>
 					{/if}
 				</div>

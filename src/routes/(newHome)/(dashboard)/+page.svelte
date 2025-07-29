@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { language, t, type Language } from '$lib/stores/language';
+	import IconMapping from '$lib/components/icons/IconMapping.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -25,19 +26,19 @@
 
 	// Mock recent activities for demo
 	const recentActivities = [
-		{ type: 'lesson', title: 'Completed "Support & Resistance Basics"', time: '2h ago', icon: '📚' },
-		{ type: 'forum', title: 'Posted in "Trading Psychology"', time: '4h ago', icon: '💬' },
-		{ type: 'analysis', title: 'Shared EURUSD analysis', time: '1d ago', icon: '📈' },
-		{ type: 'level', title: 'Reached Level 3', time: '2d ago', icon: '🎯' },
-		{ type: 'trade', title: 'Logged new GBPJPY trade', time: '3d ago', icon: '💰' }
+		{ type: 'lesson', title: 'Completed "Support & Resistance Basics"', time: '2h ago' },
+		{ type: 'forum', title: 'Posted in "Trading Psychology"', time: '4h ago' },
+		{ type: 'analysis', title: 'Shared EURUSD analysis', time: '1d ago' },
+		{ type: 'level', title: 'Reached Level 3', time: '2d ago' },
+		{ type: 'trade', title: 'Logged new GBPJPY trade', time: '3d ago' }
 	];
 </script>
 
-<div class="space-y-6">
-	<h1 class="text-navy text-2xl font-bold">{t('dashboard.welcome', $language)}, {user.username} 👋</h1>
+<div class="space-y-6 transition-colors duration-200">
+	<h1 class="text-gray-900 dark:text-gray-100 text-2xl font-bold transition-colors duration-200">{t('dashboard.welcome', $language)}, {user.username} 👋</h1>
 
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-		<div class="from-teal rounded-xl bg-gradient-to-br to-cyan-500 p-6 text-white shadow-lg">
+		<div class="rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 dark:from-teal-600 dark:to-cyan-600 p-6 text-white shadow-lg transition-all duration-200">
 			<div class="mb-3 flex items-center justify-between">
 				<h3 class="font-semibold">{t('dashboard.level-progress', $language)}</h3>
 			</div>
@@ -74,7 +75,7 @@
 			</div>
 		</div>
 
-		<div class="from-navy rounded-xl bg-gradient-to-br to-slate-700 p-6 text-white shadow-lg">
+		<div class="rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 p-6 text-white shadow-lg transition-all duration-200">
 			<div class="mb-4 flex items-center justify-between">
 				<h3 class="font-semibold text-white">Your Activity</h3>
 			</div>
@@ -94,38 +95,54 @@
 			</div>
 		</div>
 
-		<div class="rounded-xl border bg-white p-6 shadow-md">
+		<div class="rounded-xl border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 p-6 shadow-md transition-all duration-200">
 			<div class="mb-3 flex items-center justify-between">
-				<h3 class="text-navy font-semibold">{t('dashboard.current-level', $language)}</h3>
+				<h3 class="text-gray-900 dark:text-gray-100 font-semibold transition-colors duration-200">{t('dashboard.current-level', $language)}</h3>
 			</div>
 			<div>
-				<p class="text-navy text-lg font-bold">Level {user.level}</p>
-				<p class="text-graphite/80 mb-3 text-sm">{userLevelInfo.description}</p>
+				<p class="text-gray-900 dark:text-gray-100 text-lg font-bold transition-colors duration-200">Level {user.level}</p>
+				<p class="text-gray-600 dark:text-gray-400 mb-3 text-sm transition-colors duration-200">{userLevelInfo.description}</p>
 				<a
 					href="/school"
-					class="text-teal flex items-center gap-1 text-sm font-semibold hover:underline">
+					class="text-teal-600 dark:text-teal-400 flex items-center gap-1 text-sm font-semibold hover:underline transition-colors duration-200">
 					{t('dashboard.continue-learning', $language)}
 				</a>
 			</div>
 		</div>
 
+		<div class="rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 p-6 text-white shadow-lg transition-all duration-200">
+			<div class="mb-4 flex items-center justify-between">
+				<h3 class="font-semibold text-white">Quick Actions</h3>
+			</div>
+			<div class="space-y-3">
+				<a href="/market" class="block rounded-lg bg-white/20 hover:bg-white/30 p-3 text-sm font-medium transition-colors">
+					Share Analysis
+				</a>
+				<a href="/tradinglog" class="block rounded-lg bg-white/20 hover:bg-white/30 p-3 text-sm font-medium transition-colors">
+					Log Trade
+				</a>
+				<a href="/forum" class="block rounded-lg bg-white/20 hover:bg-white/30 p-3 text-sm font-medium transition-colors">
+					Join Discussion
+				</a>
+			</div>
+		</div>
 
 	</div>
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 		<div class="card">
 			<div class="mb-4 flex items-center justify-between">
-				<h3 class="text-navy font-semibold">{t('dashboard.recent-activities', $language)}</h3>
-				<a href="/forum" class="text-teal text-sm hover:underline">View all</a>
+				<h3 class="text-gray-900 dark:text-gray-100 font-semibold transition-colors duration-200">{t('dashboard.recent-activities', $language)}</h3>
+				<a href="/forum" class="text-teal-600 dark:text-teal-400 text-sm hover:underline transition-colors duration-200">View all</a>
 			</div>
 			<div class="space-y-4">
 				{#if recentForumPosts.length}
 					{#each recentForumPosts as post (post.id)}
-						<div class="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-							<a href={`/forum/${post.id}`} class="text-navy hover:text-teal font-medium">
+						<div class="border-b border-gray-100 dark:border-gray-600 pb-3 last:border-0 last:pb-0 transition-colors duration-200">
+							<a href={`/forum/${post.id}`} class="text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 font-medium transition-colors duration-200">
 								{post.title}
 							</a>
-							<div class="mt-1 flex items-center justify-between text-xs text-gray-500">
+							<div class="mt-1 flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
 								<span>
 									by {post.author.username} in
 									<span class="text-teal font-medium">{post.category.name}</span>
@@ -142,17 +159,17 @@
 
 		<div class="card">
 			<div class="mb-4 flex items-center justify-between">
-				<h3 class="text-navy font-semibold">Latest Market Analyses</h3>
-				<a href="/market" class="text-teal text-sm hover:underline">View all</a>
+				<h3 class="text-gray-900 dark:text-gray-100 font-semibold transition-colors duration-200">Latest Market Analyses</h3>
+				<a href="/market" class="text-teal-600 dark:text-teal-400 text-sm hover:underline transition-colors duration-200">View all</a>
 			</div>
 			<div class="space-y-4">
 				{#if recentMarketPosts.length}
 					{#each recentMarketPosts as idea (idea.id)}
-						<div class="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-							<a href="/market" class="text-navy hover:text-teal font-medium">
+						<div class="border-b border-gray-100 dark:border-gray-600 pb-3 last:border-0 last:pb-0 transition-colors duration-200">
+							<a href="/market" class="text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 font-medium transition-colors duration-200">
 								{idea.title}
 							</a>
-							<div class="mt-1 text-xs text-gray-500">shared by {idea.author}</div>
+							<div class="mt-1 text-xs text-gray-600 dark:text-gray-400">shared by {idea.author}</div>
 						</div>
 					{/each}
 				{:else}
@@ -162,18 +179,20 @@
 		</div>
 
 		<!-- Recent Activities -->
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-600 transition-all duration-200">
 			<div class="flex items-center justify-between mb-6">
-				<h3 class="text-xl font-semibold text-navy">Recent Activities</h3>
-				<a href="/profile" class="text-teal-600 text-sm hover:underline">View all</a>
+				<h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Recent Activities</h3>
+				<a href="/profile" class="text-teal-600 dark:text-teal-400 text-sm hover:underline transition-colors duration-200">View all</a>
 			</div>
 			<div class="space-y-4">
 				{#each recentActivities as activity}
-					<div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
-						<div class="text-2xl">{activity.icon}</div>
+					<div class="flex items-center gap-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors duration-200">
+						<div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center transition-colors duration-200">
+							<IconMapping iconType={activity.type} size={20} className="text-blue-600 dark:text-blue-400" />
+						</div>
 						<div class="flex-1">
-							<p class="font-medium text-navy">{activity.title}</p>
-							<p class="text-sm text-gray-500">{activity.time}</p>
+							<p class="font-medium text-gray-900 dark:text-gray-100 transition-colors duration-200">{activity.title}</p>
+							<p class="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">{activity.time}</p>
 						</div>
 					</div>
 				{/each}

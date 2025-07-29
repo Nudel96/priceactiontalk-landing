@@ -143,32 +143,32 @@
 <div class="space-y-6">
 	<div class="flex items-center justify-between">
 		<div>
-			<h1 class="text-3xl font-bold text-navy">Trading School</h1>
-			<p class="text-gray-600 mt-2">Master the fundamentals of technical analysis, risk management and trading psychology</p>
+			<h1 class="text-3xl font-bold text-navy dark:text-dark-text-primary">Trading School</h1>
+			<p class="text-gray-600 dark:text-dark-text-secondary mt-2">Master the fundamentals of technical analysis, risk management and trading psychology</p>
 		</div>
 	</div>
 
 	<!-- Difficulty Level Selector -->
-	<div class="bg-white rounded-xl shadow-md p-6">
-		<h2 class="text-xl font-semibold text-navy mb-4">Choose Your Learning Path</h2>
+	<div class="bg-gray-800 rounded-xl shadow-md p-6 transition-colors duration-200">
+		<h2 class="text-xl font-semibold text-navy dark:text-dark-text-primary mb-4">Choose Your Learning Path</h2>
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
 			{#each difficultyLevels as level}
 				{@const progress = getLevelProgress(level.id)}
 				<button
 					class="p-4 rounded-lg border-2 transition-all duration-200 text-left {selectedLevel === level.id
-						? 'border-teal-500 bg-teal-50'
-						: 'border-gray-200 hover:border-gray-300'}"
+						? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20 dark:border-teal-400'
+						: 'border-gray-600 hover:border-gray-500 bg-gray-700'}"
 					on:click={() => selectedLevel = level.id}>
 					<div class="flex items-center gap-3 mb-2">
 						<div class="w-3 h-3 rounded-full {level.color}"></div>
-						<h3 class="font-semibold text-navy">{level.name}</h3>
+						<h3 class="font-semibold text-navy dark:text-dark-text-primary">{level.name}</h3>
 					</div>
-					<p class="text-sm text-gray-600 mb-3">{level.description}</p>
+					<p class="text-sm text-gray-600 dark:text-dark-text-secondary mb-3">{level.description}</p>
 					<div class="flex items-center justify-between text-xs">
-						<span class="text-gray-500">{progress.completed}/{progress.total} completed</span>
+						<span class="text-gray-500 dark:text-dark-text-muted">{progress.completed}/{progress.total} completed</span>
 						<span class="font-semibold {level.textColor}">{progress.percentage}%</span>
 					</div>
-					<div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+					<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mt-2">
 						<div class="h-1.5 rounded-full {level.color}" style="width: {progress.percentage}%"></div>
 					</div>
 				</button>
@@ -180,13 +180,13 @@
 	<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 		{#each categories as category}
 			{@const categoryProgress = category.subcategories.filter(sub => getCompletionStatus(selectedLevel, category.id, sub)).length}
-			<div class="bg-white rounded-xl shadow-md overflow-hidden">
-				<div class="p-6 border-b border-gray-100">
+			<div class="bg-gray-800 rounded-xl shadow-md overflow-hidden transition-colors duration-200">
+				<div class="p-6 border-b border-gray-100 dark:border-dark-border">
 					<div class="flex items-center gap-3 mb-2">
-						<div class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
-							<svelte:component this={category.icon} class="w-5 h-5 text-teal-600" />
+						<div class="w-8 h-8 bg-teal-100 dark:bg-teal-900/30 rounded-lg flex items-center justify-center">
+							<svelte:component this={category.icon} class="w-5 h-5 text-teal-600 dark:text-teal-400" />
 						</div>
-						<h3 class="text-xl font-semibold text-navy">{category.name}</h3>
+						<h3 class="text-xl font-semibold text-navy dark:text-dark-text-primary">{category.name}</h3>
 					</div>
 				</div>
 				<div class="p-6">
@@ -194,30 +194,30 @@
 						{#each category.subcategories as subcategory}
 							{@const isCompleted = getCompletionStatus(selectedLevel, category.id, subcategory)}
 							<button
-								class="w-full flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-teal-300 hover:bg-teal-50 transition-all duration-200 text-left"
+								class="w-full flex items-center justify-between p-3 rounded-lg border border-gray-600 hover:border-teal-500 hover:bg-teal-900/20 transition-all duration-200 text-left bg-gray-700"
 								on:click={() => handleSubcategoryClick(category.id, subcategory)}>
 								<div class="flex items-center gap-3">
 									{#if isCompleted}
-										<CheckCircle class="w-5 h-5 text-green-500" />
+										<CheckCircle class="w-5 h-5 text-green-500 dark:text-green-400" />
 									{:else}
-										<Clock class="w-5 h-5 text-gray-400" />
+										<Clock class="w-5 h-5 text-gray-400 dark:text-gray-500" />
 									{/if}
-									<span class="font-medium text-navy">{subcategory}</span>
+									<span class="font-medium text-navy dark:text-dark-text-primary">{subcategory}</span>
 								</div>
-								<ChevronRight class="w-4 h-4 text-gray-400" />
+								<ChevronRight class="w-4 h-4 text-gray-400 dark:text-gray-500" />
 							</button>
 						{/each}
 					</div>
 
 					<!-- Category Progress -->
-					<div class="mt-4 pt-4 border-t border-gray-100">
+					<div class="mt-4 pt-4 border-t border-gray-100 dark:border-dark-border">
 						<div class="flex items-center justify-between text-sm mb-2">
-							<span class="text-gray-600">Progress</span>
-							<span class="font-semibold text-navy">{categoryProgress}/{category.subcategories.length}</span>
+							<span class="text-gray-600 dark:text-dark-text-secondary">Progress</span>
+							<span class="font-semibold text-navy dark:text-dark-text-primary">{categoryProgress}/{category.subcategories.length}</span>
 						</div>
-						<div class="w-full bg-gray-200 rounded-full h-2">
+						<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
 							<div
-								class="h-2 rounded-full bg-teal-500"
+								class="h-2 rounded-full bg-teal-500 dark:bg-teal-400"
 								style="width: {(categoryProgress / category.subcategories.length) * 100}%">
 							</div>
 						</div>
@@ -228,24 +228,24 @@
 	</div>
 
 	<!-- Overall Progress Summary -->
-	<div class="bg-white rounded-xl shadow-md p-6">
-		<h3 class="text-xl font-semibold text-navy mb-4">Your {selectedLevelData?.name} Level Progress</h3>
+	<div class="bg-gray-800 rounded-xl shadow-md p-6 transition-colors duration-200">
+		<h3 class="text-xl font-semibold text-navy dark:text-dark-text-primary mb-4">Your {selectedLevelData?.name} Level Progress</h3>
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 			<div class="text-center">
-				<div class="text-3xl font-bold text-teal-600 mb-1">{overallProgress.completed}</div>
-				<div class="text-sm text-gray-600">Lessons Completed</div>
+				<div class="text-3xl font-bold text-teal-600 dark:text-teal-400 mb-1">{overallProgress.completed}</div>
+				<div class="text-sm text-gray-600 dark:text-dark-text-secondary">Lessons Completed</div>
 			</div>
 			<div class="text-center">
-				<div class="text-3xl font-bold text-navy mb-1">{overallProgress.total - overallProgress.completed}</div>
-				<div class="text-sm text-gray-600">Lessons Remaining</div>
+				<div class="text-3xl font-bold text-navy dark:text-dark-text-primary mb-1">{overallProgress.total - overallProgress.completed}</div>
+				<div class="text-sm text-gray-600 dark:text-dark-text-secondary">Lessons Remaining</div>
 			</div>
 			<div class="text-center">
 				<div class="text-3xl font-bold {selectedLevelData?.textColor} mb-1">{overallProgress.percentage}%</div>
-				<div class="text-sm text-gray-600">Overall Progress</div>
+				<div class="text-sm text-gray-600 dark:text-dark-text-secondary">Overall Progress</div>
 			</div>
 		</div>
 		<div class="mt-6">
-			<div class="w-full bg-gray-200 rounded-full h-3">
+			<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
 				<div
 					class="h-3 rounded-full {selectedLevelData?.color}"
 					style="width: {overallProgress.percentage}%">

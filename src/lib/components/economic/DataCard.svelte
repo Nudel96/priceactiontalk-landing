@@ -17,49 +17,49 @@
 	export let clickable: boolean = false;
 	export let href: string | undefined = undefined;
 
-	// Color schemes
+	// Color schemes - Permanent Dark Theme
 	const colorSchemes = {
 		blue: {
-			bg: 'bg-blue-50',
-			icon: 'text-blue-600',
-			title: 'text-blue-700',
-			value: 'text-blue-900'
+			bg: 'bg-blue-900/20',
+			icon: 'text-blue-400',
+			title: 'text-blue-300',
+			value: 'text-blue-100'
 		},
 		green: {
-			bg: 'bg-green-50',
-			icon: 'text-green-600',
-			title: 'text-green-700',
-			value: 'text-green-900'
+			bg: 'bg-green-900/20',
+			icon: 'text-green-400',
+			title: 'text-green-300',
+			value: 'text-green-100'
 		},
 		red: {
-			bg: 'bg-red-50',
-			icon: 'text-red-600',
-			title: 'text-red-700',
-			value: 'text-red-900'
+			bg: 'bg-red-900/20',
+			icon: 'text-red-400',
+			title: 'text-red-300',
+			value: 'text-red-100'
 		},
 		yellow: {
-			bg: 'bg-yellow-50',
-			icon: 'text-yellow-600',
-			title: 'text-yellow-700',
-			value: 'text-yellow-900'
+			bg: 'bg-yellow-900/20',
+			icon: 'text-yellow-400',
+			title: 'text-yellow-300',
+			value: 'text-yellow-100'
 		},
 		purple: {
-			bg: 'bg-purple-50',
-			icon: 'text-purple-600',
-			title: 'text-purple-700',
-			value: 'text-purple-900'
+			bg: 'bg-purple-900/20',
+			icon: 'text-purple-400',
+			title: 'text-purple-300',
+			value: 'text-purple-100'
 		},
 		teal: {
-			bg: 'bg-teal-50',
-			icon: 'text-teal-600',
-			title: 'text-teal-700',
-			value: 'text-teal-900'
+			bg: 'bg-teal-900/20',
+			icon: 'text-teal-400',
+			title: 'text-teal-300',
+			value: 'text-teal-100'
 		},
 		gray: {
-			bg: 'bg-gray-50',
-			icon: 'text-gray-600',
-			title: 'text-gray-700',
-			value: 'text-gray-900'
+			bg: 'bg-gray-700',
+			icon: 'text-gray-400',
+			title: 'text-gray-300',
+			value: 'text-gray-100'
 		}
 	};
 
@@ -112,10 +112,10 @@
 	$: formattedChangePercent = changePercent !== undefined ? 
 		`${changePercent >= 0 ? '+' : ''}${changePercent.toFixed(2)}%` : '';
 
-	// Change color
-	$: changeColor = calculatedTrend === 'up' ? 'text-green-600' :
-					 calculatedTrend === 'down' ? 'text-red-600' :
-					 'text-gray-600';
+	// Change color with dark mode support
+	$: changeColor = calculatedTrend === 'up' ? 'text-green-600 dark:text-green-400' :
+					 calculatedTrend === 'down' ? 'text-red-600 dark:text-red-400' :
+					 'text-gray-600 dark:text-gray-400';
 
 	// Trend icon
 	$: TrendIcon = calculatedTrend === 'up' ? TrendingUp :
@@ -130,8 +130,8 @@
 </script>
 
 <!-- Card Container -->
-<div 
-	class="bg-white rounded-xl shadow-md border border-gray-200 transition-all duration-200
+<div
+	class="bg-gray-800 rounded-xl shadow-md border border-gray-600 transition-all duration-200
 		{config.padding}
 		{clickable || href ? 'hover:shadow-lg hover:scale-105 cursor-pointer' : ''}
 		{loading ? 'animate-pulse' : ''}"
@@ -166,7 +166,7 @@
 				<div>
 					<h3 class="font-semibold {config.titleSize} {scheme.title}">{title}</h3>
 					{#if subtitle}
-						<p class="text-xs text-gray-600 mt-1">{subtitle}</p>
+						<p class="text-xs text-gray-600 dark:text-gray-400 mt-1">{subtitle}</p>
 					{/if}
 				</div>
 			</div>

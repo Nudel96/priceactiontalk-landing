@@ -68,9 +68,9 @@
 
 <div class="space-y-6">
 	<!-- Profile Header -->
-	<div class="bg-white rounded-xl shadow-md p-6">
+	<div class="bg-gray-800 rounded-xl shadow-md p-6">
 		<div class="flex items-start gap-6">
-			<div class="w-24 h-24 bg-teal-100 rounded-full flex items-center justify-center">
+			<div class="w-24 h-24 bg-teal-900/30 rounded-full flex items-center justify-center">
 				{#if user.avatar}
 					<img src={user.avatar} alt="Profile" class="w-24 h-24 rounded-full object-cover" />
 				{:else}
@@ -82,7 +82,7 @@
 					<h1 class="text-2xl font-bold text-navy">{user.username}</h1>
 					<button
 						on:click={() => showEditModal = true}
-						class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-teal-100 hover:text-teal-700 rounded-lg transition-colors">
+						class="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-teal-900/30 hover:text-teal-400 rounded-lg transition-colors text-gray-300">
 						<Settings class="w-4 h-4" />
 						<span class="text-sm">Edit Profile</span>
 					</button>
@@ -107,42 +107,42 @@
 
 	<!-- Stats Grid -->
 	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-		<div class="bg-white rounded-xl shadow-md p-4 text-center">
-			<div class="text-2xl font-bold text-teal-600 mb-1">{user.stats.forumPosts}</div>
-			<div class="text-sm text-gray-600">Forum Posts</div>
+		<div class="bg-gray-800 rounded-xl shadow-md p-4 text-center">
+			<div class="text-2xl font-bold text-teal-400 mb-1">{user.stats.forumPosts}</div>
+			<div class="text-sm text-gray-300">Forum Posts</div>
 		</div>
-		<div class="bg-white rounded-xl shadow-md p-4 text-center">
-			<div class="text-2xl font-bold text-blue-600 mb-1">{user.stats.completedLessons}</div>
-			<div class="text-sm text-gray-600">Lessons Completed</div>
+		<div class="bg-gray-800 rounded-xl shadow-md p-4 text-center">
+			<div class="text-2xl font-bold text-blue-400 mb-1">{user.stats.completedLessons}</div>
+			<div class="text-sm text-gray-300">Lessons Completed</div>
 		</div>
-		<div class="bg-white rounded-xl shadow-md p-4 text-center">
-			<div class="text-2xl font-bold text-purple-600 mb-1">{user.stats.marketAnalyses}</div>
-			<div class="text-sm text-gray-600">Market Analyses</div>
+		<div class="bg-gray-800 rounded-xl shadow-md p-4 text-center">
+			<div class="text-2xl font-bold text-purple-400 mb-1">{user.stats.marketAnalyses}</div>
+			<div class="text-sm text-gray-300">Market Analyses</div>
 		</div>
-		<div class="bg-white rounded-xl shadow-md p-4 text-center">
-			<div class="text-2xl font-bold text-orange-600 mb-1">{user.stats.daysActive}</div>
-			<div class="text-sm text-gray-600">Days Active</div>
+		<div class="bg-gray-800 rounded-xl shadow-md p-4 text-center">
+			<div class="text-2xl font-bold text-orange-400 mb-1">{user.stats.daysActive}</div>
+			<div class="text-sm text-gray-300">Days Active</div>
 		</div>
-		<div class="bg-white rounded-xl shadow-md p-4 text-center">
-			<div class="text-2xl font-bold text-yellow-600 mb-1">{user.stats.tradingChallengesWon}</div>
-			<div class="text-sm text-gray-600">Challenges Won</div>
+		<div class="bg-gray-800 rounded-xl shadow-md p-4 text-center">
+			<div class="text-2xl font-bold text-yellow-400 mb-1">{user.stats.tradingChallengesWon}</div>
+			<div class="text-sm text-gray-300">Challenges Won</div>
 		</div>
 	</div>
 
 	<!-- Content Grid -->
 	<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 		<!-- Achievements -->
-		<div class="bg-white rounded-xl shadow-md p-6">
-			<h3 class="text-xl font-semibold text-navy mb-4">Achievements</h3>
+		<div class="bg-gray-800 rounded-xl shadow-md p-6">
+			<h3 class="text-xl font-semibold text-gray-100 mb-4">Achievements</h3>
 			<div class="space-y-3">
 				{#each achievements as achievement}
-					<div class="flex items-center gap-3 p-3 rounded-lg {achievement.earned ? 'bg-green-50' : 'bg-gray-50'}">
-						<div class="w-10 h-10 rounded-full flex items-center justify-center {achievement.earned ? 'bg-green-100' : 'bg-gray-200'}">
-							<svelte:component this={achievement.icon} class="w-5 h-5 {achievement.earned ? 'text-green-600' : 'text-gray-400'}" />
+					<div class="flex items-center gap-3 p-3 rounded-lg {achievement.earned ? 'bg-green-900/20' : 'bg-gray-700'}">
+						<div class="w-10 h-10 rounded-full flex items-center justify-center {achievement.earned ? 'bg-green-900/30' : 'bg-gray-600'}">
+							<svelte:component this={achievement.icon} class="w-5 h-5 {achievement.earned ? 'text-green-400' : 'text-gray-400'}" />
 						</div>
 						<div class="flex-1">
-							<div class="font-medium {achievement.earned ? 'text-navy' : 'text-gray-500'}">{achievement.name}</div>
-							<div class="text-sm {achievement.earned ? 'text-gray-600' : 'text-gray-400'}">{achievement.description}</div>
+							<div class="font-medium {achievement.earned ? 'text-gray-100' : 'text-gray-400'}">{achievement.name}</div>
+							<div class="text-sm {achievement.earned ? 'text-gray-300' : 'text-gray-400'}">{achievement.description}</div>
 						</div>
 						{#if achievement.earned}
 							<div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
@@ -157,19 +157,19 @@
 		</div>
 
 		<!-- Recent Activity -->
-		<div class="bg-white rounded-xl shadow-md p-6">
-			<h3 class="text-xl font-semibold text-navy mb-4">Recent Activity</h3>
+		<div class="bg-gray-800 rounded-xl shadow-md p-6">
+			<h3 class="text-xl font-semibold text-gray-100 mb-4">Recent Activity</h3>
 			<div class="space-y-3">
 				{#each recentActivity as activity}
 					{@const ActivityIcon = getActivityIcon(activity.type)}
 					{@const activityColor = getActivityColor(activity.type)}
-					<div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-						<div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+					<div class="flex items-start gap-3 p-3 bg-gray-700 rounded-lg">
+						<div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
 							<svelte:component this={ActivityIcon} class="w-4 h-4 {activityColor}" />
 						</div>
 						<div class="flex-1">
-							<div class="font-medium text-navy text-sm">{activity.title}</div>
-							<div class="text-xs text-gray-500">{activity.time}</div>
+							<div class="font-medium text-gray-100 text-sm">{activity.title}</div>
+							<div class="text-xs text-gray-400">{activity.time}</div>
 						</div>
 					</div>
 				{/each}

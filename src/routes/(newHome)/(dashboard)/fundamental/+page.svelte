@@ -42,19 +42,18 @@
 		code: string;
 		name: string;
 		type: 'currency' | 'precious_metal';
-		emoji: string;
 	}> = [
-		{ code: 'USD', name: 'US Dollar', type: 'currency', emoji: '🇺🇸' },
-		{ code: 'EUR', name: 'Euro', type: 'currency', emoji: '🇪🇺' },
-		{ code: 'GBP', name: 'British Pound', type: 'currency', emoji: '🇬🇧' },
-		{ code: 'JPY', name: 'Japanese Yen', type: 'currency', emoji: '🇯🇵' },
-		{ code: 'AUD', name: 'Australian Dollar', type: 'currency', emoji: '🇦🇺' },
-		{ code: 'CAD', name: 'Canadian Dollar', type: 'currency', emoji: '🇨🇦' },
-		{ code: 'CHF', name: 'Swiss Franc', type: 'currency', emoji: '🇨🇭' },
-		{ code: 'CNY', name: 'Chinese Yuan', type: 'currency', emoji: '🇨🇳' },
-		{ code: 'NZD', name: 'New Zealand Dollar', type: 'currency', emoji: '🇳🇿' },
-		{ code: 'XAU', name: 'Gold', type: 'precious_metal', emoji: '🥇' },
-		{ code: 'XAG', name: 'Silver', type: 'precious_metal', emoji: '🥈' }
+		{ code: 'USD', name: 'US Dollar', type: 'currency' },
+		{ code: 'EUR', name: 'Euro', type: 'currency' },
+		{ code: 'GBP', name: 'British Pound', type: 'currency' },
+		{ code: 'JPY', name: 'Japanese Yen', type: 'currency' },
+		{ code: 'AUD', name: 'Australian Dollar', type: 'currency' },
+		{ code: 'CAD', name: 'Canadian Dollar', type: 'currency' },
+		{ code: 'CHF', name: 'Swiss Franc', type: 'currency' },
+		{ code: 'CNY', name: 'Chinese Yuan', type: 'currency' },
+		{ code: 'NZD', name: 'New Zealand Dollar', type: 'currency' },
+		{ code: 'XAU', name: 'Gold', type: 'precious_metal' },
+		{ code: 'XAG', name: 'Silver', type: 'precious_metal' }
 	];
 
 	// Load data based on selected asset using comprehensive system
@@ -253,11 +252,11 @@
 
 <div class="space-y-4">
 	<!-- Compact Header with Asset Selector -->
-	<div class="bg-white rounded-xl shadow-md p-4">
+	<div class="bg-gray-800 rounded-xl shadow-md p-4">
 		<div class="flex items-center justify-between mb-4">
 			<div>
-				<h1 class="text-2xl font-bold text-navy">{t('economic.fundamental-analysis', $currentLanguage)}</h1>
-				<p class="text-gray-600 text-sm">{t('economic.overview', $currentLanguage)}</p>
+				<h1 class="text-2xl font-bold text-gray-100">{t('economic.fundamental-analysis', $currentLanguage)}</h1>
+				<p class="text-gray-300 text-sm">{t('economic.overview', $currentLanguage)}</p>
 			</div>
 			<div class="flex items-center gap-3">
 				<div class="text-xs text-gray-500">
@@ -278,14 +277,14 @@
 			<div class="lg:col-span-1">
 				<div class="flex items-center gap-2 mb-2">
 					<Globe class="w-4 h-4 text-teal-600" />
-					<h3 class="font-semibold text-navy text-sm">{t('economic.asset-selection', $currentLanguage)}</h3>
+					<h3 class="font-semibold text-gray-100 text-sm">{t('economic.asset-selection', $currentLanguage)}</h3>
 				</div>
 				<EconomicAssetSelector
 					bind:selectedAsset
 					{availableAssets}
 					on:change={handleAssetChange}
 				/>
-				<div class="mt-2 p-2 bg-gray-50 rounded text-xs text-gray-600">
+				<div class="mt-2 p-2 bg-gray-700 rounded text-xs text-gray-300">
 					{getAssetDescription(selectedAsset)}
 				</div>
 			</div>
@@ -336,19 +335,19 @@
 
 <!-- Loading State -->
 {#if isLoading}
-	<div class="bg-white rounded-xl shadow-md p-8">
+	<div class="bg-gray-800 rounded-xl shadow-md p-8">
 		<div class="text-center">
 			<LoadingSpinner size="large" />
-			<p class="mt-4 text-gray-600">{t('economic.loading', $currentLanguage)} {selectedAsset} {t('economic.economic-data', $currentLanguage)}...</p>
+			<p class="mt-4 text-gray-300">{t('economic.loading', $currentLanguage)} {selectedAsset} {t('economic.economic-data', $currentLanguage)}...</p>
 		</div>
 	</div>
 {:else}
 	<!-- Macroeconomic Indicators -->
-	<div class="bg-white rounded-xl shadow-md p-4">
+	<div class="bg-gray-800 rounded-xl shadow-md p-4">
 		<div class="flex items-center justify-between mb-4">
 			<div class="flex items-center gap-2">
-				<Calendar class="w-4 h-4 text-purple-600" />
-				<h2 class="text-lg font-semibold text-navy">
+				<Calendar class="w-4 h-4 text-purple-400" />
+				<h2 class="text-lg font-semibold text-gray-100">
 					{selectedAsset} {t('economic.macroeconomic-indicators', $currentLanguage)}
 				</h2>
 			</div>
@@ -375,12 +374,12 @@
 {/if}
 
 	<!-- Additional Information -->
-	<div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+	<div class="bg-blue-900/20 border border-blue-600/30 rounded-lg p-3">
 		<div class="flex items-start gap-2">
-			<AlertCircle class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+			<AlertCircle class="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
 			<div>
-				<h3 class="font-semibold text-blue-900 mb-1 text-sm">{t('economic.important-notes', $currentLanguage)}</h3>
-				<ul class="text-xs text-blue-800 space-y-0.5">
+				<h3 class="font-semibold text-blue-300 mb-1 text-sm">{t('economic.important-notes', $currentLanguage)}</h3>
+				<ul class="text-xs text-blue-300 space-y-0.5">
 					<li>• Economic indicators are updated regularly based on official releases</li>
 					<li>• High impact indicators have the most significant effect on asset movements</li>
 					<li>• Consider multiple indicators together for comprehensive analysis</li>
@@ -392,23 +391,23 @@
 
 	<!-- Live Economic News from APIs -->
 	{#if data.fundamentalData && data.fundamentalData.latestNews.length > 0}
-		<div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 p-4">
+		<div class="bg-green-900/20 rounded-xl border border-green-600/30 p-4">
 			<div class="flex items-center gap-2 mb-4">
-				<Globe class="w-5 h-5 text-green-600" />
-				<h2 class="text-lg font-semibold text-navy">Latest Economic News</h2>
-				<span class="ml-auto text-xs text-gray-500">
+				<Globe class="w-5 h-5 text-green-400" />
+				<h2 class="text-lg font-semibold text-gray-100">Latest Economic News</h2>
+				<span class="ml-auto text-xs text-gray-400">
 					Sources: {data.fundamentalData.totalSources.join(', ')}
 				</span>
 			</div>
 
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 				{#each data.fundamentalData.latestNews as article}
-					<div class="bg-white rounded-lg p-4 border border-green-100 hover:shadow-md transition-shadow">
+					<div class="bg-gray-700 rounded-lg p-4 border border-gray-600 hover:shadow-md transition-shadow">
 						<div class="flex items-start justify-between mb-2">
-							<span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800">
+							<span class="text-xs px-2 py-1 rounded-full bg-blue-900/30 text-blue-400">
 								{article.source}
 							</span>
-							<span class="text-xs text-gray-500">{article.date}</span>
+							<span class="text-xs text-gray-400">{article.date}</span>
 						</div>
 
 						<h3 class="font-semibold text-navy text-sm mb-2 line-clamp-2">
@@ -443,12 +442,12 @@
 			</div>
 		</div>
 	{:else}
-		<div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+		<div class="bg-yellow-900/20 border border-yellow-600/30 rounded-xl p-4">
 			<div class="flex items-center gap-2 mb-2">
-				<AlertCircle class="w-5 h-5 text-yellow-600" />
-				<h3 class="font-semibold text-yellow-800">No Economic News Available</h3>
+				<AlertCircle class="w-5 h-5 text-yellow-400" />
+				<h3 class="font-semibold text-yellow-300">No Economic News Available</h3>
 			</div>
-			<p class="text-yellow-700 text-sm mb-3">
+			<p class="text-yellow-300 text-sm mb-3">
 				No recent economic news data found. Click below to fetch the latest news from our APIs.
 			</p>
 			<button

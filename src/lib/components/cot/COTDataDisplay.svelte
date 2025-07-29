@@ -259,14 +259,14 @@
 					{/if}
 
 					<!-- Data Info -->
-					<div class="border border-gray-200 rounded-lg p-4">
-						<div class="flex items-center justify-between text-sm text-gray-600">
+					<div class="border border-gray-200 dark:border-dark-border rounded-lg p-4 bg-white dark:bg-dark-card transition-colors duration-200">
+						<div class="flex items-center justify-between text-sm text-gray-600 dark:text-dark-text-secondary">
 							<div>
 								Data Quality: <span class="{getQualityColor(cotData.data_quality)} font-medium">{cotData.data_quality}</span>
 							</div>
 							<div>Last updated: {lastUpdated}</div>
 						</div>
-						<div class="mt-2 text-xs text-gray-500">
+						<div class="mt-2 text-xs text-gray-500 dark:text-dark-text-muted">
 							Source: CFTC Commitment of Traders Report
 						</div>
 					</div>

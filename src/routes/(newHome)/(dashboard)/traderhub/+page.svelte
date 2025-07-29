@@ -2,10 +2,11 @@
 	import { onMount, onDestroy } from 'svelte';
 	import {
 		TrendingUp, TrendingDown, RefreshCw, DollarSign,
-		Settings, Eye, EyeOff, Maximize2,
+		Settings, Maximize2,
 		AlertTriangle, Bell, Search, SlidersHorizontal,
 		ChevronDown, ChevronUp, X, Activity
 	} from '@lucide/svelte';
+
 
 	// Enhanced Types
 	interface PriceData {
@@ -80,8 +81,8 @@
 	let error = '';
 	let priceInterval: number;
 
-	// UI State
-	let isDarkMode = true;
+	// UI State - Permanent Dark Mode
+	const isDarkMode = true;
 	let activeTab = 'positions'; // positions, orders, history, watchlist
 	let showAdvancedOrder = false;
 	let isChartMaximized = false;
@@ -503,19 +504,6 @@
 
 			<!-- Right: Controls -->
 			<div class="flex items-center gap-3">
-				<!-- Dark Mode Toggle -->
-				<button
-					on:click={() => isDarkMode = !isDarkMode}
-					class="rounded-lg p-2 transition-colors"
-					class:bg-gray-700={isDarkMode} class:hover:bg-gray-600={isDarkMode}
-					class:bg-gray-100={!isDarkMode} class:hover:bg-gray-200={!isDarkMode}>
-					{#if isDarkMode}
-						<Eye size={18} class="text-yellow-400" />
-					{:else}
-						<EyeOff size={18} class="text-gray-600" />
-					{/if}
-				</button>
-
 				<!-- Chart Maximize -->
 				<button
 					on:click={() => isChartMaximized = !isChartMaximized}

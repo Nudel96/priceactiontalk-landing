@@ -4,13 +4,22 @@ import typography from '@tailwindcss/typography';
 
 export default {
 	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx,svelte,html}'],
+	darkMode: 'class',
 	theme: {
 		extend: {
 			colors: {
 				navy: '#0d1b2a',
 				teal: '#1b9aaa',
 				signal: '#7cfc00',
-				graphite: '#2e2e2e'
+				graphite: '#2e2e2e',
+				// Dark mode color palette
+				'dark-bg': '#0f172a',
+				'dark-surface': '#1e293b',
+				'dark-card': '#334155',
+				'dark-border': '#475569',
+				'dark-text-primary': '#f8fafc',
+				'dark-text-secondary': '#cbd5e1',
+				'dark-text-muted': '#94a3b8'
 			},
 			fontFamily: {
 				sans: ['Inter', 'Roboto', 'sans-serif']

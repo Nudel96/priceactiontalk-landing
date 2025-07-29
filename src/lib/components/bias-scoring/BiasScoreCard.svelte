@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { TrendingUp, TrendingDown, ChartBar, Minus, HelpCircle } from '@lucide/svelte';
   
   export let asset: string;
   export let showDetails: boolean = false;
@@ -22,20 +23,20 @@
   let error: string | null = null;
   let lastRefresh: Date | null = null;
 
-  // Bias color mapping
+  // Bias color mapping - Permanent Dark Theme
   const biasColors = {
-    'STRONG_BULLISH': 'text-green-600 bg-green-50 border-green-200',
-    'BULLISH': 'text-green-500 bg-green-50 border-green-100',
-    'NEUTRAL': 'text-gray-600 bg-gray-50 border-gray-200',
-    'BEARISH': 'text-red-500 bg-red-50 border-red-100',
-    'STRONG_BEARISH': 'text-red-600 bg-red-50 border-red-200'
+    'STRONG_BULLISH': 'text-green-400 bg-green-900/20 border-green-700',
+    'BULLISH': 'text-green-400 bg-green-900/20 border-green-700',
+    'NEUTRAL': 'text-gray-400 bg-gray-700/20 border-gray-600',
+    'BEARISH': 'text-red-400 bg-red-900/20 border-red-700',
+    'STRONG_BEARISH': 'text-red-400 bg-red-900/20 border-red-700'
   };
 
-  // Data quality colors
+  // Data quality colors with dark mode support
   const qualityColors = {
-    'HIGH': 'text-green-600',
-    'MEDIUM': 'text-yellow-600',
-    'LOW': 'text-red-600'
+    'HIGH': 'text-green-600 dark:text-green-400',
+    'MEDIUM': 'text-yellow-600 dark:text-yellow-400',
+    'LOW': 'text-red-600 dark:text-red-400'
   };
 
   async function fetchBiasData() {
@@ -84,14 +85,20 @@
     return new Date(timestamp).toLocaleString();
   }
 
-  function getBiasIcon(bias: string): string {
+  function getBiasConfig(bias: string) {
     switch (bias) {
-      case 'STRONG_BULLISH': return '📈';
-      case 'BULLISH': return '📊';
-      case 'NEUTRAL': return '➖';
-      case 'BEARISH': return '📉';
-      case 'STRONG_BEARISH': return '🔻';
-      default: return '❓';
+      case 'STRONG_BULLISH':
+        return { icon: TrendingUp, color: 'text-green-600', bgColor: 'bg-green-50' };
+      case 'BULLISH':
+        return { icon: ChartBar, color: 'text-green-500', bgColor: 'bg-green-50' };
+      case 'NEUTRAL':
+        return { icon: Minus, color: 'text-gray-500', bgColor: 'bg-gray-50' };
+      case 'BEARISH':
+        return { icon: TrendingDown, color: 'text-red-500', bgColor: 'bg-red-50' };
+      case 'STRONG_BEARISH':
+        return { icon: TrendingDown, color: 'text-red-600', bgColor: 'bg-red-50' };
+      default:
+        return { icon: HelpCircle, color: 'text-gray-400', bgColor: 'bg-gray-50' };
     }
   }
 
@@ -104,13 +111,16 @@
   });
 </script>
 
-<div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+<div class="bg-gray-800 rounded-lg shadow-md border border-gray-600 p-6 transition-all duration-200">
   <!-- Header -->
   <div class="flex items-center justify-between mb-4">
     <div class="flex items-center space-x-3">
-      <h3 class="text-lg font-semibold text-gray-900">{asset}</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">{asset}</h3>
       {#if biasData}
-        <span class="text-2xl">{getBiasIcon(biasData.currentBias)}</span>
+        {@const config = getBiasConfig(biasData.currentBias)}
+        <div class="w-8 h-8 rounded-full {config.bgColor} flex items-center justify-center">
+          <svelte:component this={config.icon} size={16} class={config.color} />
+        </div>
       {/if}
     </div>
     

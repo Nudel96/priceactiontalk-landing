@@ -29,13 +29,13 @@
 <main class="flex flex-grow items-center justify-center px-4 py-10">
 	<div
 		in:fly={{ y: 20, duration: 400 }}
-		class="shadow-card text-navy w-full max-w-md rounded-xl bg-white p-8 ring-1 ring-gray-100">
+		class="shadow-card text-gray-100 w-full max-w-md rounded-xl bg-gray-800 p-8 ring-1 ring-gray-700 transition-colors duration-200">
 		<Logo class="mx-auto mb-6 h-12 w-auto" />
 		<h1 class="mb-2 text-3xl font-bold">Welcome back</h1>
-		<p class="mb-6 text-sm text-gray-600">Sign in to access your PriceActionTalk account</p>
+		<p class="mb-6 text-sm text-gray-300">Sign in to access your PriceActionTalk account</p>
 
 		{#if error}
-			<div class="mb-6 rounded-md bg-red-50 px-4 py-3 text-red-700">
+			<div class="mb-6 rounded-md bg-red-900/20 px-4 py-3 text-red-300">
 				{error}
 			</div>
 		{/if}
@@ -49,7 +49,7 @@
 					id="email"
 					type="email"
 					bind:value={email}
-					class="focus:border-teal focus:ring-teal w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-500 focus:outline-none"
+					class="focus:border-teal focus:ring-teal w-full rounded-md border border-gray-600 bg-gray-700 px-4 py-2 text-gray-100 placeholder-gray-400 focus:outline-none transition-colors duration-200"
 					placeholder="your.email@example.com"
 					required />
 			</div>
@@ -61,7 +61,7 @@
 						id="password"
 						type={showPassword ? 'text' : 'password'}
 						bind:value={password}
-						class="focus:border-teal focus:ring-teal w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-500 focus:outline-none"
+						class="focus:border-teal focus:ring-teal w-full rounded-md border border-gray-600 bg-gray-700 px-4 py-2 text-gray-100 placeholder-gray-400 focus:outline-none transition-colors duration-200"
 						placeholder="••••••••"
 						required />
 					<button
@@ -106,8 +106,4 @@
 	</div>
 </main>
 
-<style>
-	:global(body) {
-		background-color: white;
-	}
-</style>
+

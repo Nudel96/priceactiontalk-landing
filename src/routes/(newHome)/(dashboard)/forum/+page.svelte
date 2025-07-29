@@ -169,35 +169,35 @@
 	<!-- Header -->
 	<div class="flex items-center justify-between">
 		<div>
-			<h1 class="text-3xl font-bold text-navy">Forum</h1>
-			<div class="flex items-center gap-2 mt-2 text-sm text-gray-600">
+			<h1 class="text-3xl font-bold text-navy dark:text-dark-text-primary">Forum</h1>
+			<div class="flex items-center gap-2 mt-2 text-sm text-gray-600 dark:text-dark-text-secondary">
 				<MessageSquare class="w-4 h-4" />
 				<span>Welcome to the PriceActionTalk forum! Share your ideas, ask questions, and engage with the community.</span>
 			</div>
 		</div>
 		<button
 			on:click={handleNewThread}
-			class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+			class="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
 			<Plus class="w-4 h-4" />
 			New Thread
 		</button>
 	</div>
 
 	<!-- Search Bar -->
-	<div class="bg-white rounded-xl shadow-md p-4">
+	<div class="bg-gray-800 rounded-xl shadow-md p-4 transition-colors duration-200">
 		<div class="flex gap-3">
 			<div class="flex-1 relative">
-				<Search class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+				<Search class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
 				<input
 					type="text"
 					placeholder="Search forums..."
 					bind:value={searchQuery}
-					class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+					class="w-full pl-10 pr-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-gray-700 text-gray-100 transition-colors"
 				/>
 			</div>
 			<button
 				on:click={handleSearch}
-				class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-lg transition-colors">
+				class="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white px-6 py-2 rounded-lg transition-colors">
 				Search
 			</button>
 		</div>
@@ -206,24 +206,24 @@
 	<!-- Forum Categories -->
 	<div class="space-y-4">
 		{#each forumCategories as category}
-			<div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+			<div class="bg-gray-800 rounded-xl shadow-md p-6 hover:shadow-lg transition-all duration-200">
 				<div class="flex items-start justify-between">
 					<div class="flex items-start gap-4 flex-1">
-						<div class="w-12 h-12 {category.bgColor} rounded-lg flex items-center justify-center">
+						<div class="w-12 h-12 {category.bgColor} dark:bg-opacity-20 rounded-lg flex items-center justify-center">
 							<svelte:component this={category.icon} class="w-6 h-6 {category.iconColor}" />
 						</div>
 						<div class="flex-1">
-							<h3 class="text-lg font-semibold text-navy mb-1">{category.name}</h3>
-							<p class="text-gray-600 text-sm mb-3">{category.description}</p>
-							<div class="flex items-center gap-4 text-xs text-gray-500">
+							<h3 class="text-lg font-semibold text-navy dark:text-dark-text-primary mb-1">{category.name}</h3>
+							<p class="text-gray-600 dark:text-dark-text-secondary text-sm mb-3">{category.description}</p>
+							<div class="flex items-center gap-4 text-xs text-gray-500 dark:text-dark-text-muted">
 								<span>{category.threads} threads</span>
 								<span>{category.posts} posts</span>
 							</div>
 						</div>
 					</div>
 					<div class="text-right min-w-0 ml-4">
-						<div class="text-sm font-medium text-navy truncate max-w-48">{category.lastPost.title}</div>
-						<div class="text-xs text-gray-500 mt-1">
+						<div class="text-sm font-medium text-navy dark:text-dark-text-primary truncate max-w-48">{category.lastPost.title}</div>
+						<div class="text-xs text-gray-500 dark:text-dark-text-muted mt-1">
 							by {category.lastPost.author} • {category.lastPost.time}
 						</div>
 					</div>
@@ -233,42 +233,42 @@
 	</div>
 
 	<!-- Forum Statistics -->
-	<div class="bg-white rounded-xl shadow-md p-6">
-		<h3 class="text-lg font-semibold text-navy mb-4">Forum Statistics</h3>
+	<div class="bg-gray-800 rounded-xl shadow-md p-6 transition-colors duration-200">
+		<h3 class="text-lg font-semibold text-navy dark:text-dark-text-primary mb-4">Forum Statistics</h3>
 		<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
 			<div class="text-center">
-				<div class="text-2xl font-bold text-teal-600 mb-1">{forumStats.totalThreads}</div>
-				<div class="text-sm text-gray-600">Total Threads</div>
+				<div class="text-2xl font-bold text-teal-600 dark:text-teal-400 mb-1">{forumStats.totalThreads}</div>
+				<div class="text-sm text-gray-600 dark:text-dark-text-secondary">Total Threads</div>
 			</div>
 			<div class="text-center">
-				<div class="text-2xl font-bold text-teal-600 mb-1">{forumStats.totalPosts}</div>
-				<div class="text-sm text-gray-600">Total Posts</div>
+				<div class="text-2xl font-bold text-teal-600 dark:text-teal-400 mb-1">{forumStats.totalPosts}</div>
+				<div class="text-sm text-gray-600 dark:text-dark-text-secondary">Total Posts</div>
 			</div>
 			<div class="text-center">
-				<div class="text-2xl font-bold text-teal-600 mb-1">{forumStats.activeMembers}</div>
-				<div class="text-sm text-gray-600">Active Members</div>
+				<div class="text-2xl font-bold text-teal-600 dark:text-teal-400 mb-1">{forumStats.activeMembers}</div>
+				<div class="text-sm text-gray-600 dark:text-dark-text-secondary">Active Members</div>
 			</div>
 			<div class="text-center">
-				<div class="text-2xl font-bold text-teal-600 mb-1">{forumStats.newestMember}</div>
-				<div class="text-sm text-gray-600">Newest Member</div>
+				<div class="text-2xl font-bold text-teal-600 dark:text-teal-400 mb-1">{forumStats.newestMember}</div>
+				<div class="text-sm text-gray-600 dark:text-dark-text-secondary">Newest Member</div>
 			</div>
 		</div>
 
 		<!-- Recent Threads -->
-		<div class="bg-white rounded-xl shadow-md p-6">
+		<div class="bg-gray-800 rounded-xl shadow-md p-6 transition-colors duration-200">
 			<div class="flex items-center justify-between mb-6">
-				<h2 class="text-xl font-semibold text-navy">Recent Threads</h2>
-				<span class="text-sm text-gray-500">{threads.length} threads</span>
+				<h2 class="text-xl font-semibold text-navy dark:text-dark-text-primary">Recent Threads</h2>
+				<span class="text-sm text-gray-500 dark:text-dark-text-muted">{threads.length} threads</span>
 			</div>
 			<div class="space-y-4">
 				{#each threads as thread}
-					<div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+					<div class="border border-gray-600 rounded-lg p-4 hover:shadow-md transition-all duration-200 bg-gray-700">
 						<div class="flex items-start justify-between">
 							<div class="flex-1">
-								<h3 class="font-medium text-navy hover:text-teal-600 cursor-pointer">{thread.title}</h3>
-								<div class="flex items-center gap-4 mt-2 text-sm text-gray-500">
+								<h3 class="font-medium text-navy dark:text-dark-text-primary hover:text-teal-600 dark:hover:text-teal-400 cursor-pointer">{thread.title}</h3>
+								<div class="flex items-center gap-4 mt-2 text-sm text-gray-500 dark:text-dark-text-muted">
 									<span>by {thread.author}</span>
-									<span class="px-2 py-1 bg-gray-100 rounded-full text-xs">{thread.category}</span>
+									<span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-xs">{thread.category}</span>
 									<span>{thread.replies} replies</span>
 									<span>{thread.views} views</span>
 									<span>{thread.lastActivity}</span>
@@ -283,8 +283,8 @@
 						</div>
 					</div>
 				{:else}
-					<div class="text-center py-8 text-gray-500">
-						<MessageSquare class="w-12 h-12 mx-auto mb-4 text-gray-300" />
+					<div class="text-center py-8 text-gray-500 dark:text-dark-text-muted">
+						<MessageSquare class="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
 						<p>No threads yet. Be the first to start a discussion!</p>
 					</div>
 				{/each}
@@ -296,7 +296,7 @@
 <!-- New Thread Modal -->
 {#if showNewThreadModal}
 	<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-		<div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+		<div class="bg-gray-800 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
 			<div class="flex items-center justify-between mb-6">
 				<h3 class="text-xl font-semibold text-navy">Create New Thread</h3>
 				<button on:click={() => showNewThreadModal = false} class="text-gray-400 hover:text-gray-600">
